@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title style="text-align:center;">
+      Category
+    </ion-title>
+     <!--ion-buttons end>     
+      <button ion-button icon-only>
+          <ion-icon name="cube"></ion-icon>
+      </button>
+    </ion-buttons-->
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event);" class="refresher">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+   <ion-list>
+
+    <!--ion-list-header>
+      Categories
+    </ion-list-header-->
+
+    <ion-item-sliding *ngFor="let category of categories">
+      <ion-item (click)="editCategory(category);">        
+        <button ion-fab color="{{category.color}}" item-left style="box-shadow:none;">
+            <ion-icon name="{{category.icon}}"></ion-icon>
+        </button>
+        <h2 item-center style="margin-left:7%">{{category.name}}</h2>
+        <p item-center style="margin-left:7%">{{category.description}}.</p>
+      </ion-item>
+      <ion-item-options>
+        <button ion-button color="danger" icon-left (click)="onTrash(category);">
+          <ion-icon name="trash" ></ion-icon>
+          Delete
+        </button>                
+      </ion-item-options>
+    </ion-item-sliding>  
+
+  </ion-list>
+
+  <br>
+  <ion-fab right bottom>
+    <button ion-fab color="add-item" (click)="onAddClick()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>

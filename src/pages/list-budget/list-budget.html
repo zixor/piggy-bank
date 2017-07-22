@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title style="text-align:center;">
+      Budgets
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="doFilter();">
+          <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher (ionRefresh)="doRefresh($event);" class="refresher">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card *ngFor="let budget of budgets">
+
+    <ion-item (click)="onClickBudget(budget);">
+      <button item-start ion-fab color="{{budget.category.color}}" item-left style="box-shadow:none;">
+          <ion-icon name="{{budget.category.icon}}"></ion-icon>
+      </button>
+      <h2> {{budget.category.name}} </h2>
+      <p> {{budget.initialDate | date}} - {{budget.finalDate | date}}</p>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <p class="information">Budget</p>
+      </ion-col>
+      <ion-col>
+        <p>{{ budget.amount | currency : 'USD': true }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p class="information">Executed</p>
+      </ion-col>
+      <ion-col>
+        <p>{{ budget.executed | currency : 'USD': true }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <progress-bar [progress]="budget.percent"></progress-bar>
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
+
+  <br>
+  <ion-fab right bottom>
+    <button ion-fab color="add-item" (click)="onAddClick()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>

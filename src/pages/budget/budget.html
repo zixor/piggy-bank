@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title style="text-align:center;"> Budget </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onTrash()" *ngIf="budget.id">
+          <ion-icon name="trash"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="onSave()" [disabled]="!f.valid">
+          <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <form #f="ngForm">
+
+    <ion-grid>
+      <ion-row>
+        <ion-col col-3>
+          <button ion-fab color="{{category.color}}" item-left style="box-shadow:none;" (click)="openModalCategory();">
+                <ion-icon name="{{category.icon}}"></ion-icon>
+              </button>
+        </ion-col>
+        <ion-col>
+          <ion-item item-center>
+            <ion-input type="text" *ngIf="category" [(ngModel)]="category.name" name="category" placeholder="Choose Category" required
+              readonly></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+    <ion-item>
+      <ion-label color="primary">Initial Date</ion-label>
+      <ion-datetime displayFormat="MMM DD YYYY" name="initialDate" [(ngModel)]="budget.initialDate"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary">Final Date</ion-label>
+      <ion-datetime displayFormat="MMM DD YYYY" name="finalDate" [(ngModel)]="budget.finalDate"></ion-datetime>
+    </ion-item>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col col-3>
+          <button ion-fab color="add-item" item-left style="box-shadow:none;" (click)="openCalc();">
+                    <ion-icon name="cash"></ion-icon>
+                  </button>
+        </ion-col>
+        <ion-col>
+          <ion-item item-right>
+            <p>{{ budget.amount | currency : 'USD': true }}</p>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+  </form>
+</ion-content>

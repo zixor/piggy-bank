@@ -1,0 +1,100 @@
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title style="text-align:center;">
+      Savings
+    </ion-title>
+    <ion-buttons end>      
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher (ionRefresh)="doRefresh($event);" class="refresher">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card *ngFor="let saving of savings">
+
+    <ion-grid>
+      <ion-row>
+
+        <ion-col col-2>
+          <button item-start ion-fab color="{{saving.category.color}}"  (click)="onClickSaving(saving);" item-left style="box-shadow:none;">
+              <ion-icon name="{{saving.category.icon}}"></ion-icon>
+            </button>
+        </ion-col>
+
+        <ion-col>  
+          <h2> {{saving.description}} </h2>
+          <p> {{saving.goaldate | date}}</p>
+        </ion-col>
+
+        <ion-col col-2>
+          <button ion-button  clear icon-only (click)="onTrash(saving);">
+              <ion-icon name="trash"></ion-icon>            
+            </button>
+        </ion-col>
+
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <p class="information">Target</p>
+        </ion-col>
+        <ion-col>
+          <p>{{ saving.amount | currency : 'USD': true }}</p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <p class="information">Cumulated</p>
+        </ion-col>
+        <ion-col>
+          <p>{{ saving.cumulated | currency : 'USD': true }}</p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <progress-bar [progress]="saving.percentage"></progress-bar>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+
+          <button ion-button clear small (click)="showDetails(saving.id);">
+            <ion-icon name="list-box"></ion-icon>
+            <div> Details</div>
+          </button>
+        
+          <button ion-button clear small (click)="makeIncoming(saving.id);">
+            <ion-icon name="logo-usd"></ion-icon>
+            <div> Incoming</div>
+          </button>
+        
+          <button ion-button clear small (click)="makeWithDraw(saving.id);">
+          <ion-icon name="md-cash"></ion-icon>
+          <div> Withdraw</div>
+        </button>
+        
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+
+  </ion-card>
+
+  <br>
+  <ion-fab right bottom>
+    <button ion-fab color="add-item" (click)="onAddClick()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>

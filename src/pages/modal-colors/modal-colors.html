@@ -1,0 +1,26 @@
+<ion-header>
+
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title style="text-align:center;">Choose Color</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="closeModal();">
+          <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-row>
+    <ion-col *ngFor="let color of colors" >    
+        <button item-right ion-fab color="{{color}}" style="box-shadow:none;" (click)="onSelectedColor(color);">
+            <ion-icon name="check"></ion-icon>
+        </button>
+    </ion-col>
+  </ion-row>
+</ion-content>

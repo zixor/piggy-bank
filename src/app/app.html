@@ -1,0 +1,36 @@
+<ion-menu [content]="content">
+  <ion-header>
+    <ion-toolbar color="add-item">
+      <ion-title>Expense Tracker</ion-title>          
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="mainMenu">
+    <!--ion-card class="profile-card">
+        <ion-item>
+            <ion-avatar item-left>
+                <img src="{{userProfile.photoUrl}}">  
+            </ion-avatar>
+            <br>
+            <p> {{userProfile.displayName}} </p>  
+            <p> {{userProfile.username}} </p>             
+        </ion-item> 
+        <ion-item>  
+            <button  ion-button full color="header" (click)="closeSession()">
+              <ion-icon  name="power"></ion-icon>
+               Close Application
+            </button>
+        </ion-item> 
+      </ion-card--> 
+    <ion-list class="mainMenu">              
+      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        {{p.title}}
+        <ion-icon name="{{p.icon}}" item-left></ion-icon>
+      </button>
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

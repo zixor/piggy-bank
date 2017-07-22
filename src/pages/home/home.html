@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title style="text-align:center;">
+      Transactions
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)=doFilter();>
+          <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher (ionRefresh)="doRefresh($event);" class="refresher">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <p>Incomes</p>
+        <h3> {{ incomes | currency: 'USD': true }} </h3>
+      </ion-col>
+      <ion-col>
+        <p>Expenses</p>
+        <h3> {{ amountExpenses | currency: 'USD': true }} </h3>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p>Balance</p>
+        <h3> {{ balance | currency: 'USD': true }} </h3>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list>
+
+    <ion-item-sliding *ngFor="let expense of expenses">
+      <ion-item (click)="onItemClick(expense);">
+
+         <button ion-fab color="{{expense.category.color}}" item-left style="box-shadow:none;">
+            <ion-icon name="{{expense.category.icon}}"></ion-icon>
+        </button>
+
+        <h2 item-center *ngIf="expense">{{expense.amount | currency: 'USD': true }}</h2>
+        <p item-center *ngIf="expense"> {{expense.date | date}} - {{expense.description}}</p>
+        <ion-note item-right *ngIf="expense">{{expense.category.name}}</ion-note>
+
+      </ion-item>
+      <ion-item-options>
+        <button ion-button color="danger" icon-left (click)="onTrash(expense);">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+
+  </ion-list>
+
+  <br>
+  <ion-fab right bottom>
+    <button ion-fab color="add-item" (click)="onAddClick()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>

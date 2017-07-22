@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title style="text-align:center;">
+      Category
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="closeModal();">
+          <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+
+  <ion-list>
+
+    <ion-list-header>
+      Categories
+    </ion-list-header>
+
+    <ion-item *ngFor="let category of categories" (click)="onSelectedCategory(category);">
+      <button ion-fab color="{{category.color}}" item-left style="box-shadow:none;">
+            <ion-icon name="{{category.icon}}"></ion-icon>
+        </button>
+      <h2 item-center style="margin-left:7%">{{category.name}}</h2>
+      <p item-center style="margin-left:7%">{{category.description}}.</p>
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>

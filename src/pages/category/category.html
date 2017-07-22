@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title style="text-align:center;">{{category.name || 'New Category' }} </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onTrash()" *ngIf="category.id">
+          <ion-icon name="trash"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="onSave()" [disabled]="!f.valid">
+          <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <form #f="ngForm">
+
+    <ion-grid>
+      <ion-row>
+        <ion-col col-3>
+          <button ion-fab color="{{category.color}}" item-left style="box-shadow:none;" (click)="onModalIcons();">
+            <ion-icon name="{{category.icon}}"></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col>
+          <ion-item item-center>
+            <ion-label color="primary" floating>Name</ion-label>
+            <ion-input type="text" [(ngModel)]="category.name" name="name" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Description</ion-label>
+      <ion-input type="text" [(ngModel)]="category.description" name="description" required></ion-input>
+    </ion-item>
+
+    <br>
+    <button ion-button color="primary" block (click)="openModalColors();">
+      <ion-icon name="color-palette"  item-left></ion-icon>
+        Choose Color
+    </button>
+    
+  </form>
+</ion-content>
