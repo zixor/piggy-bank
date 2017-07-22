@@ -20,6 +20,15 @@
     </ion-refresher-content>
   </ion-refresher>
 
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <p>Cumulated</p>
+        <h3> {{ cumulated | currency: 'USD': true }} </h3>
+      </ion-col>    
+    </ion-row>    
+  </ion-grid>
+
   <ion-list>
 
     <ion-item-sliding *ngFor="let detail of details">

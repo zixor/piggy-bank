@@ -12,6 +12,7 @@ export class ListDetailsSavings {
 
 private details: DetailSavingModel[] = [];
 private savingId;
+private cumulated;
 
   constructor(
     private navParams: NavParams,
@@ -20,6 +21,7 @@ private savingId;
 
     if(navParams.get("savingId")){
         this.savingId = navParams.get("savingId");
+        this.cumulated = navParams.get("cumulated");
     }
     this.loadData();
 

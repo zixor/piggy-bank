@@ -25,6 +25,7 @@ export class ListBudget {
     private alertCtrl: AlertController
   ) {
 
+    this.findAll();
 
   }
 

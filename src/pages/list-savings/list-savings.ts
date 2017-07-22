@@ -148,8 +148,8 @@ export class ListSavings {
     confirm.present();
   }
 
-  showDetails(savingId) {
-    this.navCtrl.push(ListDetailsSavings, { savingId: savingId });
+  showDetails(saving) {
+    this.navCtrl.push(ListDetailsSavings, { savingId: saving.id, cumulated: saving.cumulated });
   }
 
   makeIncoming(savingId) {
@@ -236,6 +236,7 @@ export class ListSavings {
       buttons: ['OK']
     });
     alert.present();
+    this.loadData();
   }
 
 }

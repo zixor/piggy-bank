@@ -80,7 +80,7 @@ export class Budget {
 
     this.budgetService.getAll(this.budget.initialDate, this.budget.finalDate, this.budget.category).then(category => {
       //README If already exist the budget and I´m not editting the record
-      if (category && !this.budget.id) {
+      if ((category.length > 0) && (this.budget.id == undefined)) {
 
         let confirm = this.alertCtrl.create({
           title: 'Error',
@@ -101,7 +101,7 @@ export class Budget {
   }
 
   saveBudget() {
-    
+
     if (this.budget.id) {
       this.budgetService.update(this.budget);
     } else {
