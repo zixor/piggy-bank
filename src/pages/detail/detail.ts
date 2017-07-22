@@ -181,7 +181,7 @@ export class Detail {
   onSave() {
 
     let budget = null;
-    let budgetExecuted:number = 0;
+    let budgetExecuted: number = 0;
 
     this.budgeteService.getBudgetByDateExpenseAndCategory(this.expense.date, this.expense.category).then(data => {
 
@@ -232,9 +232,11 @@ export class Detail {
   }
 
   saveExpense() {
+
+    this.expense.image = this.lastImage;
+
     if (this.expense.id) {
 
-      this.expense.image = this.lastImage;
       this.expense.category = this.expense.category.id;
       this.expenseService.update(this.expense);
 
