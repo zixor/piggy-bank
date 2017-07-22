@@ -6,19 +6,19 @@ import { CategoryModel } from '../app/category.model';
 export class CategorySqliteService {
 
   private dbConfig = { name: 'data.db', location: 'default' };
-  private db: SQLite = null;
   private sqlObject: SQLiteObject;
 
-  constructor() {
-    this.db = new SQLite();
+  constructor(private sqlite: SQLite) {
+
   }
 
   openDataBase() {
-    this.db.create(this.dbConfig).then((sqlObject: SQLiteObject) => {
-      this.sqlObject = sqlObject;
+    return this.sqlite.create(this.dbConfig).then((db: SQLiteObject) => {
+      this.sqlObject = db;
       this.createTable();
-    }).catch(e => console.log(e));
+    });
   }
+
 
   createTable() {
     let sql = 'CREATE TABLE IF NOT EXISTS category(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, icon TEXT, color TEXT)';
@@ -65,7 +65,7 @@ export class CategorySqliteService {
       this.sqlObject.executeSql(sql, [categoryId])
         .then(response => {
           for (let index = 0; index < response.rows.length; index++) {
-            category = response.rows.item(index);                 
+            category = response.rows.item(index);
           }
           resolve(category);
         })

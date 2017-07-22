@@ -6,19 +6,18 @@ import { BudgetModel } from '../models/Budget.model';
 @Injectable()
 export class BudgetSqliteService {
 
-  private dbConfig = { name: 'data.db', location: 'default' };
-  private db: SQLite = null;
+  private dbConfig = { name: 'data.db', location: 'default' };  
   private sqlObject: SQLiteObject;
 
-  constructor() {
-    this.db = new SQLite();
+  constructor(private sqlite: SQLite) {
+
   }
 
   openDataBase() {
-    this.db.create(this.dbConfig).then((sqlObject: SQLiteObject) => {
-      this.sqlObject = sqlObject;
+   return this.sqlite.create(this.dbConfig).then((db: SQLiteObject) => {
+      this.sqlObject = db;
       this.createTable();
-    }).catch(e => console.log(e));
+    });
   }
 
   createTable() {
@@ -82,7 +81,7 @@ export class BudgetSqliteService {
     });
 
   }
-  
+
 
   getBudgetByDateExpenseAndCategory(dateExpense: string, category: string): Promise<any> {
 

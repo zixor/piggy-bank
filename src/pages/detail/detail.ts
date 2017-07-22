@@ -192,14 +192,42 @@ export class Detail {
         this.expenseService.getExpensesGroupByCategory(budget.initialDate, budget.finalDate, budget.category)
           .then(data => {
 
-            let expenseExecuted = data[0];
-            budgetExecuted = parseInt(expenseExecuted.amount) + parseInt(this.expense.amount);
-            let currencyformat = budgetExecuted.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+            if (data.length > 0) {
 
-            if (budgetExecuted > budget.amount) {
+              let expenseExecuted = data[0];
+
+              budgetExecuted = parseInt(expenseExecuted.amount) + parseInt(this.expense.amount);
+              let currencyformat = budgetExecuted.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
+              if (budgetExecuted > budget.amount) {
+                let confirm = this.alertCtrl.create({
+                  title: 'Warning',
+                  message: `Your executed budget is "${currencyformat}". \n Do you want to continue?`,
+                  buttons: [
+                    {
+                      text: 'Cancel',
+                      handler: () => {
+                      }
+                    },
+                    {
+                      text: 'Confirm',
+                      handler: () => {
+
+                        this.saveExpense();
+
+                      }
+                    }
+                  ]
+                });
+                confirm.present();
+              }
+
+            } else if (parseInt(this.expense.amount) > parseInt(budget.amount)) {
+
+              //TODO REFACTOR 
               let confirm = this.alertCtrl.create({
                 title: 'Warning',
-                message: `Your executed budget is "${currencyformat}". \n Do you want to continue?`,
+                message: `Your executed budget is "${this.expense.amount}". \n Do you want to continue?`,
                 buttons: [
                   {
                     text: 'Cancel',
@@ -217,7 +245,14 @@ export class Detail {
                 ]
               });
               confirm.present();
+
+
+            } else {
+
+              this.saveExpense();
+
             }
+
 
           });
 

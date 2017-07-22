@@ -7,20 +7,16 @@ import { Expense } from '../app/expense.model';
 export class ExpenseSqliteService {
 
   private dbConfig = { name: 'data.db', location: 'default' };
-  private db: SQLite = null;
   private sqlObject: SQLiteObject;
 
   constructor(private sqlite: SQLite) {
-    this.db = new SQLite();
+
   }
 
   openDataBase() {
-    return new Promise((resolve, reject) => {
-      this.db.create(this.dbConfig).then((sqlObject: SQLiteObject) => {
-        this.sqlObject = sqlObject;
-        this.createTable();
-      }).catch(e => console.log(e));
-      resolve(this.sqlObject);
+    return this.sqlite.create(this.dbConfig).then((db: SQLiteObject) => {
+      this.sqlObject = db;
+      this.createTable();
     });
   }
 
@@ -51,17 +47,19 @@ export class ExpenseSqliteService {
     }
 
     return new Promise((resolve, reject) => {
-      this.sqlObject.executeSql(sql, params)
-        .then(response => {
-          for (let index = 0; index < response.rows.length; index++) {
-            let expense = response.rows.item(index);
-            if (expense !== undefined) {
-              expenses.push(expense);
+      if (this.sqlObject) {
+        this.sqlObject.executeSql(sql, params)
+          .then(response => {
+            for (let index = 0; index < response.rows.length; index++) {
+              let expense = response.rows.item(index);
+              if (expense !== undefined) {
+                expenses.push(expense);
+              }
             }
-          }
-          resolve(expenses);
-        })
-        .catch(e => reject(e));
+            resolve(expenses);
+          })
+          .catch(e => reject(e));
+      }
     });
 
   }
@@ -72,15 +70,18 @@ export class ExpenseSqliteService {
     let sql = "SELECT sum(amount) as sum FROM expense where incoming = 'false' ";
 
     return new Promise((resolve, reject) => {
-      this.sqlObject.executeSql(sql, [])
-        .then(response => {
-          let data = response.rows.item(0);
-          if (data.sum) {
-            expenses = data.sum;
-          }
-          resolve(expenses);
-        })
-        .catch(e => reject(e));
+      if (this.sqlObject) {
+        this.sqlObject.executeSql(sql, [])
+          .then(response => {
+            let data = response.rows.item(0);
+            if (data.sum) {
+              expenses = data.sum;
+            }
+            resolve(expenses);
+          })
+          .catch(e => reject(e));
+      }
+
     });
 
   }
@@ -93,17 +94,21 @@ export class ExpenseSqliteService {
       " and e.incoming = 'false' ";
 
     return new Promise((resolve, reject) => {
-      this.sqlObject.executeSql(sql, [categoryId, initialDate, finalDate])
-        .then(response => {
-          let data = response.rows.item(0);
-          if (data.amount) {
-            amount = data.amount;
-          }
-          resolve(amount);
-        })
-        .catch(e => {
-          reject(e)
-        });
+
+      if (this.sqlObject) {
+        this.sqlObject.executeSql(sql, [categoryId, initialDate, finalDate])
+          .then(response => {
+            let data = response.rows.item(0);
+            if (data.amount) {
+              amount = data.amount;
+            }
+            resolve(amount);
+          })
+          .catch(e => {
+            reject(e)
+          });
+      }
+
     });
 
   }
@@ -130,17 +135,20 @@ export class ExpenseSqliteService {
     sql += " GROUP BY category ";
 
     return new Promise((resolve, reject) => {
-      this.sqlObject.executeSql(sql, params)
-        .then(response => {
-          for (let index = 0; index < response.rows.length; index++) {
-            let record = response.rows.item(index);
-            if (record) {
-              data.push(record);
+      if (this.sqlObject) {
+        this.sqlObject.executeSql(sql, params)
+          .then(response => {
+            for (let index = 0; index < response.rows.length; index++) {
+              let record = response.rows.item(index);
+              if (record) {
+                data.push(record);
+              }
             }
-          }
-          resolve(data);
-        })
-        .catch(e => reject(e));
+            resolve(data);
+          })
+          .catch(e => reject(e));
+      }
+
     });
 
   }
@@ -151,15 +159,18 @@ export class ExpenseSqliteService {
     let sql = "SELECT sum(amount) as sum FROM expense where incoming = 'true' ";
 
     return new Promise((resolve, reject) => {
-      this.sqlObject.executeSql(sql, [])
-        .then(response => {
-          let data = response.rows.item(0);
-          if (data.sum) {
-            incomes = data.sum;
-          }
-          resolve(incomes);
-        })
-        .catch(e => reject(e));
+      if (this.sqlObject) {
+        this.sqlObject.executeSql(sql, [])
+          .then(response => {
+            let data = response.rows.item(0);
+            if (data.sum) {
+              incomes = data.sum;
+            }
+            resolve(incomes);
+          })
+          .catch(e => reject(e));
+      }
+
     });
 
   }

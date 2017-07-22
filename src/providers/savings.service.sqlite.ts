@@ -8,31 +8,29 @@ import * as moment from 'moment';
 export class SavingSqliteService {
 
   private dbConfig = { name: 'data.db', location: 'default' };
-  private db: SQLite = null;
   private sqlObject: SQLiteObject;
 
-  constructor() {
-    this.db = new SQLite();
+
+  constructor(private sqlite: SQLite) {
+
   }
 
   openDataBase() {
-      this.db.create(this.dbConfig).then((sqlObject: SQLiteObject) => {
-        this.sqlObject = sqlObject;
-        this.createTable();
-      }).catch(e => console.log(e));
+    return this.sqlite.create(this.dbConfig).then((db: SQLiteObject) => {
+      this.sqlObject = db;
+      this.createTable();
+    });
   }
 
   createTable() {
 
-    let sql = "create table if not exists saving(id integer primary key autoincrement, creationdate text, category text, goaldate text, amount real, description text)";
-    this.sqlObject.executeSql(sql, {})
-      .then(() => console.log('SQL Savings Initialized'))
-      .catch(e => console.log(e));
+    let sqlsaving = " create table if not exists saving(id integer primary key autoincrement, creationdate text, category text, goaldate text, amount real, description text) ";
+    let sqlsavingdetail = " create table if not exists savingdetail(id integer primary key autoincrement, saving_id integer, date text, type text, amount real, justification text) ";
 
-    sql = "create table if not exists savingdetail(id integer primary key autoincrement, saving_id integer, date text, type text, amount real, justification text)";
-    this.sqlObject.executeSql(sql, {})
-      .then(() => console.log('SQL Savings Initialized'))
-      .catch(e => console.log(e));
+   return this.sqlObject.transaction(function (tx) {
+      tx.executeSql(sqlsaving);
+      tx.executeSql(sqlsavingdetail);
+    });
 
   }
 
