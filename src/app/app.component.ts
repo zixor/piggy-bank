@@ -81,7 +81,9 @@ export class MyApp {
         this.categorySqlService.openDataBase().then(data => {
           this.budgetSqlService.openDataBase().then(data => {
             this.savingeService.openDataBase().then(data => {
-              this.splashScreen.hide();
+              setTimeout(() => {
+                this.splashScreen.hide();
+              }, 100);
             });
           });
         });
