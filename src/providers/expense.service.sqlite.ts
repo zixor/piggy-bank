@@ -42,7 +42,7 @@ export class ExpenseSqliteService {
 
   }
 
-  getAll(initialDate: string, finalDate: string) {
+  getAll(initialDate: string, finalDate: string): Promise<any> {
 
     let expenses = [];
     let sql = 'SELECT * FROM expense';
@@ -54,21 +54,24 @@ export class ExpenseSqliteService {
     }
 
     if (this.sqlObject) {
-      this.sqlObject.executeSql(sql, params)
-        .then(response => {
-          for (let index = 0; index < response.rows.length; index++) {
+      return new Promise((resolve, reject) => {
+        this.sqlObject.executeSql(sql, params)
+          .then(response => {
+            for (let index = 0; index < response.rows.length; index++) {
 
-            let expense = response.rows.item(index);
+              let expense = response.rows.item(index);
 
-            if (expense !== undefined) {
-              this.categoryService.getCategory(expense.category).then(category => {
-                expense.category = category;
-                expenses.push(expense);
-              });
+              if (expense !== undefined) {
+                this.categoryService.getCategory(expense.category).then(category => {
+                  expense.category = category;
+                  expenses.push(expense);
+                });
+              }
             }
-          }
-          this.events.publish("expenses:loaded", expenses);
-        });
+            this.events.publish("expenses:loaded", expenses);
+            resolve(true);
+          }).catch(e => reject(e));
+      });
     }
   }
 
@@ -161,25 +164,25 @@ export class ExpenseSqliteService {
 
   }
 
-  getIncomes(): Promise<any> {
+  getIncomes(initialDate: string, finalDate: string) {
 
-    let incomes = 0;
+    let params = [];
     let sql = "SELECT sum(amount) as sum FROM expense where incoming = 'true' ";
 
-    return new Promise((resolve, reject) => {
-      if (this.sqlObject) {
-        this.sqlObject.executeSql(sql, [])
-          .then(response => {
-            let data = response.rows.item(0);
-            if (data.sum) {
-              incomes = data.sum;
-            }
-            resolve(incomes);
-          })
-          .catch(e => reject(e));
-      }
+    if (initialDate != null && finalDate != null) {
+      sql += " and date between ? and ? ";
+      params = [initialDate, finalDate];
+    }
 
-    });
+    if (this.sqlObject) {
+      this.sqlObject.executeSql(sql, params)
+        .then(response => {
+          let data = response.rows.item(0);
+          if (data.sum) {
+            this.events.publish("incomes:loaded", data.sum);
+          }
+        })
+    }
 
   }
 

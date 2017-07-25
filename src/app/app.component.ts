@@ -79,7 +79,11 @@ export class MyApp {
 
       this.expenseSqlService.openDataBase().then(self => {
         //TODO get the incomes
-        self.getAll(null,null);
+        self.getAll(null,null).then(data =>{
+            if(data){
+              self.getIncomes(null,null);
+            }
+        });
         this.categorySqlService.openDataBase().then(data => {
           this.budgetSqlService.openDataBase().then(data => {
             this.savingeService.openDataBase().then(data => {

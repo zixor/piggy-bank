@@ -28,6 +28,7 @@ export class HomePage {
 
     console.log("1.constructor");
     this.subscribeExpensesLoaded();
+    this.subscribeIncomesLoaded();
     this.doRefresh(event);
 
   }
@@ -38,29 +39,35 @@ export class HomePage {
     });
   }
 
+  subscribeIncomesLoaded() {
+    this.events.subscribe("incomes:loaded", data => {
+      this.incomes = data;
+      this.setTotalExpenses();
+      this.setBalance();
+    });
+  }
+
   initializeForm(expenses) {
-    //TODO there are some methods that can be improve
-    this.setExpenses();
-    this.setIncomes();
-    this.setBalance();
     this.expenses = expenses;
     if (this.refresher != null) {
       this.refresher.complete();
     }
   }
 
-  setExpenses() {
-    this.expenseService.getExpenses().then(data => {
-      this.amountExpenses = data;
-      this.setBalance();
-    });
+  setTotalExpenses() {
+    let totalExpenses = 0;
+    if (this.expenses) {
+      this.expenses.forEach(expense => {
+        if(expense.incoming == "false"){
+          totalExpenses += expense.amount;
+        }
+      });
+    }
+    this.amountExpenses = totalExpenses;   
   }
 
-  setIncomes() {
-    this.expenseService.getIncomes().then(data => {
-      this.incomes = data;
-      this.setBalance();
-    });
+  setIncomes(initialDate, finalDate) {
+    this.expenseService.getIncomes(initialDate, finalDate);
   }
 
   setBalance() {
