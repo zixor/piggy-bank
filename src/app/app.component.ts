@@ -77,7 +77,9 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
 
-      this.expenseSqlService.openDataBase().then(data => {
+      this.expenseSqlService.openDataBase().then(self => {
+        //TODO get the incomes
+        self.getAll(null,null);
         this.categorySqlService.openDataBase().then(data => {
           this.budgetSqlService.openDataBase().then(data => {
             this.savingeService.openDataBase().then(data => {

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Expense } from '../app/expense.model';
-
+import { CategorySqliteService } from './category.service.sqlite';
+import { Events } from 'ionic-angular';
 
 @Injectable()
 export class ExpenseSqliteService {
@@ -9,14 +10,20 @@ export class ExpenseSqliteService {
   private dbConfig = { name: 'data.db', location: 'default' };
   private sqlObject: SQLiteObject;
 
-  constructor(private sqlite: SQLite) {
+  constructor(private sqlite: SQLite,
+    private events: Events,
+    private categoryService: CategorySqliteService) {
 
   }
 
-  openDataBase() {
-    return this.sqlite.create(this.dbConfig).then((db: SQLiteObject) => {
-      this.sqlObject = db;
-      this.createTable();
+  openDataBase(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.sqlite.create(this.dbConfig).then((db: SQLiteObject) => {
+        this.sqlObject = db;
+        this.createTable();
+        //README return the service instance in order to execute the findall and register the event        
+        resolve(this);
+      });
     });
   }
 
@@ -35,7 +42,7 @@ export class ExpenseSqliteService {
 
   }
 
-  getAll(initialDate: string, finalDate: string): Promise<any> {
+  getAll(initialDate: string, finalDate: string) {
 
     let expenses = [];
     let sql = 'SELECT * FROM expense';
@@ -46,22 +53,23 @@ export class ExpenseSqliteService {
       params = [initialDate, finalDate];
     }
 
-    return new Promise((resolve, reject) => {
-      if (this.sqlObject) {
-        this.sqlObject.executeSql(sql, params)
-          .then(response => {
-            for (let index = 0; index < response.rows.length; index++) {
-              let expense = response.rows.item(index);
-              if (expense !== undefined) {
-                expenses.push(expense);
-              }
-            }
-            resolve(expenses);
-          })
-          .catch(e => reject(e));
-      }
-    });
+    if (this.sqlObject) {
+      this.sqlObject.executeSql(sql, params)
+        .then(response => {
+          for (let index = 0; index < response.rows.length; index++) {
 
+            let expense = response.rows.item(index);
+
+            if (expense !== undefined) {
+              this.categoryService.getCategory(expense.category).then(category => {
+                expense.category = category;
+                expenses.push(expense);
+              });
+            }
+          }
+          this.events.publish("expenses:loaded", expenses);
+        });
+    }
   }
 
   getExpenses(): Promise<any> {

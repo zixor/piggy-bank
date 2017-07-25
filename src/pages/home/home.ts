@@ -16,6 +16,7 @@ export class HomePage {
   private balance: number = 0;
   private incomes: number = 0;
   private amountExpenses: number = 0;
+  private refresher;
 
   constructor(private navCtrl: NavController,
     private modalCtl: ModalController,
@@ -25,14 +26,27 @@ export class HomePage {
     private events: Events
   ) {
 
-    this.initializeForm();
+    console.log("1.constructor");
+    this.subscribeExpensesLoaded();
+    this.doRefresh(event);
 
   }
 
-  initializeForm() {
+  subscribeExpensesLoaded() {
+    this.events.subscribe("expenses:loaded", expenses => {
+      this.initializeForm(expenses);
+    });
+  }
+
+  initializeForm(expenses) {
+    //TODO there are some methods that can be improve
     this.setExpenses();
     this.setIncomes();
-    this.findAll(null, null);    
+    this.setBalance();
+    this.expenses = expenses;
+    if (this.refresher != null) {
+      this.refresher.complete();
+    }
   }
 
   setExpenses() {
@@ -54,29 +68,15 @@ export class HomePage {
   }
 
   findAll(initialDate, finalDate) {
-    let arrExpenses = [];
-    return new Promise((resolve, reject) => {
-      this.expenseService.getAll(initialDate, finalDate).then(data => {
-        if (data) {
-          data.forEach(expense => {
-            this.categoryService.getCategory(expense.category).then(category => {
-              expense.category = category;
-              arrExpenses.push(expense);
-            });
-          });
-          this.expenses = arrExpenses;
-          resolve(true);
-        }
-      }).catch(e => reject(e));
-    });
-  }
-
-  ionViewWillEnter() {
-    this.initializeForm();
+    this.expenseService.getAll(initialDate, finalDate);
   }
 
   ionViewDidLoad() {
-    this.initializeForm();
+    console.log("2.ionViewDidLoad");
+  }
+
+  ionViewWillEnter() {
+    console.log("3.ionViewWillEnter");
   }
 
   onItemClick(expense) {
@@ -86,15 +86,8 @@ export class HomePage {
   }
 
   doRefresh(refresher) {
-    this.findAll(null, null).then(data => {
-      if (data) {
-        this.setExpenses();
-        this.setIncomes();
-        this.setBalance();
-        refresher.complete();
-      }
-    });
-
+    this.findAll(null, null);
+    this.refresher = refresher;
   }
 
   onAddClick() {
