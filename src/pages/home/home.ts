@@ -29,7 +29,6 @@ export class HomePage {
     console.log("1.constructor");
     this.subscribeExpensesLoaded();
     this.subscribeIncomesLoaded();
-    this.doRefresh(event);
 
   }
 
@@ -58,12 +57,12 @@ export class HomePage {
     let totalExpenses = 0;
     if (this.expenses) {
       this.expenses.forEach(expense => {
-        if(expense.incoming == "false"){
+        if (expense.incoming == "false") {
           totalExpenses += expense.amount;
         }
       });
     }
-    this.amountExpenses = totalExpenses;   
+    this.amountExpenses = totalExpenses;
   }
 
   setIncomes(initialDate, finalDate) {
@@ -83,7 +82,12 @@ export class HomePage {
   }
 
   ionViewWillEnter() {
-    console.log("3.ionViewWillEnter");
+    console.log("3.ionViewWillEnter");   
+    this.expenseService.getAll(null,null).then( data => {
+      if(data){
+        this.expenseService.getIncomes(null,null);
+      }
+    })
   }
 
   onItemClick(expense) {
