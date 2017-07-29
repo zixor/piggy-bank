@@ -161,7 +161,7 @@ export class HomePage {
   onExport(){
 
     let initialDate = moment(this.initialDate).format("MMM Do YY");
-    let finalDate = moment(this.initialDate).format("MMM Do YY");
+    let finalDate = moment(this.finalDate).format("MMM Do YY");
 
     let confirm = this.alertCtrl.create({
       title: 'Exporting current range of expenses',
