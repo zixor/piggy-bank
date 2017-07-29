@@ -31,6 +31,15 @@ export class Datefilter {
   }
 
   onApply() {
+
+    if (this.filter.initialDate == this.filter.finalDate) {
+
+      let finalDate = new Date(this.filter.finalDate);
+      finalDate.setHours(23, 59, 59, 999);
+      this.filter.finalDate = finalDate.toISOString();
+      
+    }
+
     this.closeModal();
   }
 

@@ -4,6 +4,8 @@ import { Detail } from '../detail/detail';
 import { ExpenseSqliteService } from '../../providers/expense.service.sqlite';
 import { CategorySqliteService } from '../../providers/category.service.sqlite';
 import { Datefilter } from '../datefilter/datefilter';
+import { UtilitiesService } from '../../providers/utilities.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'page-home',
@@ -17,16 +19,24 @@ export class HomePage {
   private incomes: number = 0;
   private amountExpenses: number = 0;
   private refresher;
+  private initialDate: string;
+  private finalDate: string;
 
   constructor(private navCtrl: NavController,
     private modalCtl: ModalController,
     private expenseService: ExpenseSqliteService,
     private categoryService: CategorySqliteService,
+    private utilitiesService: UtilitiesService,
     private alertCtrl: AlertController,
     private events: Events
   ) {
 
     console.log("1.constructor");
+
+    let arrDates = this.utilitiesService.getInitialRangeOfDates();
+    this.initialDate = arrDates[0];
+    this.finalDate = arrDates[1];
+
     this.subscribeExpensesLoaded();
     this.subscribeIncomesLoaded();
 
@@ -82,10 +92,10 @@ export class HomePage {
   }
 
   ionViewWillEnter() {
-    console.log("3.ionViewWillEnter");   
-    this.expenseService.getAll(null,null).then( data => {
-      if(data){
-        this.expenseService.getIncomes(null,null);
+    console.log("3.ionViewWillEnter");
+    this.expenseService.getAll(this.initialDate, this.finalDate).then(data => {
+      if (data) {
+        this.expenseService.getIncomes(this.initialDate, this.finalDate);
       }
     })
   }
@@ -97,7 +107,8 @@ export class HomePage {
   }
 
   doRefresh(refresher) {
-    this.findAll(null, null);
+
+    this.findAll(this.initialDate, this.finalDate);
     this.refresher = refresher;
   }
 
@@ -125,7 +136,7 @@ export class HomePage {
           text: 'Confirm',
           handler: () => {
             this.expenseService.delete(expense);
-            this.findAll(null, null);
+            this.findAll(this.initialDate, this.finalDate);
           }
         }
       ]
@@ -140,9 +151,40 @@ export class HomePage {
 
     modal.onDidDismiss(filter => {
       console.log(filter);
-      this.findAll(filter.initialDate, filter.finalDate);
+      this.initialDate = filter.initialDate;
+      this.finalDate = filter.finalDate;
+      this.findAll(this.initialDate, this.finalDate);
     });
 
+  }
+
+  onExport(){
+
+    let initialDate = moment(this.initialDate).format("MMM Do YY");
+    let finalDate = moment(this.initialDate).format("MMM Do YY");
+
+    let confirm = this.alertCtrl.create({
+      title: 'Exporting current range of expenses',
+      message: `Are you want to export the selected range of expenses : "${initialDate}" and "${finalDate}" ?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            //TODO make
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  exportExpenses(){
+    //TODO MAKE EXPORT HERE
   }
 
 

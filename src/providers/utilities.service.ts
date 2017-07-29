@@ -42,5 +42,18 @@ export class UtilitiesService {
             "warm-22": "#a4a4b0"
         };
     }
-    
+
+    getInitialRangeOfDates() {        
+        let arrDates = [];
+        let date = new Date();
+
+        let firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        let lastDayCurrentMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+        arrDates.push(new Date(firstDay).toISOString());
+        arrDates.push(new Date(lastDayCurrentMonth).toISOString());
+
+        return arrDates;
+    }
+
 }

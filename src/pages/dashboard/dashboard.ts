@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import {  ModalController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
 import { Datefilter } from '../datefilter/datefilter';
 import { Chart } from 'chart.js';
+import * as moment from 'moment';
 
 
 import { ExpenseSqliteService } from '../../providers/expense.service.sqlite';
@@ -22,12 +23,21 @@ export class Dashboard {
   private borderColor = [];
   private backgroundColor = [];
   private colors = {};
+  private initialDate: string;
+  private finalDate: string;
+  private currentDate:string;
+  private data = [];
 
   constructor(
     private modalCtl: ModalController,
     private expenseService: ExpenseSqliteService,
     private utilitiesService: UtilitiesService) {
+
     this.getColors();
+    let arrDates = this.utilitiesService.getInitialRangeOfDates();
+    this.initialDate = arrDates[0];
+    this.initialDate = arrDates[1];
+    this.currentDate = moment(this.initialDate).format("MMM YYYY"); 
   }
 
   getColors() {
@@ -35,12 +45,12 @@ export class Dashboard {
   }
 
 
-  initializeData(initialDate,finalDate) {
+  initializeData(initialDate, finalDate) {
     let data = [];
-    let labels = [];  
-    this.expenseService.getExpensesGroupByCategory(initialDate,finalDate,null).then(response => {
-
+    let labels = [];
+    this.expenseService.getExpensesGroupByCategory(initialDate, finalDate, null).then(response => {      
       if (response) {
+        this.data = response;
         response.forEach(report => {
 
           labels.push(report.category);
@@ -58,7 +68,7 @@ export class Dashboard {
 
   ionViewDidLoad() {
 
-    this.initializeData(null,null);
+    this.initializeData(this.initialDate, this.finalDate);
 
   }
 
@@ -102,7 +112,7 @@ export class Dashboard {
       }
 
     });
-    
+
   }
 
   showItem() {
@@ -116,7 +126,10 @@ export class Dashboard {
 
     modal.onDidDismiss(filter => {
       console.log(filter);
-       this.initializeData(filter.initialDate,filter.finalDate);
+      this.initialDate = filter.initialDate;
+      this.finalDate = filter.finalDate;
+      this.currentDate = moment(this.initialDate).format("MMM YYYY"); 
+      this.initializeData(this.initialDate, this.finalDate);
     });
 
   }

@@ -12,6 +12,7 @@ import { ListBudget } from '../pages/list-budget/list-budget';
 import { ListCategory } from '../pages/list-category/list-category';
 import { ListSavings } from '../pages/list-savings/list-savings';
 import { UserProfile } from "./user-profile.model";
+import { UtilitiesService } from "../providers/utilities.service";
 
 //imports services
 import { ExpenseSqliteService } from '../providers/expense.service.sqlite';
@@ -39,7 +40,8 @@ export class MyApp {
     private expenseSqlService: ExpenseSqliteService,
     private categorySqlService: CategorySqliteService,
     private budgetSqlService: BudgetSqliteService,
-    private savingeService: SavingSqliteService) {
+    private savingeService: SavingSqliteService,
+    private utilitiesService: UtilitiesService) {
 
     this.initializeApp();
 
@@ -79,9 +81,10 @@ export class MyApp {
 
       this.expenseSqlService.openDataBase().then(self => {
         //TODO get the incomes
-        self.getAll(null,null).then(data =>{
+        let arrDates = this.utilitiesService.getInitialRangeOfDates();
+        self.getAll(arrDates[0],arrDates[1]).then(data =>{
             if(data){
-              self.getIncomes(null,null);
+              self.getIncomes(arrDates[0],arrDates[1]);
             }
         });
         this.categorySqlService.openDataBase().then(data => {

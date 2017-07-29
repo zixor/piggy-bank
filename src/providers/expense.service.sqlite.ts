@@ -49,7 +49,7 @@ export class ExpenseSqliteService {
     let params = [];
 
     if (initialDate != null && finalDate != null) {
-      sql += " where date between ? and ? ";
+      sql += " where date between ? and ? order by date desc";
       params = [initialDate, finalDate];
     }
 

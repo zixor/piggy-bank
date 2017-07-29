@@ -25,7 +25,7 @@
 
   <ion-card>
     <ion-card-header>
-      Bar - Expenses By Category
+      Stack Expenses - {{currentDate}}
     </ion-card-header>
     <ion-card-content>
       <canvas #barCanvas></canvas>
@@ -34,11 +34,32 @@
 
   <ion-card>
     <ion-card-header>
-      Percentage - Expenses By Category
+      Percentage - {{currentDate}}
     </ion-card-header>
     <ion-card-content>
       <canvas #doughnutCanvas></canvas>
     </ion-card-content>
-  </ion-card> 
+  </ion-card>
+
+
+
+  <ion-list>    
+
+    <ion-item *ngFor="let report of data">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <h2 item-left><b> {{report.category}} </b> </h2>
+          </ion-col>
+          <ion-col>
+            <h2 item-right><em> {{ report.amount | currency: 'USD': true }} </em></h2>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+  </ion-list>
+
+
 
 </ion-content>
