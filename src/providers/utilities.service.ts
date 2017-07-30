@@ -1,5 +1,6 @@
 
 import { Injectable } from '@angular/core';
+import * as moment from 'moment';
 
 @Injectable()
 export class UtilitiesService {
@@ -43,15 +44,23 @@ export class UtilitiesService {
         };
     }
 
-    getInitialRangeOfDates() {        
+    getInitialRangeOfDates() {
         let arrDates = [];
         let date = new Date();
 
         let firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         let lastDayCurrentMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-        arrDates.push(new Date(firstDay).toISOString());
-        arrDates.push(new Date(lastDayCurrentMonth).toISOString());
+        let initialDate = moment(firstDay).utcOffset(0);
+        initialDate.set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+
+        let finalDate = moment(lastDayCurrentMonth).utcOffset(0);
+        finalDate.set({ hour: 23, minute: 59, second: 59, millisecond: 0 })
+
+        arrDates.push(initialDate.toISOString());
+        arrDates.push(finalDate.toISOString());
+
+        console.log(arrDates);
 
         return arrDates;
     }

@@ -174,7 +174,7 @@ export class ListSavings {
 
             let detail: DetailSavingModel = {
               savingid: savingId,
-              date: moment(new Date().toString()).format(),
+              date: moment(new Date().toISOString()).format(),
               type: "1",
               amount: data.amount
             };
@@ -215,7 +215,7 @@ export class ListSavings {
             let detail: DetailSavingModel = {
               savingid: savingId,
               justification: data.justification,
-              date: moment(new Date().toString()).format(),
+              date: moment(new Date().toISOString()).format(),
               type: "2",
               amount: data.amount
             };

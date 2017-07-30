@@ -68,6 +68,7 @@ export class ExpenseSqliteService {
                 });
               }
             }
+            console.log(expenses);
             this.events.publish("expenses:loaded", expenses);
             resolve(true);
           }).catch(e => reject(e));
@@ -144,6 +145,7 @@ export class ExpenseSqliteService {
     }
 
     sql += " GROUP BY category ";
+    sql += " having  e.category = c.id order by amount desc";
 
     return new Promise((resolve, reject) => {
       if (this.sqlObject) {

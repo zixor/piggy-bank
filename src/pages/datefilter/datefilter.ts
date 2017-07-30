@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
+import * as moment from 'moment';
 
 @Component({
   selector: 'page-datefilter',
@@ -32,13 +33,14 @@ export class Datefilter {
 
   onApply() {
 
-    if (this.filter.initialDate == this.filter.finalDate) {
+      let initialDate = moment(this.filter.initialDate).utcOffset(0);
+      initialDate.set({hour:0,minute:0,second:0,millisecond:0})
 
-      let finalDate = new Date(this.filter.finalDate);
-      finalDate.setHours(23, 59, 59, 999);
-      this.filter.finalDate = finalDate.toISOString();
-      
-    }
+      let finalDate = moment(this.filter.finalDate).utcOffset(0);
+      finalDate.set({hour:23,minute:59,second:59,millisecond:0})
+
+      this.filter.initialDate = initialDate.toISOString();
+      this.filter.finalDate = finalDate.toISOString();      
 
     this.closeModal();
   }
