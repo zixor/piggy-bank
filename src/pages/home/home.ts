@@ -190,7 +190,7 @@ export class HomePage {
 
     let confirm = this.alertCtrl.create({
       title: 'Exporting current range of expenses',
-      message: `Are you want to export the selected range of expenses : "${initialDate}" and "${finalDate}" ?`,
+      message: `Are you want to export the selected range of expenses ?`,
       buttons: [
         {
           text: 'Cancel',
