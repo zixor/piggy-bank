@@ -11,6 +11,7 @@ import { Camera } from '@ionic-native/camera';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { StatusBar } from '@ionic-native/status-bar';
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { SQLite } from '@ionic-native/sqlite';
 
 //Services
@@ -94,6 +95,7 @@ import { ListDetailsSavings } from '../pages/list-details-savings/list-details-s
     BudgetSqliteService,
     SavingSqliteService,
     UtilitiesService,
+    SocialSharing,
     StatusBar,
     SplashScreen,
     SQLite,

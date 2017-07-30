@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, ModalController, Events } from 'ionic-angular';
+import { NavController, AlertController, ModalController, Events, Platform, ToastController } from 'ionic-angular';
 import { Detail } from '../detail/detail';
 import { ExpenseSqliteService } from '../../providers/expense.service.sqlite';
 import { CategorySqliteService } from '../../providers/category.service.sqlite';
 import { Datefilter } from '../datefilter/datefilter';
 import { UtilitiesService } from '../../providers/utilities.service';
+import { SocialSharing } from '@ionic-native/social-sharing';
+import { File } from '@ionic-native/file';
 import * as moment from 'moment';
+
+declare var cordova: any;
 
 @Component({
   selector: 'page-home',
@@ -21,14 +25,19 @@ export class HomePage {
   private refresher;
   private initialDate: string;
   private finalDate: string;
+  private systemDirectory: string
 
   constructor(private navCtrl: NavController,
     private modalCtl: ModalController,
     private expenseService: ExpenseSqliteService,
     private categoryService: CategorySqliteService,
     private utilitiesService: UtilitiesService,
+    private socialSharing: SocialSharing,
+    private toastController: ToastController,
     private alertCtrl: AlertController,
-    private events: Events
+    private events: Events,
+    private file: File,
+    private platform: Platform
   ) {
 
     console.log("1.constructor");
@@ -37,9 +46,22 @@ export class HomePage {
     this.initialDate = arrDates[0];
     this.finalDate = arrDates[1];
 
+    this.setSysmteDirectory();
+
     this.subscribeExpensesLoaded();
     this.subscribeIncomesLoaded();
 
+  }
+
+  setSysmteDirectory() {
+    if (this.platform.is('ios')) {
+      //documentsDirectory is specific IOS.
+      this.systemDirectory = this.file.documentsDirectory;
+    }
+    else if (this.platform.is('android')) {
+      //cordova.file.dataDirectory or cordova.file.externalDataDirectory is specific to Android
+      this.systemDirectory = this.file.dataDirectory;
+    }
   }
 
   subscribeExpensesLoaded() {
@@ -158,10 +180,10 @@ export class HomePage {
 
   }
 
-  onExport(){
+  onExport() {
 
-    let initialDate = moment(this.initialDate).format("MMM Do YY");
-    let finalDate = moment(this.finalDate).format("MMM Do YY");
+    let initialDate = moment(this.initialDate).format("MMM D YY");
+    let finalDate = moment(this.finalDate).format("MMM D YY");
 
     let confirm = this.alertCtrl.create({
       title: 'Exporting current range of expenses',
@@ -175,7 +197,7 @@ export class HomePage {
         {
           text: 'Confirm',
           handler: () => {
-            //TODO make
+            this.exportExpenses();
           }
         }
       ]
@@ -183,9 +205,79 @@ export class HomePage {
     confirm.present();
   }
 
-  exportExpenses(){
-    //TODO MAKE EXPORT HERE
+
+
+  exportExpenses() {
+
+    let expenses = this.expenses;
+    let self = this;
+
+    this.file.createFile(this.systemDirectory, "export.txt", true).then(fileEntry => {
+
+      fileEntry.createWriter(function (fileWriter) {
+
+        let data = "";
+        expenses.forEach(expense => {
+          let dateformat = moment(expense.date, "YYYY-MM-DD").toISOString();
+          data += expense.category.name + "," + dateformat + "," + expense.description + "," + expense.amount + "\n";
+        });
+
+        fileWriter.seek(fileWriter.length);
+        let blob = new Blob([data], { type: 'text/plain' });
+        fileWriter.write(blob);
+
+        self.shareWhatsApp();
+
+      }, function (e) {
+        this.presentToast('Error while exporting file:\n' + e);
+      });
+    });
+
+
   }
 
+  shareWhatsApp() {
+    let prompt = this.alertCtrl.create({
+      title: 'Lets share via  WhatsApp',
+      message: "Click to share with some friend!.",
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => { }
+        },
+        {
+          text: 'Share',
+          handler: data => {
+           // let pathReport = this.systemDirectory + "export.txt";
+           let pathReport = cordova.file.dataDirectory + "export.txt";
+            this.socialSharing.shareViaWhatsApp("Your expenses report goes here!", pathReport, null);
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+
+  private presentToast(text) {
+    let toast = this.toastController.create({
+      message: text,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
+  }
+
+  onShareWhatsApp(expense){
+
+    let message = "I would like to share with you my expense: \n";
+    message+=" Description: "+expense.description+"\n";
+    message+=" Category : "+expense.category.name+"\n";
+    message+=" Amount : "+expense.amount+"\n";
+    message+=" Date : "+expense.date+"\n";
+
+   this.socialSharing.shareViaWhatsApp(message , null, null);
+   
+  }
 
 }
