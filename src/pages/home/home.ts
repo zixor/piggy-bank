@@ -8,6 +8,7 @@ import { UtilitiesService } from '../../providers/utilities.service';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { File } from '@ionic-native/file';
 import * as moment from 'moment';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 declare var cordova: any;
 
@@ -35,6 +36,8 @@ export class HomePage {
     private socialSharing: SocialSharing,
     private toastController: ToastController,
     private alertCtrl: AlertController,
+    private currencyPipe: CurrencyPipe,
+    private datePipe: DatePipe,
     private events: Events,
     private file: File,
     private platform: Platform
@@ -182,8 +185,8 @@ export class HomePage {
 
   onExport() {
 
-    let initialDate = moment(this.initialDate).format("MMM D YY");
-    let finalDate = moment(this.finalDate).format("MMM D YY");
+    let initialDate =  this.datePipe.transform(this.initialDate);
+    let finalDate =  this.datePipe.transform(this.finalDate);
 
     let confirm = this.alertCtrl.create({
       title: 'Exporting current range of expenses',
@@ -248,8 +251,8 @@ export class HomePage {
         {
           text: 'Share',
           handler: data => {
-           // let pathReport = this.systemDirectory + "export.txt";
-           let pathReport = cordova.file.dataDirectory + "export.txt";
+            // let pathReport = this.systemDirectory + "export.txt";
+            let pathReport = cordova.file.dataDirectory + "export.txt";
             this.socialSharing.shareViaWhatsApp("Your expenses report goes here!", pathReport, null);
           }
         }
@@ -268,16 +271,18 @@ export class HomePage {
     toast.present();
   }
 
-  onShareWhatsApp(expense){
+  onShareWhatsApp(expense) {
 
-    let message = "I would like to share with you my expense: \n";
-    message+=" Description: "+expense.description+"\n";
-    message+=" Category : "+expense.category.name+"\n";
-    message+=" Amount : "+expense.amount+"\n";
-    message+=" Date : "+expense.date+"\n";
+    let message = "I would like to share with you my expense: \n";    
+    let dateformat = moment(expense.date, "YYYY-MM-DD").toISOString();
+  
+    message += "Description: " + expense.description + "\n";
+    message += "Category : " + expense.category.name + "\n";
+    message += "Amount : "+  this.currencyPipe.transform(expense.amount,"USD",true) +"\n";
+    message += "Date : " + this.datePipe.transform(dateformat) + "\n";
 
-   this.socialSharing.shareViaWhatsApp(message , null, null);
-   
+    this.socialSharing.shareViaWhatsApp(message, null, null);
+
   }
 
 }

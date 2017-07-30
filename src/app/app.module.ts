@@ -13,6 +13,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { SQLite } from '@ionic-native/sqlite';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 //Services
 import { ExpenseSqliteService } from '../providers/expense.service.sqlite';
@@ -98,6 +99,8 @@ import { ListDetailsSavings } from '../pages/list-details-savings/list-details-s
     SocialSharing,
     StatusBar,
     SplashScreen,
+    CurrencyPipe,
+    DatePipe,
     SQLite,
     File,
     Transfer,
