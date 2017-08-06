@@ -36,8 +36,8 @@ export class Dashboard {
     this.getColors();
     let arrDates = this.utilitiesService.getInitialRangeOfDates();
     this.initialDate = arrDates[0];
-    this.initialDate = arrDates[1];
-    this.currentDate = moment(this.initialDate).format("MMM YYYY"); 
+    this.finalDate = arrDates[1];
+    this.currentDate = moment(this.finalDate).format("MMM YYYY"); 
   }
 
   getColors() {
@@ -46,7 +46,7 @@ export class Dashboard {
 
 
   initializeData(initialDate, finalDate) {
-    let data = [];
+    let amount = [];
     let labels = [];
     this.expenseService.getExpensesGroupByCategory(initialDate, finalDate, null).then(response => {      
       if (response) {
@@ -54,13 +54,13 @@ export class Dashboard {
         response.forEach(report => {
 
           labels.push(report.category);
-          data.push(report.amount);
+          amount.push(report.amount);
 
           this.borderColor.push(this.colors[report.color]);
           this.backgroundColor.push(this.colors[report.color]);
 
         });
-        this.makeGraphics(labels, data, this.borderColor, this.backgroundColor);
+        this.makeGraphics(labels, amount, this.borderColor, this.backgroundColor);
       }
 
     });
@@ -72,7 +72,7 @@ export class Dashboard {
 
   }
 
-  private makeGraphics(labels, data, borderColor, backgroundColor) {
+  private makeGraphics(labels, amount, borderColor, backgroundColor) {
     this.barChart = new Chart(this.barCanvas.nativeElement, {
 
       type: 'bar',
@@ -80,7 +80,7 @@ export class Dashboard {
         labels: labels,
         datasets: [{
           label: 'Expenses By Category',
-          data: data,
+          data: amount,
           backgroundColor: backgroundColor,
           borderColor: borderColor,
           borderWidth: 1
@@ -105,7 +105,7 @@ export class Dashboard {
         labels: labels,
         datasets: [{
           label: 'Category',
-          data: data,
+          data: amount,
           backgroundColor: backgroundColor,
           hoverBackgroundColor: borderColor
         }]
@@ -128,7 +128,7 @@ export class Dashboard {
       console.log(filter);
       this.initialDate = filter.initialDate;
       this.finalDate = filter.finalDate;
-      this.currentDate = moment(this.initialDate).format("MMM YYYY"); 
+      this.currentDate = moment(this.finalDate).format("MMM YYYY"); 
       this.initializeData(this.initialDate, this.finalDate);
     });
 

@@ -12,6 +12,7 @@ import { ImagePicker } from '@ionic-native/image-picker';
 import { StatusBar } from '@ionic-native/status-bar';
 import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { EmailComposer } from '@ionic-native/email-composer';
 import { SQLite } from '@ionic-native/sqlite';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 
@@ -97,6 +98,7 @@ import { ListDetailsSavings } from '../pages/list-details-savings/list-details-s
     SavingSqliteService,
     UtilitiesService,
     SocialSharing,
+    EmailComposer,
     StatusBar,
     SplashScreen,
     CurrencyPipe,

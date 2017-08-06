@@ -60,8 +60,6 @@ export class UtilitiesService {
         arrDates.push(initialDate.toISOString());
         arrDates.push(finalDate.toISOString());
 
-        console.log(arrDates);
-
         return arrDates;
     }
 

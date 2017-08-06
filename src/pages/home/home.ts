@@ -6,6 +6,7 @@ import { CategorySqliteService } from '../../providers/category.service.sqlite';
 import { Datefilter } from '../datefilter/datefilter';
 import { UtilitiesService } from '../../providers/utilities.service';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { EmailComposer } from '@ionic-native/email-composer';
 import { File } from '@ionic-native/file';
 import * as moment from 'moment';
 import { CurrencyPipe, DatePipe } from '@angular/common';
@@ -34,6 +35,7 @@ export class HomePage {
     private categoryService: CategorySqliteService,
     private utilitiesService: UtilitiesService,
     private socialSharing: SocialSharing,
+    private email: EmailComposer,
     private toastController: ToastController,
     private alertCtrl: AlertController,
     private currencyPipe: CurrencyPipe,
@@ -62,8 +64,8 @@ export class HomePage {
       this.systemDirectory = this.file.documentsDirectory;
     }
     else if (this.platform.is('android')) {
-      //cordova.file.dataDirectory or cordova.file.externalDataDirectory is specific to Android
-      this.systemDirectory = this.file.dataDirectory;
+      //this.systemDirectory = this.file.dataDirectory;
+      this.systemDirectory = this.file.externalDataDirectory;
     }
   }
 
@@ -185,8 +187,8 @@ export class HomePage {
 
   onExport() {
 
-    let initialDate =  this.datePipe.transform(this.initialDate);
-    let finalDate =  this.datePipe.transform(this.finalDate);
+    let initialDate = this.datePipe.transform(this.initialDate);
+    let finalDate = this.datePipe.transform(this.finalDate);
 
     let confirm = this.alertCtrl.create({
       title: 'Exporting current range of expenses',
@@ -215,50 +217,16 @@ export class HomePage {
     let expenses = this.expenses;
     let self = this;
 
-    this.file.createFile(this.systemDirectory, "export.txt", true).then(fileEntry => {
-
-      fileEntry.createWriter(function (fileWriter) {
-
-        let data = "";
-        expenses.forEach(expense => {
-          let dateformat = moment(expense.date, "YYYY-MM-DD").toISOString();
-          data += expense.category.name + "," + dateformat + "," + expense.description + "," + expense.amount + "\n";
-        });
-
-        fileWriter.seek(fileWriter.length);
-        let blob = new Blob([data], { type: 'text/plain' });
-        fileWriter.write(blob);
-
-        self.shareWhatsApp();
-
-      }, function (e) {
-        this.presentToast('Error while exporting file:\n' + e);
-      });
+    let data = "";
+    expenses.forEach(expense => {
+      data += expense.category.name + "," + expense.date + "," + expense.description + "," + expense.amount + "\n";
     });
 
-
-  }
-
-  shareWhatsApp() {
-    let prompt = this.alertCtrl.create({
-      title: 'Lets share via  WhatsApp',
-      message: "Click to share with some friend!.",
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: data => { }
-        },
-        {
-          text: 'Share',
-          handler: data => {
-            // let pathReport = this.systemDirectory + "export.txt";
-            let pathReport = cordova.file.dataDirectory + "export.txt";
-            this.socialSharing.shareViaWhatsApp("Your expenses report goes here!", pathReport, null);
-          }
-        }
-      ]
+    this.file.writeFile(this.systemDirectory, "expenses.txt", data, { replace: true }).then(fileEntry => {
+      console.log(fileEntry);
+      this.sendEmail(fileEntry.nativeURL);
     });
-    prompt.present();
+
   }
 
 
@@ -273,16 +241,31 @@ export class HomePage {
 
   onShareWhatsApp(expense) {
 
-    let message = "I would like to share with you my expense: \n";    
+    let message = "I would like to share with you my expense: \n";
     let dateformat = moment(expense.date, "YYYY-MM-DD").toISOString();
-  
+
     message += "Description: " + expense.description + "\n";
     message += "Category : " + expense.category.name + "\n";
-    message += "Amount : "+  this.currencyPipe.transform(expense.amount,"USD",true) +"\n";
+    message += "Amount : " + this.currencyPipe.transform(expense.amount, "USD", true) + "\n";
     message += "Date : " + this.datePipe.transform(dateformat) + "\n";
 
     this.socialSharing.shareViaWhatsApp(message, null, null);
 
   }
+
+  sendEmail(pathFile) {
+
+    let email = {
+      to: 'noel.gonzalez.h@gmail.com',
+      attachments: [pathFile],
+      subject: 'Report for your expenses',
+      body: 'Following We attach your expenses report!',
+      isHtml: true
+    };
+    this.email.open(email);
+  }
+
+
+
 
 }

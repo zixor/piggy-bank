@@ -67,8 +67,7 @@ export class ExpenseSqliteService {
                   expenses.push(expense);
                 });
               }
-            }
-            console.log(expenses);
+            }            
             this.events.publish("expenses:loaded", expenses);
             resolve(true);
           }).catch(e => reject(e));
