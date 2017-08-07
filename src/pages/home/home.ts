@@ -47,26 +47,14 @@ export class HomePage {
 
     console.log("1.constructor");
 
+    this.systemDirectory = this.utilitiesService.getSysmteDirectory();
     let arrDates = this.utilitiesService.getInitialRangeOfDates();
     this.initialDate = arrDates[0];
     this.finalDate = arrDates[1];
 
-    this.setSysmteDirectory();
-
     this.subscribeExpensesLoaded();
     this.subscribeIncomesLoaded();
 
-  }
-
-  setSysmteDirectory() {
-    if (this.platform.is('ios')) {
-      //documentsDirectory is specific IOS.
-      this.systemDirectory = this.file.documentsDirectory;
-    }
-    else if (this.platform.is('android')) {
-      //this.systemDirectory = this.file.dataDirectory;
-      this.systemDirectory = this.file.externalDataDirectory;
-    }
   }
 
   subscribeExpensesLoaded() {
@@ -185,10 +173,7 @@ export class HomePage {
 
   }
 
-  onExport() {
-
-    let initialDate = this.datePipe.transform(this.initialDate);
-    let finalDate = this.datePipe.transform(this.finalDate);
+  onExport() {    
 
     let confirm = this.alertCtrl.create({
       title: 'Exporting current range of expenses',
@@ -215,16 +200,19 @@ export class HomePage {
   exportExpenses() {
 
     let expenses = this.expenses;
-    let self = this;
 
     let data = "";
     expenses.forEach(expense => {
       data += expense.category.name + "," + expense.date + "," + expense.description + "," + expense.amount + "\n";
     });
 
-    this.file.writeFile(this.systemDirectory, "expenses.txt", data, { replace: true }).then(fileEntry => {
+    this.utilitiesService.exportToFile("expenses.txt", data).then(fileEntry => {
+
       console.log(fileEntry);
-      this.sendEmail(fileEntry.nativeURL);
+      this.utilitiesService.sendEmail('', 'Report for your expenses',
+        'Following We attach your expenses report!',
+        fileEntry.nativeURL);
+
     });
 
   }
@@ -249,23 +237,9 @@ export class HomePage {
     message += "Amount : " + this.currencyPipe.transform(expense.amount, "USD", true) + "\n";
     message += "Date : " + this.datePipe.transform(dateformat) + "\n";
 
-    this.socialSharing.shareViaWhatsApp(message, null, null);
+    this.utilitiesService.onShareWhatsApp(message);
 
   }
-
-  sendEmail(pathFile) {
-
-    let email = {
-      to: 'noel.gonzalez.h@gmail.com',
-      attachments: [pathFile],
-      subject: 'Report for your expenses',
-      body: 'Following We attach your expenses report!',
-      isHtml: true
-    };
-    this.email.open(email);
-  }
-
-
 
 
 }

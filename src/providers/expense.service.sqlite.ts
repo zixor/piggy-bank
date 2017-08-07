@@ -45,13 +45,16 @@ export class ExpenseSqliteService {
   getAll(initialDate: string, finalDate: string): Promise<any> {
 
     let expenses = [];
-    let sql = 'SELECT * FROM expense';
+    let sql = 'SELECT * FROM expense ';
+    let conditional = "";
     let params = [];
 
     if (initialDate != null && finalDate != null) {
-      sql += " where date between ? and ? order by date desc";
+      conditional += " date between ? and ? ";
       params = [initialDate, finalDate];
     }
+
+    sql += " where " + conditional + " order by date desc ";
 
     if (this.sqlObject) {
       return new Promise((resolve, reject) => {
@@ -67,9 +70,40 @@ export class ExpenseSqliteService {
                   expenses.push(expense);
                 });
               }
-            }            
+            }
             this.events.publish("expenses:loaded", expenses);
             resolve(true);
+          }).catch(e => reject(e));
+      });
+    }
+  }
+
+  getAllByDateAndCategory(initialDate: string, finalDate: string, cateories: string): Promise<any> {
+
+    let expenses = [];
+    let sql = 'SELECT * FROM expense ';
+    let conditional = "";
+    let params = [];
+
+    if (initialDate != null && finalDate != null) {
+      conditional += " date between ? and ? ";
+      params = [initialDate, finalDate];
+    }
+
+    if (cateories != null) {
+      conditional += " and category in ("+cateories+")"; 
+    }
+
+    sql += " where " + conditional + " order by date desc ";
+
+    if (this.sqlObject) {
+      return new Promise((resolve, reject) => {
+        this.sqlObject.executeSql(sql, params)
+          .then(response => {
+            for (let index = 0; index < response.rows.length; index++) {
+              expenses.push(response.rows.item(index));
+            }
+            resolve(expenses);
           }).catch(e => reject(e));
       });
     }
@@ -128,7 +162,7 @@ export class ExpenseSqliteService {
 
     let params = [];
     let data = [];
-    let sql = " SELECT sum(e.amount) amount, c.name category, c.icon icon, c.color color " +
+    let sql = " SELECT sum(e.amount) amount, c.name category, c.icon icon, c.color color, c.id idcategory " +
       " FROM expense e, category c " +
       " where  e.category = c.id  " +
       " and e.incoming = 'false' ";

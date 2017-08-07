@@ -1,11 +1,22 @@
+import { SocialSharing } from '@ionic-native/social-sharing';
+import { EmailComposer } from '@ionic-native/email-composer';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { Platform } from 'ionic-angular';
 
+import { File } from '@ionic-native/file';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 
 @Injectable()
 export class UtilitiesService {
 
-    constructor() {
+    constructor(
+        private socialSharing: SocialSharing,
+        private email: EmailComposer,
+        private file: File,
+        private currencyPipe: CurrencyPipe,
+        private datePipe: DatePipe,
+        private platform: Platform) {
 
     }
 
@@ -63,5 +74,44 @@ export class UtilitiesService {
         return arrDates;
     }
 
-   
+    onShareWhatsApp(message) {
+        this.socialSharing.shareViaWhatsApp(message, null, null);
+    }
+
+    sendEmail(to, subject, body, pathFile) {
+
+        let email = {
+            to: to,
+            attachments: [pathFile],
+            subject: subject,
+            body: body,
+            isHtml: true
+        };
+
+        this.email.open(email);
+    }
+
+    exportToFile(fileName, data): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.file.writeFile(this.getSysmteDirectory(), fileName, data, { replace: true }).then(fileEntry => {
+                resolve(fileEntry);
+            });
+        });
+    }
+
+    getSysmteDirectory() {
+
+        let systemDirectory = "";
+
+        if (this.platform.is('ios')) {
+            //documentsDirectory is specific IOS.
+            systemDirectory = this.file.documentsDirectory;
+        }
+        else if (this.platform.is('android')) {
+            systemDirectory = this.file.externalDataDirectory;
+        }
+
+        return systemDirectory;
+    }    
+
 }

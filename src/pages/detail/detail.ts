@@ -322,9 +322,10 @@ export class Detail {
     modal.present();
 
     modal.onDidDismiss(category => {
-      console.log(category);
-      this.category = category;
-      this.expense.category = category.id;
+      if (category) {
+        this.category = category;
+        this.expense.category = category.id;
+      }
     });
 
   }
