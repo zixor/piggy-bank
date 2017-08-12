@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ModalController, AlertController } from 'ionic-angular';
 import { Datefilter } from '../datefilter/datefilter';
-import { DatePipe } from '@angular/common';
+import { DatePipe, CurrencyPipe } from '@angular/common';
 import { Chart } from 'chart.js';
 import * as moment from 'moment';
 
@@ -35,7 +35,8 @@ export class Dashboard {
     private expenseService: ExpenseSqliteService,
     private utilitiesService: UtilitiesService,
     private alertCtrl: AlertController,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private currencyPipe: CurrencyPipe
   ) {
 
     this.getColors();
@@ -177,17 +178,16 @@ export class Dashboard {
     return new Promise((resolve, reject) => {
       this.expenseService.getAllByDateAndCategory(this.initialDate, this.finalDate, categories).then(expenses => {
         this.data.forEach(report => {
-          dataReport += "\t\t\t Date "+","+"\t\t\t Total "+report.category + "," + report.amount + ",\n";
+          dataReport += " Date " + "|" + " Total " + report.category + "|" + this.currencyPipe.transform(report.amount, 'USD', true) + "|\n";
           expenses.forEach(expense => {
             if (expense.category == report.idcategory) {
-              let date = this.datePipe.transform(expense.date);
-              date = date.replace(",", " -");
-              dataReport += date + ",";
-              dataReport += expense.description + ",";
-              dataReport += expense.amount + "\n";
+              let date = moment(expense.date).format('MMMM Do YYYY, h:mm:ss a');
+              dataReport += date + "|";
+              dataReport += expense.description + "|";
+              dataReport += this.currencyPipe.transform(expense.amount, 'USD', true)  + "\n";
             }
           });
-          dataReport += ",,\n";
+          dataReport += "||\n";
         });
         resolve(dataReport);
       });
@@ -197,7 +197,7 @@ export class Dashboard {
 
   sendFile(dataReport) {
     let body = "Following We attach your expenses report!" + "\n";
-    this.utilitiesService.exportToFile("expenses.csv", dataReport).then(fileEntry => {
+    this.utilitiesService.exportToFile("expenses.txt", dataReport).then(fileEntry => {
       this.utilitiesService.sendEmail('', 'Report for your expenses',
         body, fileEntry.nativeURL);
     });

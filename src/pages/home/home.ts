@@ -202,8 +202,9 @@ export class HomePage {
     let expenses = this.expenses;
 
     let data = "";
-    expenses.forEach(expense => {
-      data += expense.category.name + "," + expense.date + "," + expense.description + "," + expense.amount + "\n";
+    expenses.forEach(expense => {      
+      let date = moment(expense.date).format('MMMM Do YYYY, h:mm:ss a');
+      data += expense.category.name + "|" + date + "|" + expense.description + "|" + this.currencyPipe.transform(expense.amount, 'USD', true) + "\n";
     });
 
     this.utilitiesService.exportToFile("expenses.txt", data).then(fileEntry => {
