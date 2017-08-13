@@ -15,6 +15,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { SQLite } from '@ionic-native/sqlite';
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 //Services
 import { ExpenseSqliteService } from '../providers/expense.service.sqlite';
@@ -101,6 +102,7 @@ import { Credits }  from '../pages/credits/credits';
     SavingSqliteService,
     UtilitiesService,
     SocialSharing,
+    InAppBrowser,
     EmailComposer,
     StatusBar,
     SplashScreen,

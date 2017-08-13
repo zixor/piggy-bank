@@ -1,7 +1,10 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>credits</ion-title>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title style="text-align:center;">Credits</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -11,18 +14,28 @@
   <ion-card>
 
     <ion-item>
-      <ion-avatar item-start>
-        <img src="../img/noel.png" class="mainPhoto">
-      </ion-avatar>
-      <h2>Noel Gonzalez</h2>
-      <p>September 15, 1983</p>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="mainPhoto">
+              <img src="assets/noel.png">
+            </div>
+          </ion-col>
+          <ion-col>
+            <h2 style="margin-top:20%">Noel Gonzalez</h2>
+            <p>September 15, 1983</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
     </ion-item>
 
-    <canvas #barCanvas></canvas>
+    <canvas #doughnut></canvas>
 
     <ion-card-content>
-      <p>I´m an Informatic engineer with more than 10 years of experience in software development, specializing in Project Management.
-        My technical skills:</p>
+      <h2>I´m an Informatic engineer with more than 10 years of experience in software development, specializing in Project Management.
+        My technical skills:</h2>
       <ul>
         <li>Java </li>
         <li>JavaScript</li>
@@ -32,18 +45,21 @@
         <li>Scrum Master Certified</li>
         <li>Scrum Developer Certified</li>
         <li>Intermediate English</li>
-        <ul>
+      </ul>
+      <button ion-button icon-left clear small (click)="emailMe();">
+        <div>Email: noel.gonzalez.h@gmail.com</div>
+      </button>
     </ion-card-content>
 
     <ion-row>
       <ion-col>
-        <button ion-button icon-left clear small>
-        <ion-icon  ng-href="https://www.linkedin.com/in/noel-gonzalez-5a169b29/" name="logo-linkedin"></ion-icon>
+        <button ion-button icon-left clear small (click)="openLinkedIn();">
+        <ion-icon name="logo-linkedin"></ion-icon>
         <div>Linkedin</div>
       </button>
       </ion-col>
       <ion-col>
-        <button ng-href="https://twitter.com/Noel_Gonzalez_H" ion-button icon-left clear small>
+        <button ion-button icon-left clear small (click)="openTwitter();">
         <ion-icon name="logo-twitter"></ion-icon>
         <div>twitter</div>
       </button>

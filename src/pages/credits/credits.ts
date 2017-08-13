@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { Chart } from 'chart.js';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { UtilitiesService } from '../../providers/utilities.service';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'page-credits',
@@ -8,105 +9,47 @@ import { UtilitiesService } from '../../providers/utilities.service';
 })
 export class Credits {
 
-  @ViewChild('barCanvas') barCanvas;
+  @ViewChild('doughnut') doughnutCanvas;
 
-
-  barChart: any;
   doughnutChart: any;
-  //lineChart: any;  
-  private borderColor = [];
-  private backgroundColor = [];
-  private colors = {};
-  private initialDate: string;
-  private finalDate: string;
-  private currentDate: string;
-  private data = [];
 
-
-  constructor(
-
-    private utilitiesService: UtilitiesService,
-
-  ) {
-
-    this.getColors();
+  constructor(private iab: InAppBrowser,
+    private utilitiesService: UtilitiesService) {
 
   }
 
-  getColors() {
-    this.colors = this.utilitiesService.getAppColors();
-  }
+  initializeData() {
 
-
-  initializeData(initialDate, finalDate) {
-
-    let amount = [];
-    let labels = [];
-    labels.push("Java");
-    amount.push("90");
-    this.borderColor.push(this.colors["primary"]);
-    this.backgroundColor.push(this.colors["primary"]);
-    labels.push("JavaScript");
-    amount.push("85");
-    this.borderColor.push(this.colors["warm-1"]);
-    this.backgroundColor.push(this.colors["warm-1"]);
-    labels.push("PHP");
-    amount.push("80");
-    this.borderColor.push(this.colors["warm-10"]);
-    this.backgroundColor.push(this.colors["warm-10"]);
-    labels.push("SQL and Plsql");
-    amount.push("80");
-    this.borderColor.push(this.colors["warm-6"]);
-    this.backgroundColor.push(this.colors["warm-6"]);
-    labels.push("Mobile Applications");
-    amount.push("70");
-    this.borderColor.push(this.colors["warm-5"]);
-    this.backgroundColor.push(this.colors["warm-5"]);
-    labels.push("Scrum Master Certified");
-    amount.push("100");
-    this.borderColor.push(this.colors["warm-14"]);
-    this.backgroundColor.push(this.colors["warm-14"]);
-    labels.push("Scrum Developer Certified");
-    amount.push("100");
-    this.borderColor.push(this.colors["warm-7"]);
-    this.backgroundColor.push(this.colors["warm-7"]);
-    labels.push("Intermediate English");
-    amount.push("67");
-    this.borderColor.push(this.colors["warm-11"]);
-    this.backgroundColor.push(this.colors["warm-11"]);
-
-    this.makeGraphics(labels, amount, this.borderColor, this.backgroundColor);
+    this.makeGraphics();
 
   }
 
   ionViewDidLoad() {
 
-    this.initializeData(this.initialDate, this.finalDate);
+    this.initializeData();
 
   }
 
-  private makeGraphics(labels, amount, borderColor, backgroundColor) {
-    this.barChart = new Chart(this.barCanvas.nativeElement, {
+  private makeGraphics() {
+    this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
 
-      type: 'bar',
+      type: 'doughnut',
       data: {
-        labels: labels,
+        labels: ["Java", "JavaScript", "PHP", "SQL and Plsql", "Hybrid Mobile Applications",
+          "Scrum Master Certified", "Scrum Developer Certified", "Intermediate English"],
         datasets: [{
-          label: '',
-          data: amount,
-          backgroundColor: backgroundColor,
-          borderColor: borderColor,
-          borderWidth: 1
+          label: '# of Votes',
+          data: [90, 83, 80, 80, 70, 100, 100, 65],
+          backgroundColor: [
+            "#36b9d5", "#28cab2", "#3ccc86", "#a9cc3e",
+            "#fdbd3f", "#41535f", "#e35144", "#7e29ba"
+
+          ],
+          hoverBackgroundColor: [
+            "#36b9d5", "#28cab2", "#3ccc86", "#a9cc3e",
+            "#fdbd3f", "#41535f", "#e35144", "#7e29ba"
+          ]
         }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
       }
 
     });
@@ -117,6 +60,18 @@ export class Credits {
     console.log("show in cloud");
   }
 
+  openLinkedIn() {
+    this.iab.create("https://www.linkedin.com/in/noel-gonzalez-5a169b29/", "_self", "location=yes");
+  }
+
+  openTwitter() {
+    this.iab.create("http://twitter.com/Noel_Gonzalez_H", "_self", "location=yes");
+  }
+
+  emailMe() {
+    this.utilitiesService.sendEmail("noel.gonzalez.h@gmail.com", "I  would like to hire you for an interesting project!",
+      "Here comes your description ...","");
+  }
 
 
 }
