@@ -42,6 +42,7 @@ import { Savings } from '../pages/savings/savings';
 import { Dashboard } from '../pages/dashboard/dashboard';
 import { Settings } from '../pages/settings/settings';
 import { ListDetailsSavings } from '../pages/list-details-savings/list-details-savings';
+import { Credits }  from '../pages/credits/credits';
 
 
 
@@ -69,7 +70,8 @@ import { ListDetailsSavings } from '../pages/list-details-savings/list-details-s
     Datefilter,
     ListSavings,
     Savings,
-    ListDetailsSavings
+    ListDetailsSavings,
+    Credits
   ],
   entryComponents: [
     MyApp,
@@ -89,7 +91,8 @@ import { ListDetailsSavings } from '../pages/list-details-savings/list-details-s
     Datefilter,
     ListSavings,
     Savings,
-    ListDetailsSavings
+    ListDetailsSavings,
+    Credits
   ],
   providers: [
     ExpenseSqliteService,

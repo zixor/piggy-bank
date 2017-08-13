@@ -27,7 +27,7 @@ export class SavingSqliteService {
     let sqlsaving = " create table if not exists saving(id integer primary key autoincrement, creationdate text, category text, goaldate text, amount real, description text) ";
     let sqlsavingdetail = " create table if not exists savingdetail(id integer primary key autoincrement, saving_id integer, date text, type text, amount real, justification text) ";
 
-   return this.sqlObject.transaction(function (tx) {
+    return this.sqlObject.transaction(function (tx) {
       tx.executeSql(sqlsaving);
       tx.executeSql(sqlsavingdetail);
     });
@@ -126,6 +126,23 @@ export class SavingSqliteService {
     });
 
   }
+
+  existCategoryInSavings(idcategory: number): Promise<any> {
+    let exist = false;
+    return new Promise((resolve, reject) => {
+      let sql = 'SELECT * from saving  where category = ? LIMIT 1';      
+      this.sqlObject.executeSql(sql, [idcategory])
+        .then(response => {
+          if (response.rows.length == 1) {
+            exist = true;
+          }
+          resolve(exist);
+        })
+        .catch(e => console.log(e));
+    });
+
+  }
+
 
   closeConnection() {
     this.sqlObject.close();

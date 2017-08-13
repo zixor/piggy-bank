@@ -6,6 +6,9 @@ import { ModalIcons } from '../modal-icons/modal-icons';
 
 /**Import services  */
 import { CategorySqliteService } from '../../providers/category.service.sqlite';
+import { ExpenseSqliteService } from '../../providers/expense.service.sqlite';
+import { SavingSqliteService } from '../../providers/savings.service.sqlite';
+import { BudgetSqliteService } from '../../providers/budget.service.sqlite';
 
 
 @Component({
@@ -19,6 +22,9 @@ export class Category {
     private navParams: NavParams,
     private modalCtl: ModalController,
     private categoryService: CategorySqliteService,
+    private expensesService: ExpenseSqliteService,
+    private savingsService: SavingSqliteService,
+    private budgetService: BudgetSqliteService,
     private alertCtrl: AlertController) {
     this.category = {
       name: "",
@@ -71,27 +77,78 @@ export class Category {
   }
 
   onTrash() {
-    let confirm = this.alertCtrl.create({
-      title: 'Delete',
-      message: `Are you sure you want to delete this category: "${this.category.description}"?`,
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: () => {
-          }
-        },
-        {
-          text: 'Confirm',
-          handler: () => {
-            this.categoryService.delete(this.category);
-            this.navCtrl.pop();
-          }
-        }
-      ]
+
+    this.isCategoryUsedByOthers(this.category).then(exist => {
+
+      if (exist) {
+
+        let alert = this.alertCtrl.create({
+          title: 'Category can´t be deleted!',
+          subTitle: 'Because it is being used by other modules!',
+          buttons: ['OK']
+        });
+        alert.present();
+
+      } else {
+
+        let confirm = this.alertCtrl.create({
+          title: 'Delete',
+          message: `Are you sure you want to delete this category: "${this.category.description}"?`,
+          buttons: [
+            {
+              text: 'Cancel',
+              handler: () => {
+              }
+            },
+            {
+              text: 'Confirm',
+              handler: () => {
+                this.categoryService.delete(this.category);
+                this.navCtrl.pop();
+              }
+            }
+          ]
+        });
+        confirm.present();
+
+      }
+
     });
-    confirm.present();
+
   }
 
+  isCategoryUsedByOthers(category): Promise<any> {
+    return new Promise((resolve, reject) => {
 
+      this.expensesService.existCategoryInExpenses(category.id).then(exist => {
 
+        if (exist) {
+          resolve(true);
+        } else {
+
+          this.budgetService.existCategoryInBudget(category.id).then(exist => {
+
+            if (exist) {
+              resolve(true);
+            } else {
+
+              this.savingsService.existCategoryInSavings(category.id).then(exist => {
+
+                if (exist) {
+                  resolve(true);
+                } else {
+                  resolve(false);
+                }
+
+              });
+            }
+          });
+        }
+
+      });
+    });
+  }
+  
 }
+
+

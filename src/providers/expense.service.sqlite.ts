@@ -91,7 +91,7 @@ export class ExpenseSqliteService {
     }
 
     if (cateories != null) {
-      conditional += " and category in ("+cateories+")"; 
+      conditional += " and category in (" + cateories + ")";
     }
 
     sql += " where " + conditional + " order by date desc ";
@@ -237,6 +237,22 @@ export class ExpenseSqliteService {
         })
         .catch(e => console.log(e));
     });
+  }
+
+  existCategoryInExpenses(idcategory: number): Promise<any> {
+    let exist = false;
+    return new Promise((resolve, reject) => {
+      let sql = 'SELECT * from expense where category = ? LIMIT 1';
+      this.sqlObject.executeSql(sql, [idcategory])
+        .then(response => {
+          if (response.rows.length == 1) {
+            exist = true;
+          }
+          resolve(exist);
+        })
+        .catch(e => console.log(e));
+    });
+
   }
 
   closeConnection() {

@@ -6,7 +6,7 @@ import { BudgetModel } from '../models/Budget.model';
 @Injectable()
 export class BudgetSqliteService {
 
-  private dbConfig = { name: 'data.db', location: 'default' };  
+  private dbConfig = { name: 'data.db', location: 'default' };
   private sqlObject: SQLiteObject;
 
   constructor(private sqlite: SQLite) {
@@ -14,7 +14,7 @@ export class BudgetSqliteService {
   }
 
   openDataBase() {
-   return this.sqlite.create(this.dbConfig).then((db: SQLiteObject) => {
+    return this.sqlite.create(this.dbConfig).then((db: SQLiteObject) => {
       this.sqlObject = db;
       this.createTable();
     });
@@ -125,6 +125,22 @@ export class BudgetSqliteService {
         })
         .catch(e => console.log(e));
     });
+  }
+
+  existCategoryInBudget(idcategory: number): Promise<any> {
+    let exist = false;
+    return new Promise((resolve, reject) => {
+      let sql = 'SELECT * from budget  where category = ? LIMIT 1';
+      this.sqlObject.executeSql(sql, [idcategory])
+        .then(response => {
+          if (response.rows.length == 1) {
+            exist = true;
+          }
+          resolve(exist);
+        })
+        .catch(e => console.log(e));
+    });
+
   }
 
   closeConnection() {

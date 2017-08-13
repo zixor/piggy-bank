@@ -12,6 +12,7 @@ import { ListBudget } from '../pages/list-budget/list-budget';
 import { ListCategory } from '../pages/list-category/list-category';
 import { ListSavings } from '../pages/list-savings/list-savings';
 import { UserProfile } from "./user-profile.model";
+import { Credits } from '../pages/credits/credits';
 import { UtilitiesService } from "../providers/utilities.service";
 
 //imports services
@@ -59,7 +60,8 @@ export class MyApp {
       { title: 'Category', component: ListCategory, icon: 'cube' },
       { title: 'Transactions', component: HomePage, icon: 'pulse' },
       { title: 'Budgets', component: ListBudget, icon: 'card' },
-      { title: 'Savings', component: ListSavings, icon: 'cash' }
+      { title: 'Savings', component: ListSavings, icon: 'cash' },
+      { title: 'Credits', component: Credits, icon: 'md-contact' }
       //   { title: 'Settings', component: Settings, icon: 'hammer' },
       // { title: 'Log Out', component: Login, icon: 'exit' }
 
