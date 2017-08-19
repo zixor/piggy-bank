@@ -169,6 +169,7 @@ export class HomePage {
       this.initialDate = filter.initialDate;
       this.finalDate = filter.finalDate;
       this.findAll(this.initialDate, this.finalDate);
+      this.setIncomes(this.initialDate, this.finalDate);
     });
 
   }

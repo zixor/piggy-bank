@@ -1,6 +1,6 @@
 {
-  "name": "Ionic",
-  "short_name": "Ionic",
+  "name": "coin-by-coin",
+  "short_name": "coin-by-coin",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [{
