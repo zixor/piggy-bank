@@ -99,7 +99,11 @@ export class HomePage {
   }
 
   findAll(initialDate, finalDate) {
-    this.expenseService.getAll(initialDate, finalDate);
+    this.expenseService.getAll(initialDate, finalDate).then(data=>{
+      if(data){
+        this.setIncomes(initialDate, finalDate);
+      }
+    });
   }
 
   ionViewDidLoad() {
@@ -168,8 +172,7 @@ export class HomePage {
       console.log(filter);
       this.initialDate = filter.initialDate;
       this.finalDate = filter.finalDate;
-      this.findAll(this.initialDate, this.finalDate);
-      this.setIncomes(this.initialDate, this.finalDate);
+      this.findAll(this.initialDate, this.finalDate);      
     });
 
   }
