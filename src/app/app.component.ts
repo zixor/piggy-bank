@@ -62,8 +62,6 @@ export class MyApp {
       { title: 'Budgets', component: ListBudget, icon: 'card' },
       { title: 'Savings', component: ListSavings, icon: 'cash' },
       { title: 'Credits', component: Credits, icon: 'md-contact' }
-      //   { title: 'Settings', component: Settings, icon: 'hammer' },
-      // { title: 'Log Out', component: Login, icon: 'exit' }
 
     ];
 
@@ -82,13 +80,8 @@ export class MyApp {
       this.statusBar.styleDefault();
 
       this.expenseSqlService.openDataBase().then(self => {
-        //TODO get the incomes
         let arrDates = this.utilitiesService.getInitialRangeOfDates();
-        self.getAll(arrDates[0],arrDates[1]).then(data =>{
-            if(data){
-              self.getIncomes(arrDates[0],arrDates[1]);
-            }
-        });
+        self.getAll(arrDates[0],arrDates[1]);
         this.categorySqlService.openDataBase().then(data => {
           this.budgetSqlService.openDataBase().then(data => {
             this.savingeService.openDataBase().then(data => {

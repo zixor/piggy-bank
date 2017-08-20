@@ -28,24 +28,24 @@
     <ion-row>
       <ion-col>
         <p>Incomes</p>
-        <h3> {{ incomes | currency: 'USD': true }} </h3>
+        <h3 *ngIf="expense"> {{ expense.totalIncomes | currency: 'USD': true }} </h3>
       </ion-col>
       <ion-col>
         <p>Expenses</p>
-        <h3> {{ amountExpenses | currency: 'USD': true }} </h3>
+        <h3 *ngIf="expense"> {{ expense.totalExpenses | currency: 'USD': true }} </h3>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <p>Balance</p>
-        <h3> {{ balance | currency: 'USD': true }} </h3>
+        <h3 *ngIf="expense"> {{ expense.balance | currency: 'USD': true }} </h3>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <ion-list>
+  <ion-list *ngIf="expense">
 
-    <ion-item-sliding *ngFor="let expense of expenses">
+    <ion-item-sliding *ngFor="let expense of expense.expenses">
       <ion-item (click)="onItemClick(expense);">
 
          <button ion-fab color="{{expense.category.color}}" item-left style="box-shadow:none;">

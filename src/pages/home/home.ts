@@ -19,7 +19,7 @@ declare var cordova: any;
 })
 export class HomePage {
 
-  private expenses: any[] = [];
+  private expense;
 
   private balance: number = 0;
   private incomes: number = 0;
@@ -53,41 +53,21 @@ export class HomePage {
     this.finalDate = arrDates[1];
 
     this.subscribeExpensesLoaded();
-    this.subscribeIncomesLoaded();
 
   }
 
   subscribeExpensesLoaded() {
-    this.events.subscribe("expenses:loaded", expenses => {
-      this.initializeForm(expenses);
+    this.events.subscribe("expenses:loaded", expense => {
+      this.expense = expense;
+     this.initializeForm();
     });
   }
 
-  subscribeIncomesLoaded() {
-    this.events.subscribe("incomes:loaded", data => {
-      this.incomes = data;
-      this.setTotalExpenses();
-      this.setBalance();
-    });
-  }
 
-  initializeForm(expenses) {
-    this.expenses = expenses;
+  initializeForm() {
     if (this.refresher != null) {
       this.refresher.complete();
     }
-  }
-
-  setTotalExpenses() {
-    let totalExpenses = 0;
-    if (this.expenses) {
-      this.expenses.forEach(expense => {
-        if (expense.incoming == "false") {
-          totalExpenses += expense.amount;
-        }
-      });
-    }
-    this.amountExpenses = totalExpenses;
   }
 
   setIncomes(initialDate, finalDate) {
@@ -203,7 +183,7 @@ export class HomePage {
 
   exportExpenses() {
 
-    let expenses = this.expenses;
+    let expenses = this.expense.expenses;
 
     let data = "";
     expenses.forEach(expense => {      
@@ -221,7 +201,6 @@ export class HomePage {
     });
 
   }
-
 
   private presentToast(text) {
     let toast = this.toastController.create({

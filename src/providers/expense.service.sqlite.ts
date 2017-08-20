@@ -48,6 +48,9 @@ export class ExpenseSqliteService {
     let sql = 'SELECT * FROM expense ';
     let conditional = "";
     let params = [];
+    let totalIncomes = 0;
+    let totalExpenses = 0;
+    let expense = { "totalExpenses": 0, "totalIncomes": 0, "balance": 0, "expenses": [] };
 
     if (initialDate != null && finalDate != null) {
       conditional += " date between ? and ? ";
@@ -65,14 +68,28 @@ export class ExpenseSqliteService {
               let expense = response.rows.item(index);
 
               if (expense !== undefined) {
+
+                if (expense.incoming == "true") {
+                  totalIncomes += expense.amount;
+                } else {
+                  totalExpenses += expense.amount;
+                }
+
+
                 this.categoryService.getCategory(expense.category).then(category => {
                   expense.category = category;
                   expenses.push(expense);
                 });
               }
             }
-            this.events.publish("expenses:loaded", expenses);
+
+            expense.totalIncomes = totalIncomes;
+            expense.totalExpenses = totalExpenses;
+            expense.balance  = totalIncomes - totalExpenses;
+            expense.expenses = expenses;
+            this.events.publish("expenses:loaded", expense);
             resolve(true);
+
           }).catch(e => reject(e));
       });
     }
