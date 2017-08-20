@@ -59,12 +59,12 @@ export class HomePage {
   subscribeExpensesLoaded() {
     this.events.subscribe("expenses:loaded", expense => {
       this.expense = expense;
-     this.initializeForm();
+     this.showLoader();
     });
   }
 
 
-  initializeForm() {
+  showLoader() {
     if (this.refresher != null) {
       this.refresher.complete();
     }
