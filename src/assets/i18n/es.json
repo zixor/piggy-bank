@@ -15,5 +15,11 @@
   "EXPORT_TITTLE": "Exportar el rango de gastos actuales",
   "EXPORT_QUESTION": "Desea exportar el rango de gastos seleccionados ?",
   "CANCEL": "Cancelar",
-  "CONFIRM": "Confirmar"
+  "CONFIRM": "Confirmar",
+  "CATEGORY_TITLE": "CategorÍa",
+  "NAME": "Nombre",
+  "DESCRIPTION": "Descripción",
+  "CHOOSE_COLOR": "Escoger color",
+  "CATEGORY_CAN_NOT_DELETED": "La Categoría no puede ser eliminada!",
+  "CATEGORY_CAN_NOT_DELETED_DESC":"Porque está siendo usada por otros módulos!"
 }

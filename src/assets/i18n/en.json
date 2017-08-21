@@ -8,5 +8,11 @@
   "EXPORT_TITTLE": "Exporting current range of expenses",
   "EXPORT_QUESTION": "Are you want to export the selected range of expenses ?",
   "CANCEL": "Cancel",
-  "CONFIRM": "Confirm"
+  "CONFIRM": "Confirm",
+  "CATEGORY_TITLE": "Category",
+  "NAME": "Name",
+  "DESCRIPTION": "Description",
+  "CHOOSE_COLOR": "Choose Color",
+  "CATEGORY_CAN_NOT_DELETED": "Category can´t be deleted!",
+  "CATEGORY_CAN_NOT_DELETED_DESC": "Because it is being used by other modules!"
 }

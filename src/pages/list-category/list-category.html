@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title style="text-align:center;">
-      Category
+      {{ 'CATEGORY_TITLE' | translate }}
     </ion-title>
      <!--ion-buttons end>     
       <button ion-button icon-only>
@@ -37,7 +37,7 @@
       <ion-item-options>
         <button ion-button color="danger" icon-left (click)="onTrash(category);">
           <ion-icon name="trash" ></ion-icon>
-          Delete
+          {{ 'DELETE' | translate }}
         </button>                
       </ion-item-options>
     </ion-item-sliding>  

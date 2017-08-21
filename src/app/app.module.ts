@@ -47,7 +47,9 @@ import { Settings } from '../pages/settings/settings';
 import { ListDetailsSavings } from '../pages/list-details-savings/list-details-savings';
 import { Credits } from '../pages/credits/credits';
 
-
+export function translateLoaderFactory(http: any) {
+    return new TranslateStaticLoader(http, './assets/i18n', '.json');
+}
 
 @NgModule({
   imports: [
@@ -55,7 +57,7 @@ import { Credits } from '../pages/credits/credits';
     HttpModule,
     TranslateModule.forRoot({ 
           provide: TranslateLoader,
-          useFactory: (http: Http) => new TranslateStaticLoader(http, './assets/i18n', '.json'),
+          useFactory: translateLoaderFactory,
           deps: [Http]
         }),
     IonicModule.forRoot(MyApp)

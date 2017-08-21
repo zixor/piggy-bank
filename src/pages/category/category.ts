@@ -10,6 +10,8 @@ import { ExpenseSqliteService } from '../../providers/expense.service.sqlite';
 import { SavingSqliteService } from '../../providers/savings.service.sqlite';
 import { BudgetSqliteService } from '../../providers/budget.service.sqlite';
 
+import { UtilitiesService } from '../../providers/utilities.service';
+
 
 @Component({
   selector: 'page-category',
@@ -18,9 +20,14 @@ import { BudgetSqliteService } from '../../providers/budget.service.sqlite';
 export class Category {
 
   private category: CategoryModel;
+  private DELETE: string;
+  private CATEGORY_CAN_NOT_DELETED: string;
+  private CATEGORY_CAN_NOT_DELETED_DESC: string;
+
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
     private modalCtl: ModalController,
+    private utilitiesService: UtilitiesService,
     private categoryService: CategorySqliteService,
     private expensesService: ExpenseSqliteService,
     private savingsService: SavingSqliteService,
@@ -37,10 +44,25 @@ export class Category {
     if (category) {
       this.category = category;
     }
+
+    this.initializeConstants();
   }
 
   ionViewDidLoad() {
 
+  }
+
+  initializeConstants() {
+
+    this.utilitiesService.getValueByLanguaje("CATEGORY_CAN_NOT_DELETED").then(value => {
+      this.CATEGORY_CAN_NOT_DELETED = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CATEGORY_CAN_NOT_DELETED_DESC").then(value => {
+      this.CATEGORY_CAN_NOT_DELETED_DESC = value;
+    });
+    this.utilitiesService.getValueByLanguaje("DELETE").then(value => {
+      this.DELETE = value;
+    });
   }
 
   onModalIcons() {
@@ -83,8 +105,8 @@ export class Category {
       if (exist) {
 
         let alert = this.alertCtrl.create({
-          title: 'Category can´t be deleted!',
-          subTitle: 'Because it is being used by other modules!',
+          title: this.CATEGORY_CAN_NOT_DELETED,
+          subTitle: this.CATEGORY_CAN_NOT_DELETED_DESC,
           buttons: ['OK']
         });
         alert.present();
@@ -92,7 +114,7 @@ export class Category {
       } else {
 
         let confirm = this.alertCtrl.create({
-          title: 'Delete',
+          title: this.DELETE,
           message: `Are you sure you want to delete this category: "${this.category.description}"?`,
           buttons: [
             {
@@ -148,7 +170,7 @@ export class Category {
       });
     });
   }
-  
+
 }
 
 
