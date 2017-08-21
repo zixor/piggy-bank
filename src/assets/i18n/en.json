@@ -1,0 +1,12 @@
+{
+  "TRANSACTIONS_TITLE": "Transacciones",
+  "INCOMES": "Incomes",
+  "EXPENSES": "Expenses",
+  "BALANCE": "Balance",
+  "DELETE": "Delete",
+  "SHARE": "Share",
+  "EXPORT_TITTLE": "Exporting current range of expenses",
+  "EXPORT_QUESTION": "Are you want to export the selected range of expenses ?",
+  "CANCEL": "Cancel",
+  "CONFIRM": "Confirm"
+}

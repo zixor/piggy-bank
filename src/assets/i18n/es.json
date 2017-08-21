@@ -1,0 +1,19 @@
+{
+  "TRANSACTIONS_TITLE": "Transacciones",
+  "INCOMES": "Ingresos",
+  "EXPENSES": "Gastos",
+  "BALANCE": "Balance",
+  "DELETE": "Eliminar",
+  "SHARE": "Compartir",
+  "FILTER": "Filtrar",
+  "APPLY": "Aplicar",
+  "INITIAL_DATE": "Fecha Inicial",
+  "FINAL_DATE": "Fecha Final",
+  "DASHBOARD": "Tablero",
+  "STACK_EXPENSES": "Pila de Gastos",
+  "PERCENTAGE": "Porcentaje",
+  "EXPORT_TITTLE": "Exportar el rango de gastos actuales",
+  "EXPORT_QUESTION": "Desea exportar el rango de gastos seleccionados ?",
+  "CANCEL": "Cancelar",
+  "CONFIRM": "Confirmar"
+}

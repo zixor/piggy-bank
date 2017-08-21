@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title style="text-align:center;">
-      Filter
+      {{ 'FILTER' | translate }}
     </ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="closeModal();">
@@ -17,16 +17,16 @@
   <form #f="ngForm">
 
     <ion-item>
-      <ion-label color="primary" floating>Initial Date</ion-label>
+      <ion-label color="primary" floating>{{ 'INITIAL_DATE' | translate }}</ion-label>
       <ion-datetime displayFormat="MMM DD YYYY" name="initialDate" [(ngModel)]="filter.initialDate"></ion-datetime>
     </ion-item>
 
     <ion-item>
-      <ion-label color="primary" floating>Final Date</ion-label>
+      <ion-label color="primary" floating>{{ 'FINAL_DATE' | translate }}</ion-label>
       <ion-datetime displayFormat="MMM DD YYYY" name="finalDate" [(ngModel)]="filter.finalDate"></ion-datetime>
     </ion-item>
 
     <br>
-    <button ion-button color="add-item" full (click)="onApply();">Apply</button>
+    <button ion-button color="add-item" full (click)="onApply();">{{ 'APPLY' | translate }}</button>
   </form>
 </ion-content>

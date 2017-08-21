@@ -4,7 +4,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title style="text-align:center;">Dashboard</ion-title>
+    <ion-title style="text-align:center;">{{ 'DASHBOARD' | translate }}</ion-title>
     <ion-buttons end>
        <button ion-button icon-only (click)="onExport();">
           <ion-icon name="md-mail"></ion-icon>
@@ -22,7 +22,7 @@
 
   <ion-card>
     <ion-card-header>
-      Stack Expenses - {{currentDate}}
+      {{ 'STACK_EXPENSES' | translate }} - {{currentDate}}
     </ion-card-header>
     <ion-card-content>
       <canvas #barCanvas></canvas>
@@ -31,7 +31,7 @@
 
   <ion-card>
     <ion-card-header>
-      Percentage - {{currentDate}}
+      {{ 'PERCENTAGE' | translate }} - {{currentDate}}
     </ion-card-header>
     <ion-card-content>
       <canvas #doughnutCanvas></canvas>

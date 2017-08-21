@@ -16,6 +16,8 @@ import { EmailComposer } from '@ionic-native/email-composer';
 import { SQLite } from '@ionic-native/sqlite';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { HttpModule, Http } from '@angular/http';
+import { TranslateModule,TranslateLoader, TranslateStaticLoader } from 'ng2-translate/ng2-translate';
 
 //Services
 import { ExpenseSqliteService } from '../providers/expense.service.sqlite';
@@ -43,13 +45,19 @@ import { Savings } from '../pages/savings/savings';
 import { Dashboard } from '../pages/dashboard/dashboard';
 import { Settings } from '../pages/settings/settings';
 import { ListDetailsSavings } from '../pages/list-details-savings/list-details-savings';
-import { Credits }  from '../pages/credits/credits';
+import { Credits } from '../pages/credits/credits';
 
 
 
 @NgModule({
   imports: [
     BrowserModule,
+    HttpModule,
+    TranslateModule.forRoot({ 
+          provide: TranslateLoader,
+          useFactory: (http: Http) => new TranslateStaticLoader(http, './assets/i18n', '.json'),
+          deps: [Http]
+        }),
     IonicModule.forRoot(MyApp)
   ],
   declarations: [
@@ -96,6 +104,7 @@ import { Credits }  from '../pages/credits/credits';
     Credits
   ],
   providers: [
+    HttpModule, TranslateModule,
     ExpenseSqliteService,
     CategorySqliteService,
     BudgetSqliteService,

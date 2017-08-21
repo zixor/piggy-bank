@@ -1,5 +1,6 @@
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { EmailComposer } from '@ionic-native/email-composer';
+import { TranslateService } from 'ng2-translate/ng2-translate';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Platform } from 'ionic-angular';
 
@@ -16,7 +17,8 @@ export class UtilitiesService {
         private file: File,
         private currencyPipe: CurrencyPipe,
         private datePipe: DatePipe,
-        private platform: Platform) {
+        private platform: Platform,
+        private translate: TranslateService) {
 
     }
 
@@ -112,6 +114,14 @@ export class UtilitiesService {
         }
 
         return systemDirectory;
-    }    
+    }
+
+    getValueByLanguaje(key: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.translate.get(key).subscribe(value => {
+                resolve(value);
+            });
+        });
+    }
 
 }

@@ -28,6 +28,10 @@ export class Dashboard {
   private finalDate: string;
   private currentDate: string;
   private data = [];
+  private EXPORT_TITTLE: string = "";
+  private EXPORT_QUESTION: string = "";
+  private CANCEL: string = "";
+  private CONFIRM: string = "";
 
 
   constructor(
@@ -44,6 +48,25 @@ export class Dashboard {
     this.initialDate = arrDates[0];
     this.finalDate = arrDates[1];
     this.currentDate = moment(this.finalDate).format("MMM YYYY");
+    this.initializeConstants();
+
+  }
+
+  initializeConstants() {
+
+    this.utilitiesService.getValueByLanguaje("EXPORT_TITTLE").then(value => {
+      this.EXPORT_TITTLE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("EXPORT_QUESTION").then(value => {
+      this.EXPORT_QUESTION = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CANCEL").then(value => {
+      this.CANCEL = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CONFIRM").then(value => {
+      this.CONFIRM = value;
+    });
+
   }
 
   getColors() {
@@ -143,16 +166,16 @@ export class Dashboard {
   onExport() {
 
     let confirm = this.alertCtrl.create({
-      title: 'Exporting current range of expenses',
-      message: `Are you want to export the selected range of expenses ?`,
+      title: this.EXPORT_TITTLE,
+      message: this.EXPORT_QUESTION,
       buttons: [
         {
-          text: 'Cancel',
+          text: this.CANCEL,
           handler: () => {
           }
         },
         {
-          text: 'Confirm',
+          text: this.CONFIRM,
           handler: () => {
             this.getDataReport().then(data => {
               this.sendFile(data);
@@ -184,7 +207,7 @@ export class Dashboard {
               let date = moment(expense.date).format('MMMM Do YYYY, h:mm:ss a');
               dataReport += date + "|";
               dataReport += expense.description + "|";
-              dataReport += this.currencyPipe.transform(expense.amount, 'USD', true)  + "\n";
+              dataReport += this.currencyPipe.transform(expense.amount, 'USD', true) + "\n";
             }
           });
           dataReport += "||\n";

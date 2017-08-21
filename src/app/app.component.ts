@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { TranslateService } from 'ng2-translate/ng2-translate';
 
 //Imports pages to Use
 import { HomePage } from '../pages/home/home';
@@ -37,12 +38,16 @@ export class MyApp {
   constructor(public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
+    public translate: TranslateService,
     public events: Events,
     private expenseSqlService: ExpenseSqliteService,
     private categorySqlService: CategorySqliteService,
     private budgetSqlService: BudgetSqliteService,
     private savingeService: SavingSqliteService,
     private utilitiesService: UtilitiesService) {
+
+    this.translate.setDefaultLang("en");
+    this.translate.use("es");
 
     this.initializeApp();
 
