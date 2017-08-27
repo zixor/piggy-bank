@@ -23,7 +23,7 @@
   "CATEGORY_CAN_NOT_DELETED": "La Categoría no puede ser eliminada!",
   "CATEGORY_CAN_NOT_DELETED_DESC":"Porque está siendo usada por otros módulos!",
   "DATE": "Fecha",
-  "AMOUNT": "cantidad",
+  "AMOUNT": "Cantidad",
   "INCOMING": "Ingreso",
   "RECIEPT": "Aquí está su recibo!",
   "QUESTION_DELETE_RECIEPT": "Desea Eleminar este gasto: ",
@@ -39,5 +39,15 @@
   "SAVE": "Guardar",
   "INSERT_AMOUNT_WITHDRAWS": "Por favor ingrese la suma de dinero a ser retirada.",
   "JUSTIFICATION": "Justificación",
-  "QUESTION_DELETE_SAVING": " Desea Eliminar este ahorro: "
+  "QUESTION_DELETE_SAVING": " Desea Eliminar este ahorro: ",
+  "SELECT_IMAGE": "Seleccionar Imágen",
+  "CHOOSE_CATEGORY":"Seleccionar Categoría",
+  "SOURCE_IMAGE": "Fuente de la imágen",
+  "LOAD_LIBRARY": "Cargar desde la Librería",
+  "USE_CAMERA": "Usar Cámara",
+  "QUESTION_DELETE_EXPENSE": "Desea eliminar el Reporte de Gasto Actual ?",
+  "EXECUTED_BUDGET":" Executed Budget",
+  "QUESTION_CONTINUE": "Do you want to continue ?",
+  "NEW_EXPENSE" : "Nuevo Gasto",
+  "TARGET": "Objetivo"
 }

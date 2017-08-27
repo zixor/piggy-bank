@@ -39,5 +39,16 @@
   "SAVE": "Save",
   "INSERT_AMOUNT_WITHDRAWS": "Please enter the amount to be withdraw.",
   "JUSTIFICATION": "Justification",
-  "QUESTION_DELETE_SAVING": "Are you want to delete this saving : "
+  "QUESTION_DELETE_SAVING": "Are you want to delete this saving : ",
+  "SELECT_IMAGE": "Select Image",
+  "CHOOSE_CATEGORY":"Choose Category",
+  "SOURCE_IMAGE": "Image Source",
+  "LOAD_LIBRARY": "Load from Library",
+  "USE_CAMERA": "Use Camera",
+  "QUESTION_DELETE_EXPENSE": "Do you want to delete the current Expense ?",
+  "EXECUTED_BUDGET":" Executed Budget",
+  "QUESTION_CONTINUE": "Do you want to continue ?",
+  "NEW_EXPENSE" : "New Expense",
+  "TARGET": "Target"
+
 }

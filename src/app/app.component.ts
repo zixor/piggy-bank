@@ -57,8 +57,6 @@ export class MyApp {
     this.translate.setDefaultLang("en");
     this.translate.use("es");
 
-    this.initializeConstants();
-
     this.initializeApp();
 
     this.userProfile = {
@@ -75,9 +73,9 @@ export class MyApp {
       { title: this.CATEGORY_TITLE, component: ListCategory, icon: 'cube' },
       { title: this.TRANSACTIONS_TITLE, component: HomePage, icon: 'pulse' },
       { title: this.BUDGETS, component: ListBudget, icon: 'card' },
-      { title: this.BUDGETS, component: ListSavings, icon: 'cash' },
-      { title: this.SETTINGS, component: Settings, icon: 'md-contact' },
-      { title: this.CREDITS, component: Credits, icon: 'md-settings' }
+      { title: this.SAVINGS, component: ListSavings, icon: 'cash' },
+      { title: this.SETTINGS, component: Settings, icon: 'md-settings' },
+      { title: this.CREDITS, component: Credits, icon: 'md-contact'  }
 
     ];
 
@@ -118,6 +116,9 @@ export class MyApp {
 
   initializeApp() {
     this.platform.ready().then(() => {
+
+       this.initializeConstants();
+
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
