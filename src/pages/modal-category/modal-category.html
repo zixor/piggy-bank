@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title style="text-align:center;">
-      Category
+      {{ 'CATEGORY_TITLE' | translate }}
     </ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="closeModal();">
@@ -20,7 +20,7 @@
   <ion-list>
 
     <ion-list-header>
-      Categories
+       {{ 'CATEGORIES' | translate }}
     </ion-list-header>
 
     <ion-item *ngFor="let category of categories" (click)="onSelectedCategory(category);">

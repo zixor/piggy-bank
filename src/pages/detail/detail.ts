@@ -157,7 +157,7 @@ export class Detail {
         },
         {
           text: this.CANCEL,
-          role: this.CANCEL
+          role: "Cancel"
         }
       ]
     });
