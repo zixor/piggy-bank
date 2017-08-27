@@ -49,5 +49,9 @@
   "EXECUTED_BUDGET":" Executed Budget",
   "QUESTION_CONTINUE": "Do you want to continue ?",
   "NEW_EXPENSE" : "Nuevo Gasto",
-  "TARGET": "Objetivo"
+  "TARGET": "Objetivo",
+  "MOVEMENT_CREATED": "Movimiento Creado",
+  "AMOUNT_TO_WITHDRAW" :"Cantidad a Retirar",
+  "AMOUNT_TO_CONSIGN" : "Cantidad a Consignar",
+  "GREAT": "Genial!"
 }
