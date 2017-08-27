@@ -27,7 +27,20 @@ export class HomePage {
   private refresher;
   private initialDate: string;
   private finalDate: string;
-  private systemDirectory: string
+  private systemDirectory: string;
+  private EXPORT_QUESTION: string;
+  private QUESTION_DELETE_EXPENSE: string;
+  private DELETE: string;
+  private CONFIRM: string;
+  private CANCEL: string;
+  private EXPORT_TITTLE: string;
+  private REPORT_TITLE_EXPORT: string;
+  private REPORT_TITLE_BODY: string;
+  private SHARE_EXPENSE: string;
+  private DESCRIPTION: string;
+  private CATEGORY_TITLE: string;
+  private AMOUNT: String;
+  private DATE: string;
 
   constructor(private navCtrl: NavController,
     private modalCtl: ModalController,
@@ -52,14 +65,61 @@ export class HomePage {
     this.initialDate = arrDates[0];
     this.finalDate = arrDates[1];
 
+    this.initializeConstants();
     this.subscribeExpensesLoaded();
 
   }
 
+
+  initializeConstants() {
+
+    this.utilitiesService.getValueByLanguaje("EXPORT_QUESTION").then(value => {
+      this.EXPORT_QUESTION = value;
+    });
+    this.utilitiesService.getValueByLanguaje("EXPORT_TITTLE").then(value => {
+      this.EXPORT_TITTLE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("QUESTION_DELETE_EXPENSE").then(value => {
+      this.QUESTION_DELETE_EXPENSE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("DELETE").then(value => {
+      this.DELETE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CANCEL").then(value => {
+      this.CANCEL = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CONFIRM").then(value => {
+      this.CONFIRM = value;
+    });
+    this.utilitiesService.getValueByLanguaje("REPORT_TITLE_EXPORT").then(value => {
+      this.REPORT_TITLE_EXPORT = value;
+    });
+    this.utilitiesService.getValueByLanguaje("REPORT_TITLE_BODY").then(value => {
+      this.REPORT_TITLE_BODY = value;
+    });
+    this.utilitiesService.getValueByLanguaje("SHARE_EXPENSE").then(value => {
+      this.SHARE_EXPENSE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("DESCRIPTION").then(value => {
+      this.DESCRIPTION = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CATEGORY_TITLE").then(value => {
+      this.CATEGORY_TITLE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("AMOUNT").then(value => {
+      this.AMOUNT = value;
+    });
+    this.utilitiesService.getValueByLanguaje("DATE").then(value => {
+      this.DATE = value;
+    });
+
+  }
+
+
   subscribeExpensesLoaded() {
     this.events.subscribe("expenses:loaded", expense => {
       this.expense = expense;
-     this.showLoader();
+      this.showLoader();
     });
   }
 
@@ -79,8 +139,8 @@ export class HomePage {
   }
 
   findAll(initialDate, finalDate) {
-    this.expenseService.getAll(initialDate, finalDate).then(data=>{
-      if(data){
+    this.expenseService.getAll(initialDate, finalDate).then(data => {
+      if (data) {
         this.setIncomes(initialDate, finalDate);
       }
     });
@@ -123,16 +183,16 @@ export class HomePage {
   onTrash(expense) {
     console.log("onTrash");
     let confirm = this.alertCtrl.create({
-      title: 'Delete',
-      message: `Are you sure you want to delete this expense: "${expense.description}"?`,
+      title: this.DELETE,
+      message: this.QUESTION_DELETE_EXPENSE + expense.description + " ?",
       buttons: [
         {
-          text: 'Cancel',
+          text: this.CANCEL,
           handler: () => {
           }
         },
         {
-          text: 'Confirm',
+          text: this.CONFIRM,
           handler: () => {
             this.expenseService.delete(expense);
             this.findAll(this.initialDate, this.finalDate);
@@ -152,24 +212,24 @@ export class HomePage {
       console.log(filter);
       this.initialDate = filter.initialDate;
       this.finalDate = filter.finalDate;
-      this.findAll(this.initialDate, this.finalDate);      
+      this.findAll(this.initialDate, this.finalDate);
     });
 
   }
 
-  onExport() {    
+  onExport() {
 
     let confirm = this.alertCtrl.create({
-      title: 'Exporting current range of expenses',
-      message: `Are you want to export the selected range of expenses ?`,
+      title: this.EXPORT_TITTLE,
+      message: this.EXPORT_QUESTION,
       buttons: [
         {
-          text: 'Cancel',
+          text: this.CANCEL,
           handler: () => {
           }
         },
         {
-          text: 'Confirm',
+          text: this.CONFIRM,
           handler: () => {
             this.exportExpenses();
           }
@@ -186,7 +246,7 @@ export class HomePage {
     let expenses = this.expense.expenses;
 
     let data = "";
-    expenses.forEach(expense => {      
+    expenses.forEach(expense => {
       let date = moment(expense.date).format('MMMM Do YYYY, h:mm:ss a');
       data += expense.category.name + "|" + date + "|" + expense.description + "|" + this.currencyPipe.transform(expense.amount, 'USD', true) + "\n";
     });
@@ -194,8 +254,8 @@ export class HomePage {
     this.utilitiesService.exportToFile("expenses.txt", data).then(fileEntry => {
 
       console.log(fileEntry);
-      this.utilitiesService.sendEmail('', 'Report for your expenses',
-        'Following We attach your expenses report!',
+      this.utilitiesService.sendEmail('', this.REPORT_TITLE_EXPORT,
+        this.REPORT_TITLE_BODY,
         fileEntry.nativeURL);
 
     });
@@ -213,13 +273,13 @@ export class HomePage {
 
   onShareWhatsApp(expense) {
 
-    let message = "I would like to share with you my expense: \n";
+    let message = this.SHARE_EXPENSE + "\n";
     let dateformat = moment(expense.date, "YYYY-MM-DD").toISOString();
 
-    message += "Description: " + expense.description + "\n";
-    message += "Category : " + expense.category.name + "\n";
-    message += "Amount : " + this.currencyPipe.transform(expense.amount, "USD", true) + "\n";
-    message += "Date : " + this.datePipe.transform(dateformat) + "\n";
+    message += this.DESCRIPTION + " : " + expense.description + "\n";
+    message += this.CATEGORY_TITLE + " : " + expense.category.name + "\n";
+    message += this.AMOUNT + " : " + this.currencyPipe.transform(expense.amount, "USD", true) + "\n";
+    message += this.DATE + " : " + this.datePipe.transform(dateformat) + "\n";
 
     this.utilitiesService.onShareWhatsApp(message);
 

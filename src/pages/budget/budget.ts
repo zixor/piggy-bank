@@ -4,6 +4,7 @@ import { Detail } from '../detail/detail';
 import { BudgetSqliteService } from '../../providers/budget.service.sqlite';
 import { CategoryModel } from '../../models/category.model';
 import { Calculator } from '../calculator/calculator';
+import { UtilitiesService } from '../../providers/utilities.service';
 
 import { ModalCategory } from '../modal-category/modal-category';
 
@@ -16,14 +17,24 @@ export class Budget {
   private budget: any;
   private category: CategoryModel;
 
+  private CANCEL: string;
+  private DELETE: string;
+  private CONFIRM: string;
+  private ERROR: string;
+  private BUDGET_FOR: string;
+  private BUDGET_SAME_DATES: string;
+  private QUESTION_DELETE_BUDGET: string;
+
   constructor(private navCtrl: NavController,
     private budgetService: BudgetSqliteService,
+    private utilitiesService: UtilitiesService,
     private modalCtl: ModalController,
     private alertCtrl: AlertController,
     private navParams: NavParams
   ) {
 
     const budget = this.navParams.get('budget');
+    this.initializeConstants();
 
     if (budget) {
 
@@ -61,6 +72,33 @@ export class Budget {
   }
 
 
+  initializeConstants() {
+
+    this.utilitiesService.getValueByLanguaje("ERROR").then(value => {
+      this.ERROR = value;
+    });
+    this.utilitiesService.getValueByLanguaje("BUDGET_FOR").then(value => {
+      this.BUDGET_FOR = value;
+    });
+    this.utilitiesService.getValueByLanguaje("BUDGET_SAME_DATES").then(value => {
+      this.BUDGET_SAME_DATES = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CANCEL").then(value => {
+      this.CANCEL = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CONFIRM").then(value => {
+      this.CONFIRM = value;
+    });
+    this.utilitiesService.getValueByLanguaje("DELETE").then(value => {
+      this.DELETE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("QUESTION_DELETE_BUDGET").then(value => {
+      this.QUESTION_DELETE_BUDGET = value;
+    });
+
+  }
+
+
   ionViewWillEnter() {
 
   }
@@ -83,8 +121,8 @@ export class Budget {
       if ((category.length > 0) && (this.budget.id == undefined)) {
 
         let confirm = this.alertCtrl.create({
-          title: 'Error',
-          message: `A Budget for "${this.category.name}" category was already created in the same range of date.`,
+          title: this.ERROR,
+          message: this.BUDGET_FOR + " " + this.category.name + " " + this.BUDGET_SAME_DATES,
           buttons: ['OK']
         });
 
@@ -122,16 +160,16 @@ export class Budget {
 
   onTrash() {
     let confirm = this.alertCtrl.create({
-      title: 'Delete',
-      message: `Are you sure you want to delete this budget ?`,
+      title: this.DELETE,
+      message: this.QUESTION_DELETE_BUDGET,
       buttons: [
         {
-          text: 'Cancel',
+          text: this.CANCEL,
           handler: () => {
           }
         },
         {
-          text: 'Confirm',
+          text: this.CONFIRM,
           handler: () => {
             this.budgetService.delete(this.budget);
             this.navCtrl.pop();

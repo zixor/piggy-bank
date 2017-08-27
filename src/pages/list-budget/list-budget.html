@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title style="text-align:center;">
-      Budgets
+      {{ 'BUDGETS' | translate }}
     </ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="doFilter();">
@@ -33,7 +33,7 @@
 
     <ion-row>
       <ion-col>
-        <p class="information">Budget</p>
+        <p class="information">{{ 'BUDGET' | translate }}</p>
       </ion-col>
       <ion-col>
         <p>{{ budget.amount | currency : 'USD': true }}</p>
@@ -41,7 +41,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <p class="information">Executed</p>
+        <p class="information">{{ 'EXECUTED' | translate}}</p>
       </ion-col>
       <ion-col>
         <p>{{ budget.executed | currency : 'USD': true }}</p>

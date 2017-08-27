@@ -4,6 +4,7 @@ import { Budget } from '../budget/budget';
 import { BudgetSqliteService } from '../../providers/budget.service.sqlite';
 import { CategorySqliteService } from '../../providers/category.service.sqlite';
 import { ExpenseSqliteService } from '../../providers/expense.service.sqlite';
+import { UtilitiesService } from '../../providers/utilities.service';
 import { BudgetModel } from '../../models/budget.model';
 import { Datefilter } from '../datefilter/datefilter';
 
@@ -16,16 +17,37 @@ export class ListBudget {
   private budgets: any[] = [];
   private initialDate: string;
   private finalDate: string;
+  private DELETE: string;
+  private CANCEL: string;
+  private CONFIRM: string;
+  private QUESTION_DELETE_BUDGET: string;
 
   constructor(private navCtrl: NavController,
     private budgetService: BudgetSqliteService,
     private categoryService: CategorySqliteService,
+    private utilitiesService: UtilitiesService,
     private expenseService: ExpenseSqliteService,
     private modalCtl: ModalController,
     private alertCtrl: AlertController
   ) {
-
+    this.initializeConstants();
     this.findAll();
+
+  }
+
+  initializeConstants() {
+    this.utilitiesService.getValueByLanguaje("CANCEL").then(value => {
+      this.CANCEL = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CONFIRM").then(value => {
+      this.CONFIRM = value;
+    });
+    this.utilitiesService.getValueByLanguaje("DELETE").then(value => {
+      this.DELETE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("QUESTION_DELETE_BUDGET").then(value => {
+      this.QUESTION_DELETE_BUDGET = value;
+    });
 
   }
 
@@ -100,16 +122,16 @@ export class ListBudget {
   onTrash(budget: BudgetModel) {
     console.log("onTrash");
     let confirm = this.alertCtrl.create({
-      title: 'Delete',
-      message: `Are you sure you want to delete this budget ?`,
+      title: this.DELETE,
+      message: this.QUESTION_DELETE_BUDGET,
       buttons: [
         {
-          text: 'Cancel',
+          text: this.CANCEL,
           handler: () => {
           }
         },
         {
-          text: 'Confirm',
+          text: this.CONFIRM,
           handler: () => {
             this.budgetService.delete(budget);
             this.findAll();

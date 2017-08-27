@@ -7,6 +7,7 @@ import {
 } from 'ionic-angular';
 import { ExpenseSqliteService } from '../../providers/expense.service.sqlite';
 import { BudgetSqliteService } from '../../providers/budget.service.sqlite';
+import { UtilitiesService } from '../../providers/utilities.service';
 import { File } from '@ionic-native/file';
 import { Transfer, TransferObject } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
@@ -29,12 +30,24 @@ export class Detail {
   private lastImage: string = null;
   private loading: Loading;
 
+  private SOURCE_IMAGE: string;
+  private LOAD_LIBRARY: string;
+  private USE_CAMERA: string;
+  private CANCEL: string;
+  private CONFIRM: string;
+  private WARNING: string;
+  private DELETE: string;
+  private QUESTION_DELETE_EXPENSE: string;
+  private EXECUTED_BUDGET: string;
+  private QUESTION_CONTINUE: string;
+
   constructor(
     private navCtrl: NavController,
     private modalCtl: ModalController,
     private navParms: NavParams,
     private expenseService: ExpenseSqliteService,
     private budgeteService: BudgetSqliteService,
+    private utilitiesService: UtilitiesService,
     private alertCtrl: AlertController,
     private camera: Camera,
     private imagePicker: ImagePicker,
@@ -61,6 +74,42 @@ export class Detail {
       this.initCategory();
 
     }
+
+  }
+
+
+  initializeConstants() {
+
+    this.utilitiesService.getValueByLanguaje("SOURCE_IMAGE").then(value => {
+      this.SOURCE_IMAGE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("LOAD_LIBRARY").then(value => {
+      this.LOAD_LIBRARY = value;
+    });
+    this.utilitiesService.getValueByLanguaje("USE_CAMERA").then(value => {
+      this.USE_CAMERA = value;
+    });
+    this.utilitiesService.getValueByLanguaje("WARNING").then(value => {
+      this.WARNING = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CANCEL").then(value => {
+      this.CANCEL = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CONFIRM").then(value => {
+      this.CONFIRM = value;
+    });
+    this.utilitiesService.getValueByLanguaje("DELETE").then(value => {
+      this.DELETE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("QUESTION_DELETE_EXPENSE").then(value => {
+      this.QUESTION_DELETE_EXPENSE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("EXECUTED_BUDGET").then(value => {
+      this.EXECUTED_BUDGET = value;
+    });
+    this.utilitiesService.getValueByLanguaje("QUESTION_CONTINUE").then(value => {
+      this.QUESTION_CONTINUE = value;
+    });
 
   }
 
@@ -92,23 +141,23 @@ export class Detail {
 
   public presentActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
-      title: 'Select Image Source',
+      title: this.SOURCE_IMAGE,
       buttons: [
         {
-          text: '   Load from Library',
+          text: this.LOAD_LIBRARY,
           handler: () => {
             this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
           }
         },
         {
-          text: '   Use Camera',
+          text: this.USE_CAMERA,
           handler: () => {
             this.takePicture(this.camera.PictureSourceType.CAMERA);
           }
         },
         {
-          text: 'Cancel',
-          role: 'cancel'
+          text: this.CANCEL,
+          role: this.CANCEL
         }
       ]
     });
@@ -202,16 +251,16 @@ export class Detail {
 
               if (budgetExecuted > budget.amount) {
                 let confirm = this.alertCtrl.create({
-                  title: 'Warning',
-                  message: `Your executed budget is "${currencyformat}". \n Do you want to continue?`,
+                  title: this.WARNING,
+                  message: this.EXECUTED_BUDGET + " " + currencyformat + ". \n " + this.QUESTION_CONTINUE,
                   buttons: [
                     {
-                      text: 'Cancel',
+                      text: this.CANCEL,
                       handler: () => {
                       }
                     },
                     {
-                      text: 'Confirm',
+                      text: this.CONFIRM,
                       handler: () => {
 
                         this.saveExpense();
@@ -227,16 +276,16 @@ export class Detail {
 
               //TODO REFACTOR 
               let confirm = this.alertCtrl.create({
-                title: 'Warning',
-                message: `Your executed budget is "${this.expense.amount}". \n Do you want to continue?`,
+                title: this.WARNING,
+                message: this.EXECUTED_BUDGET + " " + this.expense.amount + ". \n" + this.QUESTION_CONTINUE,
                 buttons: [
                   {
-                    text: 'Cancel',
+                    text: this.CANCEL,
                     handler: () => {
                     }
                   },
                   {
-                    text: 'Confirm',
+                    text: this.CONFIRM,
                     handler: () => {
 
                       this.saveExpense();
@@ -287,16 +336,16 @@ export class Detail {
 
   onTrash() {
     let confirm = this.alertCtrl.create({
-      title: 'Delete',
-      message: `Are you sure you want to delete this expense: "${this.expense.description}"?`,
+      title: this.DELETE,
+      message: this.QUESTION_DELETE_EXPENSE + this.expense.description + "? ",
       buttons: [
         {
-          text: 'Cancel',
+          text: this.CANCEL,
           handler: () => {
           }
         },
         {
-          text: 'Confirm',
+          text: this.CONFIRM,
           handler: () => {
             this.expenseService.delete(this.expense);
             this.navCtrl.pop();

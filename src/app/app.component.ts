@@ -34,6 +34,14 @@ export class MyApp {
   private pages: Array<{ title: string, component: any, icon: string }>;
   userProfile: UserProfile;
 
+  private DASHBOARD: string;
+  private CATEGORY_TITLE: string;
+  private TRANSACTIONS_TITLE: string;
+  private BUDGETS: string;
+  private SAVINGS: string;
+  private CREDITS: string;
+  private SETTINGS: string;
+
 
   constructor(public platform: Platform,
     public statusBar: StatusBar,
@@ -49,6 +57,8 @@ export class MyApp {
     this.translate.setDefaultLang("en");
     this.translate.use("es");
 
+    this.initializeConstants();
+
     this.initializeApp();
 
     this.userProfile = {
@@ -61,12 +71,13 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
 
-      { title: 'Dashboard', component: Dashboard, icon: 'analytics' },
-      { title: 'Category', component: ListCategory, icon: 'cube' },
-      { title: 'Transactions', component: HomePage, icon: 'pulse' },
-      { title: 'Budgets', component: ListBudget, icon: 'card' },
-      { title: 'Savings', component: ListSavings, icon: 'cash' },
-      { title: 'Credits', component: Credits, icon: 'md-contact' }
+      { title: this.DASHBOARD, component: Dashboard, icon: 'analytics' },
+      { title: this.CATEGORY_TITLE, component: ListCategory, icon: 'cube' },
+      { title: this.TRANSACTIONS_TITLE, component: HomePage, icon: 'pulse' },
+      { title: this.BUDGETS, component: ListBudget, icon: 'card' },
+      { title: this.BUDGETS, component: ListSavings, icon: 'cash' },
+      { title: this.SETTINGS, component: Settings, icon: 'md-contact' },
+      { title: this.CREDITS, component: Credits, icon: 'md-settings' }
 
     ];
 
@@ -74,6 +85,33 @@ export class MyApp {
       if (userProfile !== undefined) {
         this.userProfile = userProfile;
       }
+    });
+
+  }
+
+  initializeConstants() {
+
+    this.utilitiesService.getValueByLanguaje("DASHBOARD").then(value => {
+      this.DASHBOARD = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CATEGORY_TITLE").then(value => {
+      this.CATEGORY_TITLE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("TRANSACTIONS_TITLE").then(value => {
+      this.TRANSACTIONS_TITLE = value;
+    });
+
+    this.utilitiesService.getValueByLanguaje("BUDGETS").then(value => {
+      this.BUDGETS = value;
+    });
+    this.utilitiesService.getValueByLanguaje("SAVINGS").then(value => {
+      this.SAVINGS = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CREDITS").then(value => {
+      this.CREDITS = value;
+    });
+    this.utilitiesService.getValueByLanguaje("SETTINGS").then(value => {
+      this.SETTINGS = value;
     });
 
   }
@@ -86,7 +124,7 @@ export class MyApp {
 
       this.expenseSqlService.openDataBase().then(self => {
         let arrDates = this.utilitiesService.getInitialRangeOfDates();
-        self.getAll(arrDates[0],arrDates[1]);
+        self.getAll(arrDates[0], arrDates[1]);
         this.categorySqlService.openDataBase().then(data => {
           this.budgetSqlService.openDataBase().then(data => {
             this.savingeService.openDataBase().then(data => {

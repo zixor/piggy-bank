@@ -5,14 +5,20 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>Settings</ion-title>
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title style="text-align:center;"> {{ 'SETTINGS' | translate}} </ion-title>    
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content padding>
-
+  <ion-item>
+    <ion-label color="primary" stacked>{{ "LANGUAGE" | translate }}</ion-label>
+    <ion-select [(ngModel)]="language">
+      <ion-option value="es">Spanish</ion-option>
+      <ion-option value="en">English</ion-option>
+    </ion-select>
+  </ion-item>
 </ion-content>

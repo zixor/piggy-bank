@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title style="text-align:center;">
-      Savings
+      {{ 'SAVINGS' | translate }}
     </ion-title>
     <ion-buttons end>      
     </ion-buttons>
@@ -44,7 +44,7 @@
 
       <ion-row>
         <ion-col>
-          <p class="information">Target</p>
+          <p class="information">{{ 'TARGET' | translate}}</p>
         </ion-col>
         <ion-col>
           <p>{{ saving.amount | currency : 'USD': true }}</p>
@@ -53,7 +53,7 @@
 
       <ion-row>
         <ion-col>
-          <p class="information">Cumulated</p>
+          <p class="information">{{ 'CUMULATED' | translate }}</p>
         </ion-col>
         <ion-col>
           <p>{{ saving.cumulated | currency : 'USD': true }}</p>
@@ -71,17 +71,17 @@
 
           <button ion-button clear small (click)="showDetails(saving);">
             <ion-icon name="list-box"></ion-icon>
-            <div> Details</div>
+            <div> {{ 'DETAILS' | translate}}</div>
           </button>
         
           <button ion-button clear small (click)="makeIncoming(saving.id);">
             <ion-icon name="logo-usd"></ion-icon>
-            <div> Incoming</div>
+            <div> {{ 'INCOMING' | translate}}</div>
           </button>
         
           <button ion-button clear small (click)="makeWithDraw(saving.id);">
           <ion-icon name="md-cash"></ion-icon>
-          <div> Withdraw</div>
+          <div> {{ 'WITHDRAWALS' | translate}}</div>
         </button>
         
         </ion-col>

@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title style="text-align:center;"> Budget </ion-title>
+    <ion-title style="text-align:center;"> {{ 'BUDGET' | translate }} </ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="onTrash()" *ngIf="budget.id">
           <ion-icon name="trash"></ion-icon>
@@ -35,12 +35,12 @@
 
 
     <ion-item>
-      <ion-label color="primary">Initial Date</ion-label>
+      <ion-label color="primary">{{ 'INITIAL_DATE' | translate}}</ion-label>
       <ion-datetime displayFormat="MMM DD YYYY" name="initialDate" [(ngModel)]="budget.initialDate"></ion-datetime>
     </ion-item>
 
     <ion-item>
-      <ion-label color="primary">Final Date</ion-label>
+      <ion-label color="primary">{{ 'FINAL_DATE' | translate}}</ion-label>
       <ion-datetime displayFormat="MMM DD YYYY" name="finalDate" [(ngModel)]="budget.finalDate"></ion-datetime>
     </ion-item>
 

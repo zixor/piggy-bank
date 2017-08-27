@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title style="text-align:center;">
-      Details
+      {{ "DETAILS" | translate }}
     </ion-title>
     <!--ion-buttons end>     
       <button ion-button icon-only>
@@ -23,7 +23,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <p>Cumulated</p>
+        <p>{{ "CUMULATED" | translate}}</p>
         <h3> {{ cumulated | currency: 'USD': true }} </h3>
       </ion-col>    
     </ion-row>    
@@ -37,8 +37,8 @@
           <ion-row>
             <ion-col>
               <h2 item-center>{{detail.date}}</h2>
-              <p item-center *ngIf="detail.type == 1">Incoming</p>
-              <p item-center *ngIf="detail.type == 2" class="Withdraw">Withdraw - {{detail.justification}}</p>              
+              <p item-center *ngIf="detail.type == 1">{{ "INCOMING" | translate}}</p>
+              <p item-center *ngIf="detail.type == 2" class="Withdraw">{{ "WITHDRAWALS" | translate}} - {{detail.justification}}</p>              
             </ion-col>
             <ion-col>                
                 <h2 style="text-align: right" item-center *ngIf="detail.type == 1" >{{detail.amount | currency : 'USD': true }}</h2>
@@ -52,7 +52,7 @@
       <ion-item-options>
         <button ion-button color="danger" icon-left (click)="onTrash(detail);">
           <ion-icon name="trash"></ion-icon>
-          Delete
+          {{ "DELETE" | translate}}
         </button>
       </ion-item-options>
     </ion-item-sliding>

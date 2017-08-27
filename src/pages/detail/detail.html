@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title style="text-align:center;">{{expense.description || 'New Expense' }} </ion-title>
+    <ion-title style="text-align:center;">{{expense.description || 'NEW_EXPENSE' | translate }} </ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="onTrash()" *ngIf="expense.id">
           <ion-icon name="trash"></ion-icon>
@@ -18,17 +18,17 @@
   <form #f="ngForm">    
 
     <ion-item>
-      <ion-label color="primary" floating>Date</ion-label>
+      <ion-label color="primary" floating>{{ 'DATE' | translate }}</ion-label>
       <ion-datetime displayFormat="MMM DD YYYY" name="date" [(ngModel)]="expense.date"></ion-datetime>
     </ion-item>
 
     <ion-item>
-      <ion-label color="primary" stacked>Amount</ion-label>
+      <ion-label color="primary" stacked>{{ 'AMOUNT' | translate }}</ion-label>
       <ion-input type="number" [(ngModel)]="expense.amount" name="amount"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label color="primary">Incoming</ion-label>
+      <ion-label color="primary">{{ 'INCOMING' | translate }}</ion-label>
       <ion-toggle color="add-item" [(ngModel)]="expense.incoming" name="incoming"></ion-toggle>
     </ion-item>
 
@@ -41,20 +41,20 @@
         </ion-col>
         <ion-col>
           <ion-item item-center>
-            <ion-input type="text" *ngIf="category" [(ngModel)]="category.name" name="category" required readonly></ion-input>
+            <ion-input type="text"  placeholder="{{ 'CHOOSE_CATEGORY' | translate }}" *ngIf="category" [(ngModel)]="category.name" name="category" required readonly></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
     </ion-grid>
 
     <ion-item>
-      <ion-label color="primary" stacked>Description</ion-label>
+      <ion-label color="primary" stacked>{{ 'DESCRIPTION' | translate }}</ion-label>
       <ion-input type="text" [(ngModel)]="expense.description" name="description" required></ion-input>
     </ion-item>
 
     <ion-item>
       <br>
-      <h3>Here your Reciept!</h3>
+      <h3>{{ 'RECIEPT' | translate }}</h3>
       <br>
       <img src="{{pathForImage(lastImage)}}" style="width: 100%" [hidden]="lastImage === null">
     </ion-item>
@@ -66,7 +66,7 @@
   <ion-toolbar color="add-item" style="text-align: center;">
     <ion-buttons>
       <button ion-button icon-left (click)="presentActionSheet()">
-        <ion-icon name="camera"></ion-icon>Select Image
+        <ion-icon name="camera"></ion-icon>{{ 'SELECT_IMAGE' | translate }}
       </button>
       <!--button ion-button icon-left (click)="uploadImage()" [disabled]="lastImage === null">
         <ion-icon name="cloud-upload"></ion-icon>Upload

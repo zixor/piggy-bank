@@ -4,6 +4,7 @@ import { SavingModel } from "../../models/saving.model";
 import { DetailSavingModel } from "../../models/detailsaving.model";
 import { Savings } from '../savings/savings';
 import { ListDetailsSavings } from '../list-details-savings/list-details-savings';
+import { UtilitiesService } from '../../providers/utilities.service';
 
 /**Imports services  */
 import { SavingSqliteService } from '../../providers/savings.service.sqlite';
@@ -19,17 +20,78 @@ export class ListSavings {
 
   private savings: SavingModel[] = [];
 
+  private SAVE: string;
+  private GREAT: string;
+  private CANCEL: string;
+  private DELETE: string;
+  private AMOUNT: string;
+  private CONFIRM: string;
+  private INCOMING: string;
+  private WITHDRAWALS: string;
+  private QUESTION_DELETE_SAVING: string;
+  private JUSTIFICATION: string;
+  private MOVEMENT_CREATED: string;
+  private AMOUNT_TO_WITHDRAW: string;
+  private AMOUNT_TO_CONSIGN: string;
+
   constructor(private navCtrl: NavController,
     private savingService: SavingSqliteService,
     private categoryService: CategorySqliteService,
+    private utilitiesService: UtilitiesService,
     private alertCtrl: AlertController) {
 
+    this.initializeConstants();
     this.loadData();
 
   }
 
   ionViewWillEnter() {
     this.loadData();
+  }
+
+
+  initializeConstants() {
+
+    this.utilitiesService.getValueByLanguaje("INCOMING").then(value => {
+      this.INCOMING = value;
+    });
+    this.utilitiesService.getValueByLanguaje("WITHDRAWALS").then(value => {
+      this.WITHDRAWALS = value;
+    });
+    this.utilitiesService.getValueByLanguaje("SAVE").then(value => {
+      this.SAVE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("QUESTION_DELETE_SAVING").then(value => {
+      this.QUESTION_DELETE_SAVING = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CANCEL").then(value => {
+      this.CANCEL = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CONFIRM").then(value => {
+      this.CONFIRM = value;
+    });
+    this.utilitiesService.getValueByLanguaje("DELETE").then(value => {
+      this.DELETE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("AMOUNT").then(value => {
+      this.AMOUNT = value;
+    });
+    this.utilitiesService.getValueByLanguaje("JUSTIFICATION").then(value => {
+      this.JUSTIFICATION = value;
+    });
+    this.utilitiesService.getValueByLanguaje("MOVEMENT_CREATED").then(value => {
+      this.MOVEMENT_CREATED = value;
+    });
+    this.utilitiesService.getValueByLanguaje("AMOUNT_TO_WITHDRAW").then(value => {
+      this.AMOUNT_TO_WITHDRAW = value;
+    });
+    this.utilitiesService.getValueByLanguaje("AMOUNT_TO_CONSIGN").then(value => {
+      this.AMOUNT_TO_CONSIGN = value;
+    });
+    this.utilitiesService.getValueByLanguaje("GREAT").then(value => {
+      this.GREAT = value;
+    });
+
   }
 
   loadData() {
@@ -128,16 +190,16 @@ export class ListSavings {
 
   onTrash(saving: SavingModel) {
     let confirm = this.alertCtrl.create({
-      title: 'Delete',
-      message: `Are you sure you want to delete this saving: "${saving.description}"?`,
+      title: this.DELETE,
+      message: this.QUESTION_DELETE_SAVING + " " + saving.description + "?",
       buttons: [
         {
-          text: 'Cancel',
+          text: this.CANCEL,
           handler: () => {
           }
         },
         {
-          text: 'Confirm',
+          text: this.CONFIRM,
           handler: () => {
             this.savingService.delete(saving);
             this.loadData();
@@ -154,22 +216,22 @@ export class ListSavings {
 
   makeIncoming(savingId) {
     let prompt = this.alertCtrl.create({
-      title: 'Incoming',
-      message: "Plese enter the amount to be Consigned.",
+      title: this.INCOMING,
+      message: this.AMOUNT_TO_CONSIGN,
       inputs: [
         {
           type: 'number',
           name: 'amount',
-          placeholder: 'Amount'
+          placeholder: this.AMOUNT
         },
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: this.CANCEL,
           handler: data => { }
         },
         {
-          text: 'Save',
+          text: this.SAVE,
           handler: data => {
 
             let detail: DetailSavingModel = {
@@ -190,27 +252,27 @@ export class ListSavings {
 
   makeWithDraw(savingId) {
     let prompt = this.alertCtrl.create({
-      title: 'Withdraw',
-      message: "Please enter the amount to Withdraw.",
+      title: this.WITHDRAWALS,
+      message: this.AMOUNT_TO_WITHDRAW,
       inputs: [
         {
           type: 'number',
           name: 'amount',
-          placeholder: 'Amount'
+          placeholder: this.AMOUNT
         },
         {
           type: 'text',
           name: 'justification',
-          placeholder: 'Justification'
+          placeholder: this.JUSTIFICATION
         },
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: this.CANCEL,
           handler: data => { }
         },
         {
-          text: 'Save',
+          text: this.SAVE,
           handler: data => {
             let detail: DetailSavingModel = {
               savingid: savingId,
@@ -231,8 +293,8 @@ export class ListSavings {
 
   showAlert() {
     let alert = this.alertCtrl.create({
-      title: 'Well Done!',
-      subTitle: 'Your movement was create!',
+      title: this.GREAT,
+      subTitle: this.MOVEMENT_CREATED,
       buttons: ['OK']
     });
     alert.present();
