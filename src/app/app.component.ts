@@ -66,6 +66,22 @@ export class MyApp {
       displayName: ""
     };
 
+    this.events.subscribe("expenses:loaded", loaded => {
+      if (loaded) {
+        this.setMenuItems();
+      }
+    });
+
+    this.events.subscribe("userProfile:changed", userProfile => {
+      if (userProfile !== undefined) {
+        this.userProfile = userProfile;
+      }
+    });
+
+  }
+
+
+  setMenuItems() {
     // used for an example of ngFor and navigation
     this.pages = [
 
@@ -75,17 +91,11 @@ export class MyApp {
       { title: this.BUDGETS, component: ListBudget, icon: 'card' },
       { title: this.SAVINGS, component: ListSavings, icon: 'cash' },
       { title: this.SETTINGS, component: Settings, icon: 'md-settings' },
-      { title: this.CREDITS, component: Credits, icon: 'md-contact'  }
+      { title: this.CREDITS, component: Credits, icon: 'md-contact' }
 
     ];
-
-    this.events.subscribe("userProfile:changed", userProfile => {
-      if (userProfile !== undefined) {
-        this.userProfile = userProfile;
-      }
-    });
-
   }
+
 
   initializeConstants() {
 
@@ -112,12 +122,14 @@ export class MyApp {
       this.SETTINGS = value;
     });
 
+    this.events.publish("constants:loaded", true);
+
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
 
-       this.initializeConstants();
+      this.initializeConstants();
 
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

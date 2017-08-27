@@ -11,13 +11,12 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col col-3>
-        {{ "LANGUAGE" | translate }}
+      <ion-col>
+       <p> {{ "LANGUAGE" | translate }} </p>
       </ion-col>
       <ion-col>
-        <ion-item>
-          <ion-label color="primary" stacked>{{ "LANGUAGE" | translate }}</ion-label>
-          <ion-select [(ngModel)]="language">
+        <ion-item>         
+          <ion-select [(ngModel)]="language" (ionChange)="onChangeLanguage(language)">
             <ion-option value="es">Spanish</ion-option>
             <ion-option value="en">English</ion-option>
           </ion-select>

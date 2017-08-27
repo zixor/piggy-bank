@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 
 
@@ -9,20 +9,23 @@ import { TranslateService } from 'ng2-translate/ng2-translate';
 })
 export class Settings {
 
-  private language:string;
+  private language: string;
 
   constructor(public navCtrl: NavController,
-   public navParams: NavParams,
-   private  translate: TranslateService,) {
-     this.setLanguage();
+    public navParams: NavParams,
+    public events: Events,
+    private translate: TranslateService, ) {
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad Settings');
   }
 
-  setLanguage(){
+  onChangeLanguage() {
     this.translate.use(this.language);
+    this.events.publish("constants:loaded", true);
+
   }
 
 }
