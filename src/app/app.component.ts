@@ -55,7 +55,6 @@ export class MyApp {
     private utilitiesService: UtilitiesService) {
 
     this.translate.setDefaultLang("en");
-    this.translate.use("es");
 
     this.initializeApp();
 
@@ -66,7 +65,7 @@ export class MyApp {
       displayName: ""
     };
 
-    this.events.subscribe("expenses:loaded", loaded => {
+    this.events.subscribe("constants:loaded", loaded => {
       if (loaded) {
         this.setMenuItems();
       }
@@ -120,16 +119,14 @@ export class MyApp {
     });
     this.utilitiesService.getValueByLanguaje("SETTINGS").then(value => {
       this.SETTINGS = value;
-    });
-
-    this.events.publish("constants:loaded", true);
+    });    
 
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
 
-      this.initializeConstants();
+      this.initializeConstants();      
 
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -138,6 +135,7 @@ export class MyApp {
       this.expenseSqlService.openDataBase().then(self => {
         let arrDates = this.utilitiesService.getInitialRangeOfDates();
         self.getAll(arrDates[0], arrDates[1]);
+        this.events.publish("constants:loaded", true);
         this.categorySqlService.openDataBase().then(data => {
           this.budgetSqlService.openDataBase().then(data => {
             this.savingeService.openDataBase().then(data => {
