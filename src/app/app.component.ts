@@ -54,7 +54,14 @@ export class MyApp {
     private savingeService: SavingSqliteService,
     private utilitiesService: UtilitiesService) {
 
-    this.translate.setDefaultLang("en");
+    this.translate.setDefaultLang("es");
+    this.translate.use("es");
+
+    this.events.subscribe("constants:loaded", loaded => {
+      if (loaded) {
+        this.setMenuItems();
+      }
+    });
 
     this.initializeApp();
 
@@ -65,11 +72,6 @@ export class MyApp {
       displayName: ""
     };
 
-    this.events.subscribe("constants:loaded", loaded => {
-      if (loaded) {
-        this.setMenuItems();
-      }
-    });
 
     this.events.subscribe("userProfile:changed", userProfile => {
       if (userProfile !== undefined) {
@@ -119,14 +121,14 @@ export class MyApp {
     });
     this.utilitiesService.getValueByLanguaje("SETTINGS").then(value => {
       this.SETTINGS = value;
-    });    
+    });
 
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
 
-      this.initializeConstants();      
+      this.initializeConstants();
 
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
