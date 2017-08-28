@@ -47,8 +47,8 @@
   "LOAD_LIBRARY": "Cargar desde la Librería",
   "USE_CAMERA": "Usar Cámara",
   "QUESTION_DELETE_EXPENSE": "Desea eliminar el Reporte de Gasto Actual ?",
-  "EXECUTED_BUDGET": " Executed Budget",
-  "QUESTION_CONTINUE": "Do you want to continue ?",
+  "EXECUTED_BUDGET": "Presupuesto Ejecutado",
+  "QUESTION_CONTINUE": "Desea Continuar ?",
   "NEW_EXPENSE": "Nuevo Gasto",
   "TARGET": "Objetivo",
   "MOVEMENT_CREATED": "Movimiento Creado",
@@ -57,5 +57,6 @@
   "GREAT": "Genial!",
   "CREDITS": "Créditos",
   "SETTINGS": "Configuración",
-  "LANGUAGE": "Idioma"
+  "LANGUAGE": "Idioma",
+  "WARNING": "Precaución"
 }

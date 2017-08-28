@@ -27,7 +27,7 @@ export class Detail {
 
   private expense: any;
   private category;
-  private lastImage: string = null;
+  private lastImage: string = "";
   private loading: Loading;
 
   private SOURCE_IMAGE: string;
@@ -65,7 +65,9 @@ export class Detail {
     if (expense) {
 
       this.expense = expense;
-      this.lastImage = expense.image;
+      if (expense.image) {
+        this.lastImage = expense.image;
+      }
       this.category = expense.category;
 
     } else {
@@ -140,23 +142,24 @@ export class Detail {
   };
 
   public presentActionSheet() {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: this.SOURCE_IMAGE,
+    let actionSheet = this.actionSheetCtrl.create(
+      {
+      title: "Image Source",
       buttons: [
         {
-          text: this.LOAD_LIBRARY,
+          text: "From Library",
           handler: () => {
             this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
           }
         },
         {
-          text: this.USE_CAMERA,
+          text: "Use Camera",
           handler: () => {
             this.takePicture(this.camera.PictureSourceType.CAMERA);
           }
         },
         {
-          text: this.CANCEL,
+          text: "Cancel",
           role: "Cancel"
         }
       ]
