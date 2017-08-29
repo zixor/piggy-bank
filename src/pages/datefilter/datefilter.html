@@ -18,12 +18,14 @@
 
     <ion-item>
       <ion-label color="primary" floating>{{ 'INITIAL_DATE' | translate }}</ion-label>
-      <ion-datetime displayFormat="MMM DD YYYY" name="initialDate" [(ngModel)]="filter.initialDate"></ion-datetime>
+      <ion-datetime displayFormat="MMM DD YYYY" name="initialDate" [(ngModel)]="filter.initialDate" monthNames="{{ 'MONTHNAMES' | translate}}"
+        monthShortNames="{{ 'MONTHSHORTNAMES' | translate}}"></ion-datetime>
     </ion-item>
 
     <ion-item>
       <ion-label color="primary" floating>{{ 'FINAL_DATE' | translate }}</ion-label>
-      <ion-datetime displayFormat="MMM DD YYYY" name="finalDate" [(ngModel)]="filter.finalDate"></ion-datetime>
+      <ion-datetime displayFormat="MMM DD YYYY" name="finalDate" [(ngModel)]="filter.finalDate" monthNames="{{ 'MONTHNAMES' | translate}}"
+        monthShortNames="{{ 'MONTHSHORTNAMES' | translate}}"></ion-datetime>
     </ion-item>
 
     <br>

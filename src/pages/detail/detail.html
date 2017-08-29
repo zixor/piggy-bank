@@ -15,11 +15,12 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <form #f="ngForm">    
+  <form #f="ngForm">
 
     <ion-item>
       <ion-label color="primary" floating>{{ 'DATE' | translate }}</ion-label>
-      <ion-datetime displayFormat="MMM DD YYYY" name="date" [(ngModel)]="expense.date"></ion-datetime>
+      <ion-datetime displayFormat="MMM DD YYYY" name="date" [(ngModel)]="expense.date" monthNames="{{ 'MONTHNAMES' | translate}}"
+        monthShortNames="{{ 'MONTHSHORTNAMES' | translate}}"></ion-datetime>
     </ion-item>
 
     <ion-item>
@@ -41,7 +42,8 @@
         </ion-col>
         <ion-col>
           <ion-item item-center>
-            <ion-input type="text"  placeholder="{{ 'CHOOSE_CATEGORY' | translate }}" *ngIf="category" [(ngModel)]="category.name" name="category" required readonly></ion-input>
+            <ion-input type="text" placeholder="{{ 'CHOOSE_CATEGORY' | translate }}" *ngIf="category" [(ngModel)]="category.name" name="category"
+              required readonly></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>

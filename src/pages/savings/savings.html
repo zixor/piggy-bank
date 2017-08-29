@@ -40,7 +40,9 @@
 
     <ion-item>
       <ion-label color="primary" floating>Choose Goal Date</ion-label>
-      <ion-datetime displayFormat="MMM DD YYYY" max="2030-12-31" name="date" [(ngModel)]="saving.goaldate"></ion-datetime>
+      <ion-datetime displayFormat="MMM DD YYYY" max="2030-12-31" name="date" [(ngModel)]="saving.goaldate"
+      monthNames="{{ 'MONTHNAMES' | translate}}"
+       monthShortNames="{{ 'MONTHSHORTNAMES' | translate}}"></ion-datetime>
     </ion-item>    
 
     <ion-grid>

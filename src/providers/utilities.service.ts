@@ -116,6 +116,10 @@ export class UtilitiesService {
         return systemDirectory;
     }
 
+    getCurrentLanguage():string{
+        return this.translate.currentLang;
+    }
+
     getValueByLanguaje(key: string): Promise<any> {
         return new Promise((resolve, reject) => {
             this.translate.get(key).subscribe(value => {

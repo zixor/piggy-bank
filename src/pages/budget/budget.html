@@ -36,12 +36,14 @@
 
     <ion-item>
       <ion-label color="primary">{{ 'INITIAL_DATE' | translate}}</ion-label>
-      <ion-datetime displayFormat="MMM DD YYYY" name="initialDate" [(ngModel)]="budget.initialDate"></ion-datetime>
+      <ion-datetime displayFormat="MMM DD YYYY" name="initialDate" [(ngModel)]="budget.initialDate" monthNames="{{ 'MONTHNAMES' | translate}}"
+        monthShortNames="{{ 'MONTHSHORTNAMES' | translate}}"></ion-datetime>
     </ion-item>
 
     <ion-item>
       <ion-label color="primary">{{ 'FINAL_DATE' | translate}}</ion-label>
-      <ion-datetime displayFormat="MMM DD YYYY" name="finalDate" [(ngModel)]="budget.finalDate"></ion-datetime>
+      <ion-datetime displayFormat="MMM DD YYYY" name="finalDate" [(ngModel)]="budget.finalDate" monthNames="{{ 'MONTHNAMES' | translate}}"
+        monthShortNames="{{ 'MONTHSHORTNAMES' | translate}}"></ion-datetime>
     </ion-item>
 
     <ion-grid>

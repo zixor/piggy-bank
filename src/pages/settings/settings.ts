@@ -23,10 +23,8 @@ export class Settings {
   }
 
   onChangeLanguage() {
-    
-    this.translate.setDefaultLang(this.language);
-    this.translate.use(this.language);
-    
+
+    this.translate.use(this.language);    
     this.events.publish("constants:loaded", true);
 
   }

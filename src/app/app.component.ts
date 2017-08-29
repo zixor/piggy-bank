@@ -55,13 +55,13 @@ export class MyApp {
     private utilitiesService: UtilitiesService) {
 
     this.translate.setDefaultLang("es");
-    this.translate.use("es");
 
     this.events.subscribe("constants:loaded", loaded => {
       if (loaded) {
-        this.setMenuItems();
+        this.updateMenu();
       }
     });
+
 
     this.initializeApp();
 
@@ -78,6 +78,12 @@ export class MyApp {
         this.userProfile = userProfile;
       }
     });
+
+  }
+
+  updateMenu() {
+    
+    this.initializeConstants();    
 
   }
 
@@ -102,28 +108,34 @@ export class MyApp {
 
     this.utilitiesService.getValueByLanguaje("DASHBOARD").then(value => {
       this.DASHBOARD = value;
+      this.setMenuItems();
     });
     this.utilitiesService.getValueByLanguaje("CATEGORY_TITLE").then(value => {
       this.CATEGORY_TITLE = value;
+      this.setMenuItems();
     });
     this.utilitiesService.getValueByLanguaje("TRANSACTIONS_TITLE").then(value => {
       this.TRANSACTIONS_TITLE = value;
+      this.setMenuItems();
     });
-
     this.utilitiesService.getValueByLanguaje("BUDGETS").then(value => {
       this.BUDGETS = value;
+      this.setMenuItems();
     });
     this.utilitiesService.getValueByLanguaje("SAVINGS").then(value => {
       this.SAVINGS = value;
+      this.setMenuItems();
     });
     this.utilitiesService.getValueByLanguaje("CREDITS").then(value => {
       this.CREDITS = value;
+      this.setMenuItems();
     });
     this.utilitiesService.getValueByLanguaje("SETTINGS").then(value => {
       this.SETTINGS = value;
+      this.setMenuItems();
     });
 
-  }
+  }    
 
   initializeApp() {
     this.platform.ready().then(() => {
