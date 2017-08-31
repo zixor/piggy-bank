@@ -15,7 +15,7 @@ export class Credits {
 
   constructor(private iab: InAppBrowser,
     private utilitiesService: UtilitiesService) {
-
+      this.initializeConstants();
   }
 
   private EMAIL_ME_BODY: string;

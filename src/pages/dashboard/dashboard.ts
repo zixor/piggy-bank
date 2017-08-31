@@ -32,6 +32,8 @@ export class Dashboard {
   private EXPORT_QUESTION: string = "";
   private CANCEL: string = "";
   private CONFIRM: string = "";
+  private REPORT_TITLE_EXPORT:string = "";
+  private REPORT_TITLE_BODY:string = "";
 
 
   constructor(
@@ -66,7 +68,12 @@ export class Dashboard {
     this.utilitiesService.getValueByLanguaje("CONFIRM").then(value => {
       this.CONFIRM = value;
     });
-
+this.utilitiesService.getValueByLanguaje("REPORT_TITLE_EXPORT").then(value => {
+      this.REPORT_TITLE_EXPORT = value;
+    });
+    this.utilitiesService.getValueByLanguaje("REPORT_TITLE_BODY").then(value => {
+      this.REPORT_TITLE_BODY = value;
+    });
   }
 
   getColors() {
@@ -219,9 +226,9 @@ export class Dashboard {
   }
 
   sendFile(dataReport) {
-    let body = "Following We attach your expenses report!" + "\n";
+    let body = this.REPORT_TITLE_BODY + "\n";
     this.utilitiesService.exportToFile("expenses.txt", dataReport).then(fileEntry => {
-      this.utilitiesService.sendEmail('', 'Report for your expenses',
+      this.utilitiesService.sendEmail('', this.REPORT_TITLE_EXPORT,
         body, fileEntry.nativeURL);
     });
   }
