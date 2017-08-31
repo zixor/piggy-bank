@@ -18,6 +18,19 @@ export class Credits {
 
   }
 
+  private EMAIL_ME_BODY: string;
+  private EMAIL_ME_TITLE: string;
+
+  initializeConstants() {
+
+    this.utilitiesService.getValueByLanguaje("EMAIL_ME_TITLE").then(value => {
+      this.EMAIL_ME_TITLE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("EMAIL_ME_BODY").then(value => {
+      this.EMAIL_ME_BODY = value;
+    });
+  }
+
   initializeData() {
 
     this.makeGraphics();
@@ -69,8 +82,10 @@ export class Credits {
   }
 
   emailMe() {
-    this.utilitiesService.sendEmail("noel.gonzalez.h@gmail.com", "I  would like to hire you for an interesting project!",
-      "Here comes your description ...","");
+
+    this.utilitiesService.sendEmail("noel.gonzalez.h@gmail.com", this.EMAIL_ME_TITLE,
+      this.EMAIL_ME_BODY, "");
+
   }
 
 

@@ -59,6 +59,36 @@
   "SETTINGS": "Settings",
   "LANGUAGE": "Language",
   "WARNING": "Warning",
-  "MONTHNAMES": ["January","February","March","April","May","June","July","August","September","October","November","December"],
-  "MONTHSHORTNAMES" : ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+  "MONTHNAMES": [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ],
+  "MONTHSHORTNAMES": [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ],
+  "REPORT_TITLE_EXPORT": "This is you current expenses report",
+  "REPORT_TITLE_BODY": "This file contains all data related with the expenses by category",
+  "EMAIL_ME_TITLE": "I  would like to hire you for an interesting project!",
+  "EMAIL_ME_BODY": "Tell me more about your project..."
 }
