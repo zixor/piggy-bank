@@ -15,14 +15,13 @@ export class Credits {
 
   constructor(private iab: InAppBrowser,
     private utilitiesService: UtilitiesService) {
-      this.initializeConstants();
+    this.initializeConstants();
   }
 
-  private EMAIL_ME_BODY: string;
-  private EMAIL_ME_TITLE: string;
+  private EMAIL_ME_TITLE: string = "";
+  private EMAIL_ME_BODY: string = "";
 
   initializeConstants() {
-
     this.utilitiesService.getValueByLanguaje("EMAIL_ME_TITLE").then(value => {
       this.EMAIL_ME_TITLE = value;
     });
