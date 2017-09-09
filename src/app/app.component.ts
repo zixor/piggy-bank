@@ -29,7 +29,7 @@ import { SavingSqliteService } from '../providers/savings.service.sqlite';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = Login;
 
   private pages: Array<{ title: string, component: any, icon: string }>;
   userProfile: UserProfile;

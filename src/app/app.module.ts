@@ -17,7 +17,7 @@ import { SQLite } from '@ionic-native/sqlite';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { HttpModule, Http } from '@angular/http';
-import { TranslateModule,TranslateLoader, TranslateStaticLoader } from 'ng2-translate/ng2-translate';
+import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-translate/ng2-translate';
 
 //Services
 import { ExpenseSqliteService } from '../providers/expense.service.sqlite';
@@ -46,21 +46,37 @@ import { Dashboard } from '../pages/dashboard/dashboard';
 import { Settings } from '../pages/settings/settings';
 import { ListDetailsSavings } from '../pages/list-details-savings/list-details-savings';
 import { Credits } from '../pages/credits/credits';
+import { GooglePlus } from '@ionic-native/google-plus';
+import { Facebook } from "@ionic-native/facebook";
+import { AngularFireModule } from 'angularfire2';
+import firebase from 'firebase';
 
 export function translateLoaderFactory(http: any) {
-    return new TranslateStaticLoader(http, './assets/i18n', '.json');
+  return new TranslateStaticLoader(http, './assets/i18n', '.json');
 }
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyCYD-CkOBkPegq9RlV2fPL8Z4zhKHpJdXo",
+  authDomain: "coin-by-coin-179315.firebaseapp.com",
+  databaseURL: "https://coin-by-coin-179315.firebaseio.com",
+  projectId: "coin-by-coin-179315",
+  storageBucket: "coin-by-coin-179315.appspot.com",
+  messagingSenderId: "346822450290"
+}
+
+firebase.initializeApp(firebaseConfig);
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpModule,
-    TranslateModule.forRoot({ 
-          provide: TranslateLoader,
-          useFactory: translateLoaderFactory,
-          deps: [Http]
-        }),
-    IonicModule.forRoot(MyApp)
+    TranslateModule.forRoot({
+      provide: TranslateLoader,
+      useFactory: translateLoaderFactory,
+      deps: [Http]
+    }),
+    IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(firebaseConfig)
   ],
   declarations: [
     MyApp,
@@ -106,7 +122,10 @@ export function translateLoaderFactory(http: any) {
     Credits
   ],
   providers: [
-    HttpModule, TranslateModule,
+    HttpModule,
+    TranslateModule,
+    GooglePlus,
+    Facebook,
     ExpenseSqliteService,
     CategorySqliteService,
     BudgetSqliteService,

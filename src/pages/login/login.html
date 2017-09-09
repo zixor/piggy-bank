@@ -24,13 +24,13 @@
      <ion-fab buttom center  >
         <button ion-fab color="light">  <ion-icon name="finger-print"></ion-icon></button>
         <ion-fab-list side="left">
-          <button ion-fab > <ion-icon name="logo-facebook"></ion-icon></button>
+          <button ion-fab (click)="onFacebookLogin();" > <ion-icon name="logo-facebook"></ion-icon></button>
         </ion-fab-list>  
         <ion-fab-list side="right">
           <button ion-fab ><ion-icon name="logo-twitter"></ion-icon></button>
           </ion-fab-list> 
           <ion-fab-list side="buttom">
-          <button ion-fab > <ion-icon name="logo-googleplus"></ion-icon></button>
+          <button ion-fab (click)="onGoogleLogin();"> <ion-icon name="logo-googleplus"></ion-icon></button>
         </ion-fab-list>  
   </ion-fab>
   </form>
