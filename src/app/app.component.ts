@@ -69,7 +69,8 @@ export class MyApp {
       username: "",
       uid: "",
       photoURL: "",
-      displayName: ""
+      displayName: "",
+      email:""
     };
 
 

@@ -89,10 +89,10 @@
             "cordova-plugin-email-composer": {},
             "cordova-plugin-inappbrowser": {},
             "cordova-plugin-googleplus": {
-                "REVERSED_CLIENT_ID": "com.googleusercontent.apps.346822450290-d1itoic036psigphe0neql4a3tg8quno"
+                "REVERSED_CLIENT_ID": "com.googleusercontent.apps.612258474146-6naptd9e4kvb2fl9fsp0jdu97skalbam"
             },
             "cordova-plugin-facebook4": {
-                "APP_ID": "1964845993795993",
+                "APP_ID": "312326005907335",
                 "APP_NAME": "Coin By Coin"
             }
         },

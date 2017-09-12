@@ -56,12 +56,12 @@ export function translateLoaderFactory(http: any) {
 }
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyCYD-CkOBkPegq9RlV2fPL8Z4zhKHpJdXo",
-  authDomain: "coin-by-coin-179315.firebaseapp.com",
-  databaseURL: "https://coin-by-coin-179315.firebaseio.com",
-  projectId: "coin-by-coin-179315",
-  storageBucket: "coin-by-coin-179315.appspot.com",
-  messagingSenderId: "346822450290"
+  apiKey: "AIzaSyC5Rbrvr3byO5F2hq0SHbGb6R3ITVb9Am0",
+  authDomain: "coin-by-coin-179711.firebaseapp.com",
+  databaseURL: "https://coin-by-coin-179711.firebaseio.com",
+  projectId: "coin-by-coin-179711",
+  storageBucket: "coin-by-coin-179711.appspot.com",
+  messagingSenderId: "354841706808"
 }
 
 firebase.initializeApp(firebaseConfig);

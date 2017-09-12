@@ -1,28 +1,30 @@
 <ion-menu [content]="content">
   <ion-header>
     <ion-toolbar color="add-item">
-      <ion-title>Coin By Coin</ion-title>          
+      <ion-title>Coin By Coin</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <ion-content class="mainMenu">
-    <!--ion-card class="profile-card">
-        <ion-item>
-            <ion-avatar item-left>
-                <img src="{{userProfile.photoUrl}}">  
-            </ion-avatar>
-            <br>
-            <p> {{userProfile.displayName}} </p>  
-            <p> {{userProfile.username}} </p>             
-        </ion-item> 
-        <ion-item>  
-            <button  ion-button full color="header" (click)="closeSession()">
-              <ion-icon  name="power"></ion-icon>
-               Close Application
-            </button>
-        </ion-item> 
-      </ion-card--> 
-    <ion-list class="mainMenu">              
+    <ion-item>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="mainPhoto">
+              <img src="{{userProfile.photoURL}}">
+            </div>
+          </ion-col>
+          <ion-col>
+            <h2 style="margin-top:20%">{{userProfile.displayName}}</h2>
+            <p>{{userProfile.email}}</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+    </ion-item>
+
+    <ion-list class="mainMenu">
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}
         <ion-icon name="{{p.icon}}" item-left></ion-icon>
