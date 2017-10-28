@@ -67,34 +67,9 @@ export class Login {
           self.events.publish("userProfile:changed", self.userProfile);
           window.localStorage.setItem('userProfile', JSON.stringify(self.userProfile));
           self.navCtrl.setRoot(HomePage);
-
-
-          console.log("Firebase success: " + JSON.stringify(response));
+          // console.log("Firebase success: " + JSON.stringify(response));
         });
 
     });
   }
-  /* this.facebook.login(['email']).then(response => {
-     const fc = firebase.auth.FacebookAuthProvider.credential(response.authResponse.accessToken)
-     firebase.auth().signInWithCredential(fc).then(response => {
-
-       console.log(response);
-
-       self.userProfile.uid = response.uid;
-       self.userProfile.displayName = response.displayName;
-       self.userProfile.photoURL = response.photoURL;
-       self.userProfile.email = response.email;
-
-       self.events.publish("userProfile:changed", self.userProfile);
-       window.localStorage.setItem('userProfile', JSON.stringify(self.userProfile));
-       self.navCtrl.setRoot(HomePage);
-
-     }).catch(ferr => {
-       alert("Error")
-     })
-   }).catch(err => {
-     alert(JSON.stringify(err));
-   });
- }*/
-
 }

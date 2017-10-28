@@ -30,7 +30,6 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = Login;
-
   private pages: Array<{ title: string, component: any, icon: string }>;
   userProfile: UserProfile;
 
@@ -41,7 +40,6 @@ export class MyApp {
   private SAVINGS: string;
   private CREDITS: string;
   private SETTINGS: string;
-
 
   constructor(public platform: Platform,
     public statusBar: StatusBar,

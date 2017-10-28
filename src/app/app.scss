@@ -36,3 +36,15 @@ div.datepicker-balanced[_ngcontent-c0], div.datepicker-balanced-light[_ngcontent
     width: 46px;
     height: 46px;
 }
+
+.profile-photo{
+    border-radius: 50%;
+    overflow: hidden;
+    width: 60px;
+    height: 60px; 
+}
+
+.bgd{
+   background-image: url("../assets/city.png");
+   margin-top: -15px;
+}
