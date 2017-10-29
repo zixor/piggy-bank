@@ -133,7 +133,7 @@ export class MyApp {
       this.setMenuItems();
     });
      this.utilitiesService.getValueByLanguaje("CLOSE_SESSION").then(value => {
-      this.SETTINGS = value;
+      this.CLOSE_SESSION = value;
       this.setMenuItems();
     });
   }
