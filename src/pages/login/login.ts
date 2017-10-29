@@ -46,6 +46,7 @@ export class Login {
         this.utilitiesService.showMessage("Error", "Usuario o Password no válido!");
       } else {
         firebase.auth().signInWithEmailAndPassword(this.user, this.password).then(response => {
+          console.log(response);
           this.setUserProfile(response);
         });
       }

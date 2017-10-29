@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, ModalController, Events, Platform, ToastController, MenuController } from 'ionic-angular';
+import {
+  NavController, AlertController, ModalController, Events, Platform,
+  ToastController, MenuController, NavParams
+} from 'ionic-angular';
 import { Detail } from '../detail/detail';
 import { ExpenseSqliteService } from '../../providers/expense.service.sqlite';
 import { CategorySqliteService } from '../../providers/category.service.sqlite';
@@ -19,6 +22,7 @@ declare var cordova: any;
 export class HomePage {
 
   private expense;
+  private disableGestorBack = false;
   private balance: number = 0;
   private incomes: number = 0;
   private amountExpenses: number = 0;
@@ -51,12 +55,14 @@ export class HomePage {
     private toastController: ToastController,
     private alertCtrl: AlertController,
     private currencyPipe: CurrencyPipe,
+    private navParms: NavParams,
     private datePipe: DatePipe,
+    private platform: Platform,
     private events: Events,
-    private file: File,
-    private platform: Platform
+    private file: File
   ) {
     console.log("1.constructor");
+    this.disabelBackMenu(navParms.get('fromProfile'));
     this.systemDirectory = this.utilitiesService.getSysmteDirectory();
     let arrDates = this.utilitiesService.getInitialRangeOfDates();
     this.initialDate = arrDates[0];
@@ -64,6 +70,10 @@ export class HomePage {
     this.initializeConstants();
     this.subscribeExpensesLoaded();
     this.menu.swipeEnable(true);
+  }
+
+  disabelBackMenu(disable) {
+    this.disableGestorBack = disable;
   }
 
   initializeConstants() {

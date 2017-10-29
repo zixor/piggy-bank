@@ -1,14 +1,15 @@
 <ion-menu [content]="content">
-
   <ion-content>
     <ion-item class="bgd" item-width="120%"  style="padding-left:0%;">
-
       <ion-grid>
         <ion-row>
           <ion-col>
-            <div class="profile-photo">
+            <div class="profile-photo" *ngIf="userProfile.photoURL">
               <img src="{{userProfile.photoURL}}">
             </div>
+            <button ion-fab *ngIf="!userProfile.photoURL" color="warm-22" item-left style="box-shadow:none;">
+                <ion-icon name="md-contact"></ion-icon>
+              </button>
           </ion-col>
           <ion-col>          
             <h2 style="color: #5a5a59;">{{userProfile.displayName}}</h2>
@@ -16,9 +17,7 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-
     </ion-item>
-
     <ion-list>
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}
@@ -26,7 +25,6 @@
       </button>
     </ion-list>
   </ion-content>
-
 </ion-menu>
 
 <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->

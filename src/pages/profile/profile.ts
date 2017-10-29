@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Loading, MenuController } from 'ionic-angular';
+import { NavController, NavParams, Loading, MenuController, Events } from 'ionic-angular';
 import { AngularFireModule } from 'angularfire2';
 import { HomePage } from '../home/home';
 import firebase from 'firebase';
 import { UtilitiesService } from "../../providers/utilities.service";
+import { UserProfile } from "../../app/user-profile.model";
 
 @Component({
   selector: 'page-profile',
@@ -13,11 +14,13 @@ export class ProfilePage {
 
   private profile: any;
   private refresher;
+  private userProfile: UserProfile;
 
   constructor(private navCtrl: NavController,
-    private navParams: NavParams,
+    private utilitiesService: UtilitiesService,
     private menu: MenuController,
-    private utilitiesService: UtilitiesService) {
+    private navParams: NavParams,
+    private events: Events) {
     this.profile = {
       uid: "",
       name: "",
@@ -44,7 +47,7 @@ export class ProfilePage {
       firebase.auth().createUserWithEmailAndPassword(this.profile.email, this.profile.password)
         .then(user => {
           this.setProfile(user.uid);
-          this.navCtrl.push(HomePage);
+          this.navCtrl.setRoot(HomePage,{'fromProfile' : true});
         })
         .catch(e => {
           this.utilitiesService.showMessage("Error", e.message);
@@ -57,7 +60,13 @@ export class ProfilePage {
       .database()
       .ref('/userProfile')
       .child(uid)
-      .set({ name: this.profile.name, email: this.profile.email });
+      .set({ displayName: this.profile.name, email: this.profile.email });
+    this.userProfile.uid = uid;
+    this.userProfile.displayName = this.profile.name;
+    this.userProfile.photoURL = "";
+    this.userProfile.email = this.profile.email;
+    window.localStorage.setItem('userProfile', JSON.stringify(this.userProfile));
+    this.events.publish("userProfile:changed", this.userProfile);
   }
 
   validateForm() {
