@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, ModalController, Events, Platform, ToastController } from 'ionic-angular';
+import { NavController, AlertController, ModalController, Events, Platform, ToastController, MenuController } from 'ionic-angular';
 import { Detail } from '../detail/detail';
 import { ExpenseSqliteService } from '../../providers/expense.service.sqlite';
 import { CategorySqliteService } from '../../providers/category.service.sqlite';
@@ -46,6 +46,7 @@ export class HomePage {
     private categoryService: CategorySqliteService,
     private utilitiesService: UtilitiesService,
     private socialSharing: SocialSharing,
+    private menu: MenuController,
     private email: EmailComposer,
     private toastController: ToastController,
     private alertCtrl: AlertController,
@@ -62,6 +63,7 @@ export class HomePage {
     this.finalDate = arrDates[1];
     this.initializeConstants();
     this.subscribeExpensesLoaded();
+    this.menu.swipeEnable(true);
   }
 
   initializeConstants() {

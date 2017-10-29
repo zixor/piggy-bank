@@ -48,10 +48,9 @@ export class MyApp {
     private categorySqlService: CategorySqliteService,
     private budgetSqlService: BudgetSqliteService,
     private savingeService: SavingSqliteService,
-    private utilitiesService: UtilitiesService) {
-
+    private utilitiesService: UtilitiesService) { 
     this.translate.setDefaultLang("es");
-
+  
     this.events.subscribe("constants:loaded", loaded => {
       if (loaded) {
         this.updateMenu();
@@ -75,6 +74,7 @@ export class MyApp {
     });
 
     if (this.isUserAlreadyLoggedIn()) {
+      this.userProfile = JSON.parse(window.localStorage.getItem('userProfile'));
       this.rootPage = HomePage;
     }
 
@@ -99,7 +99,7 @@ export class MyApp {
       { title: this.SAVINGS, component: ListSavings, icon: 'cash' },
       { title: this.SETTINGS, component: Settings, icon: 'md-settings' },
       { title: this.CREDITS, component: Credits, icon: 'md-contact' },
-      { title: this.CLOSE_SESSION, component: null, icon: 'md-contact' },
+      { title: this.CLOSE_SESSION, component: null, icon: 'md-log-out' },
     ];
   }
 
@@ -171,6 +171,6 @@ export class MyApp {
 
   closeSession() {
     window.localStorage.removeItem("userProfile");
-    this.nav.push(HomePage);
+    this.nav.push(Login);
   }
 }

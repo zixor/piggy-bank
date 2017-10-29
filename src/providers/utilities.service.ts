@@ -2,7 +2,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { Platform } from 'ionic-angular';
+import { Platform, AlertController } from 'ionic-angular';
 
 import { File } from '@ionic-native/file';
 import { Injectable } from '@angular/core';
@@ -16,6 +16,7 @@ export class UtilitiesService {
         private email: EmailComposer,
         private file: File,
         private currencyPipe: CurrencyPipe,
+        private alertCtrl: AlertController,
         private datePipe: DatePipe,
         private platform: Platform,
         private translate: TranslateService) {
@@ -116,7 +117,7 @@ export class UtilitiesService {
         return systemDirectory;
     }
 
-    getCurrentLanguage():string{
+    getCurrentLanguage(): string {
         return this.translate.currentLang;
     }
 
@@ -127,5 +128,28 @@ export class UtilitiesService {
             });
         });
     }
+
+    showMessage(title: string, message: string) {
+        let confirm = this.alertCtrl.create({
+            title: title,
+            message: message,
+            buttons: [
+                {
+                    text: "OK",
+                    handler: () => {
+                    }
+                }
+            ]
+        });
+        confirm.present();
+    }
+
+    getLocalProfile(){
+        let profile = window.localStorage.getItem('userProfile');
+        if(profile){
+           profile = JSON.parse(profile);
+        }
+        return profile;
+    } 
 
 }

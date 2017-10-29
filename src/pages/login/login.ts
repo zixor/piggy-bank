@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Events } from 'ionic-angular';
+import { NavController, Events, MenuController } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { UserProfile } from "../../app/user-profile.model";
 import { GooglePlus } from '@ionic-native/google-plus';
@@ -7,6 +7,7 @@ import { Facebook } from "@ionic-native/facebook";
 import { AngularFireModule } from 'angularfire2';
 import { ProfilePage } from '../profile/profile';
 import firebase from 'firebase';
+import { UtilitiesService } from "../../providers/utilities.service";
 
 @Component({
   selector: 'page-login',
@@ -20,6 +21,8 @@ export class Login {
   private user: string;
 
   constructor(private navCtrl: NavController,
+    private utilitiesService: UtilitiesService,
+    private menu: MenuController,
     private googlePlus: GooglePlus,
     private facebook: Facebook,
     public events: Events) {
@@ -32,10 +35,23 @@ export class Login {
     };
   }
 
+  ionViewDidEnter() {
+    this.menu.swipeEnable(false);
+  }
+
   singIn() {
-    firebase.auth().signInWithEmailAndPassword(this.user, this.password).then(response => {
-      this.setUserProfile(response);
-    });
+    try {
+      if ((this.user == null || this.user == "") || this.user.length < 4 ||
+        (this.password == null || this.password == "") || this.password.length < 7) {
+        this.utilitiesService.showMessage("Error", "Usuario o Password no válido!");
+      } else {
+        firebase.auth().signInWithEmailAndPassword(this.user, this.password).then(response => {
+          this.setUserProfile(response);
+        });
+      }
+    } catch (error) {
+      this.utilitiesService.showMessage("Error", error.message);
+    }
   }
 
   onGoogleLogin() {
@@ -70,14 +86,14 @@ export class Login {
       self.userProfile.uid = response.uid;
       self.userProfile.displayName = response.displayName;
       self.userProfile.photoURL = response.photoURL;
-      self.userProfile.email = response.email;      
+      self.userProfile.email = response.email;
       window.localStorage.setItem('userProfile', JSON.stringify(self.userProfile));
       self.events.publish("userProfile:changed", self.userProfile);
       self.navCtrl.setRoot(HomePage);
     }
   }
 
-  onCreateProfile(){
-   this.navCtrl.setRoot(ProfilePage);
+  onCreateProfile() {
+    this.navCtrl.setRoot(ProfilePage);
   }
 }
