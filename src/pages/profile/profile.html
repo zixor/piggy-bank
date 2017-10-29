@@ -1,0 +1,36 @@
+<ion-header color="header">
+  <ion-navbar>
+    <ion-title>Registro</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form #f="ngForm">
+    <ion-refresher (ionRefresh)="doRefresh($event);" class="refresher">
+      <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+      </ion-refresher-content>
+    </ion-refresher>
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Nombre</ion-label>
+        <ion-input type="text" [(ngModel)]="profile.name" name="name" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input type="text" [(ngModel)]="profile.email" name="email" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Contraseña</ion-label>
+        <ion-input type="text" [(ngModel)]="profile.password" name="password" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Repetir Contraseña</ion-label>
+        <ion-input type="text" [(ngModel)]="profile.repeatpassword" name="repeatpassword" required></ion-input>
+      </ion-item>
+    </ion-list>
+    <br>
+    <div padding>
+      <button ion-button color="add-item" block (click)=createProfile();>REGISTRARSE</button>
+    </div>
+  </form>
+</ion-content>

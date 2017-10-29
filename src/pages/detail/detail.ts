@@ -13,10 +13,8 @@ import { Transfer, TransferObject } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
 import * as moment from 'moment';
-
 //Import modal page
 import { ModalCategory } from '../modal-category/modal-category';
-
 declare var cordova: any;
 
 @Component({
@@ -29,7 +27,6 @@ export class Detail {
   private category;
   private lastImage: string = "";
   private loading: Loading;
-
   private SOURCE_IMAGE: string;
   private LOAD_LIBRARY: string;
   private USE_CAMERA: string;
@@ -58,30 +55,20 @@ export class Detail {
     private toastCtrl: ToastController,
     private platform: Platform,
     private loadingCtrl: LoadingController) {
-
-
     let expense = navParms.get('expense');
-
     if (expense) {
-
       this.expense = expense;
       if (expense.image) {
         this.lastImage = expense.image;
       }
       this.category = expense.category;
-
     } else {
-
       this.initExpense();
       this.initCategory();
-
     }
-
   }
 
-
   initializeConstants() {
-
     this.utilitiesService.getValueByLanguaje("SOURCE_IMAGE").then(value => {
       this.SOURCE_IMAGE = value;
     });
@@ -112,7 +99,6 @@ export class Detail {
     this.utilitiesService.getValueByLanguaje("QUESTION_CONTINUE").then(value => {
       this.QUESTION_CONTINUE = value;
     });
-
   }
 
   private initExpense() {
@@ -144,26 +130,26 @@ export class Detail {
   public presentActionSheet() {
     let actionSheet = this.actionSheetCtrl.create(
       {
-      title: "Image Source",
-      buttons: [
-        {
-          text: "From Library",
-          handler: () => {
-            this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+        title: "Image Source",
+        buttons: [
+          {
+            text: "From Library",
+            handler: () => {
+              this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+            }
+          },
+          {
+            text: "Use Camera",
+            handler: () => {
+              this.takePicture(this.camera.PictureSourceType.CAMERA);
+            }
+          },
+          {
+            text: "Cancel",
+            role: "Cancel"
           }
-        },
-        {
-          text: "Use Camera",
-          handler: () => {
-            this.takePicture(this.camera.PictureSourceType.CAMERA);
-          }
-        },
-        {
-          text: "Cancel",
-          role: "Cancel"
-        }
-      ]
-    });
+        ]
+      });
     actionSheet.present();
   }
 
@@ -232,26 +218,17 @@ export class Detail {
   }
 
   onSave() {
-
     let budget = null;
     let budgetExecuted: number = 0;
-
     this.budgeteService.getBudgetByDateExpenseAndCategory(this.expense.date, this.expense.category).then(data => {
-
       budget = data[0];
-
       if (budget != null) {
-
         this.expenseService.getExpensesGroupByCategory(budget.initialDate, budget.finalDate, budget.category)
           .then(data => {
-
             if (data.length > 0) {
-
               let expenseExecuted = data[0];
-
               budgetExecuted = parseInt(expenseExecuted.amount) + parseInt(this.expense.amount);
               let currencyformat = budgetExecuted.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-
               if (budgetExecuted > budget.amount) {
                 let confirm = this.alertCtrl.create({
                   title: this.WARNING,
@@ -265,18 +242,14 @@ export class Detail {
                     {
                       text: this.CONFIRM,
                       handler: () => {
-
                         this.saveExpense();
-
                       }
                     }
                   ]
                 });
                 confirm.present();
               }
-
             } else if (parseInt(this.expense.amount) > parseInt(budget.amount)) {
-
               //TODO REFACTOR 
               let confirm = this.alertCtrl.create({
                 title: this.WARNING,
@@ -290,49 +263,30 @@ export class Detail {
                   {
                     text: this.CONFIRM,
                     handler: () => {
-
                       this.saveExpense();
-
                     }
                   }
                 ]
               });
               confirm.present();
-
-
             } else {
-
               this.saveExpense();
-
             }
-
-
           });
-
       } else {
-
         this.saveExpense();
-
       }
-
     });
-
   }
 
   saveExpense() {
-
     this.expense.image = this.lastImage;
     this.expense.date = moment(new Date(this.expense.date).toISOString()).format();
-
     if (this.expense.id) {
-
       this.expense.category = this.expense.category.id;
       this.expenseService.update(this.expense);
-
     } else {
-
       this.expenseService.add(this.expense);
-
     }
     this.navCtrl.pop();
   }
@@ -367,31 +321,24 @@ export class Detail {
     }, (err) => { });
   }
 
-
   openModalCategory() {
-
     const modal = this.modalCtl.create(ModalCategory);
     modal.present();
-
     modal.onDidDismiss(category => {
       if (category) {
         this.category = category;
         this.expense.category = category.id;
       }
     });
-
   }
 
   public uploadImage() {
     // Destination URL
     var url = "http://yoururl/upload.php";
-
     // File for Upload
     var targetPath = this.pathForImage(this.lastImage);
-
     // File name only
     var filename = this.lastImage;
-
     var options = {
       fileKey: "file",
       fileName: filename,
@@ -399,14 +346,11 @@ export class Detail {
       mimeType: "multipart/form-data",
       params: { 'fileName': filename }
     };
-
     const fileTransfer: TransferObject = this.transfer.create();
-
     this.loading = this.loadingCtrl.create({
       content: 'Uploading...',
     });
     this.loading.present();
-
     // Use the FileTransfer to upload the image
     fileTransfer.upload(targetPath, url, options).then(data => {
       this.loading.dismissAll()
@@ -416,5 +360,4 @@ export class Detail {
       this.presentToast('Error while uploading file.');
     });
   }
-
 }

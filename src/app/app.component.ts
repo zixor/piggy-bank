@@ -3,7 +3,6 @@ import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from 'ng2-translate/ng2-translate';
-
 //Imports pages to Use
 import { HomePage } from '../pages/home/home';
 import { Dashboard } from '../pages/dashboard/dashboard';
@@ -15,13 +14,11 @@ import { ListSavings } from '../pages/list-savings/list-savings';
 import { UserProfile } from "./user-profile.model";
 import { Credits } from '../pages/credits/credits';
 import { UtilitiesService } from "../providers/utilities.service";
-
 //imports services
 import { ExpenseSqliteService } from '../providers/expense.service.sqlite';
 import { CategorySqliteService } from '../providers/category.service.sqlite';
 import { BudgetSqliteService } from '../providers/budget.service.sqlite';
 import { SavingSqliteService } from '../providers/savings.service.sqlite';
-
 
 @Component({
   templateUrl: 'app.html'
@@ -40,6 +37,7 @@ export class MyApp {
   private SAVINGS: string;
   private CREDITS: string;
   private SETTINGS: string;
+  private CLOSE_SESSION: string;
 
   constructor(public platform: Platform,
     public statusBar: StatusBar,
@@ -60,7 +58,6 @@ export class MyApp {
       }
     });
 
-
     this.initializeApp();
 
     this.userProfile = {
@@ -68,9 +65,8 @@ export class MyApp {
       uid: "",
       photoURL: "",
       displayName: "",
-      email:""
+      email: ""
     };
-
 
     this.events.subscribe("userProfile:changed", userProfile => {
       if (userProfile !== undefined) {
@@ -78,33 +74,36 @@ export class MyApp {
       }
     });
 
+    if (this.isUserAlreadyLoggedIn()) {
+      this.rootPage = HomePage;
+    }
+
   }
 
   updateMenu() {
-    
-    this.initializeConstants();    
-
+    this.initializeConstants();
   }
 
+  isUserAlreadyLoggedIn() {
+    let user = window.localStorage.getItem('userProfile');
+    return user !== null;
+  }
 
   setMenuItems() {
     // used for an example of ngFor and navigation
     this.pages = [
-
       { title: this.DASHBOARD, component: Dashboard, icon: 'analytics' },
       { title: this.CATEGORY_TITLE, component: ListCategory, icon: 'cube' },
       { title: this.TRANSACTIONS_TITLE, component: HomePage, icon: 'pulse' },
       { title: this.BUDGETS, component: ListBudget, icon: 'card' },
       { title: this.SAVINGS, component: ListSavings, icon: 'cash' },
       { title: this.SETTINGS, component: Settings, icon: 'md-settings' },
-      { title: this.CREDITS, component: Credits, icon: 'md-contact' }
-
+      { title: this.CREDITS, component: Credits, icon: 'md-contact' },
+      { title: this.CLOSE_SESSION, component: null, icon: 'md-contact' },
     ];
   }
 
-
   initializeConstants() {
-
     this.utilitiesService.getValueByLanguaje("DASHBOARD").then(value => {
       this.DASHBOARD = value;
       this.setMenuItems();
@@ -133,18 +132,18 @@ export class MyApp {
       this.SETTINGS = value;
       this.setMenuItems();
     });
-
-  }    
+     this.utilitiesService.getValueByLanguaje("CLOSE_SESSION").then(value => {
+      this.SETTINGS = value;
+      this.setMenuItems();
+    });
+  }
 
   initializeApp() {
     this.platform.ready().then(() => {
-
       this.initializeConstants();
-
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
-
       this.expenseSqlService.openDataBase().then(self => {
         let arrDates = this.utilitiesService.getInitialRangeOfDates();
         self.getAll(arrDates[0], arrDates[1]);
@@ -159,14 +158,15 @@ export class MyApp {
           });
         });
       });
-
     });
   }
 
-  openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+  openPage(page) { 
+    if (page.component == null) {
+      this.closeSession();
+    } else {
+      this.nav.setRoot(page.component);
+    }
   }
 
   closeSession() {

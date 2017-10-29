@@ -2,12 +2,11 @@ import { Component } from '@angular/core';
 import { NavController, Events } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { UserProfile } from "../../app/user-profile.model";
-
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Facebook } from "@ionic-native/facebook";
 import { AngularFireModule } from 'angularfire2';
+import { ProfilePage } from '../profile/profile';
 import firebase from 'firebase';
-
 
 @Component({
   selector: 'page-login',
@@ -17,12 +16,13 @@ import firebase from 'firebase';
 export class Login {
 
   userProfile: UserProfile;
+  private password: string;
+  private user: string;
 
   constructor(private navCtrl: NavController,
     private googlePlus: GooglePlus,
     private facebook: Facebook,
     public events: Events) {
-
     this.userProfile = {
       username: "",
       uid: "",
@@ -30,13 +30,13 @@ export class Login {
       displayName: "",
       email: ""
     };
-
   }
 
   singIn() {
-    this.navCtrl.setRoot(HomePage);
+    firebase.auth().signInWithEmailAndPassword(this.user, this.password).then(response => {
+      this.setUserProfile(response);
+    });
   }
-
 
   onGoogleLogin() {
     /* this.googlePlus.login({
@@ -58,18 +58,26 @@ export class Login {
       const facebookCredential = firebase.auth.FacebookAuthProvider.credential(response.authResponse.accessToken);
       firebase.auth().signInWithCredential(facebookCredential)
         .then(response => {
-
-          self.userProfile.uid = response.uid;
-          self.userProfile.displayName = response.displayName;
-          self.userProfile.photoURL = response.photoURL;
-          self.userProfile.email = response.email;
-
-          self.events.publish("userProfile:changed", self.userProfile);
-          window.localStorage.setItem('userProfile', JSON.stringify(self.userProfile));
-          self.navCtrl.setRoot(HomePage);
           // console.log("Firebase success: " + JSON.stringify(response));
+          this.setUserProfile(response);
         });
-
     });
+  }
+
+  setUserProfile(response) {
+    let self = this;
+    if (response.displayName) {
+      self.userProfile.uid = response.uid;
+      self.userProfile.displayName = response.displayName;
+      self.userProfile.photoURL = response.photoURL;
+      self.userProfile.email = response.email;      
+      window.localStorage.setItem('userProfile', JSON.stringify(self.userProfile));
+      self.events.publish("userProfile:changed", self.userProfile);
+      self.navCtrl.setRoot(HomePage);
+    }
+  }
+
+  onCreateProfile(){
+   this.navCtrl.setRoot(ProfilePage);
   }
 }

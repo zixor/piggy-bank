@@ -90,5 +90,6 @@
   "REPORT_TITLE_EXPORT": "Este es su informe de gastos actuales",
   "REPORT_TITLE_BODY": "Este archivo contiene todos los datos relacionados con los gastos por categoría",
   "EMAIL_ME_TITLE": "Me gustaría contratarte para un proyecto interesante!",
-  "EMAIL_ME_BODY": "Cuéntame más acerca del proyecto..."
+  "EMAIL_ME_BODY": "Cuéntame más acerca del proyecto...",
+  "CLOSE_SESSION": "Cerrar Sesión"
 }

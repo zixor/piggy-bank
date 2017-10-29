@@ -42,9 +42,11 @@ div.datepicker-balanced[_ngcontent-c0], div.datepicker-balanced-light[_ngcontent
     overflow: hidden;
     width: 60px;
     height: 60px; 
+    margin-top: 10px;
 }
 
 .bgd{
-   background-image: url("../assets/city.png");
+   //background-image: url("../assets/city.png");
+   background-color: #5ec3ab;
    margin-top: -15px;
 }

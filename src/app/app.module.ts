@@ -46,6 +46,7 @@ import { Dashboard } from '../pages/dashboard/dashboard';
 import { Settings } from '../pages/settings/settings';
 import { ListDetailsSavings } from '../pages/list-details-savings/list-details-savings';
 import { Credits } from '../pages/credits/credits';
+import { ProfilePage } from '../pages/profile/profile';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Facebook } from "@ionic-native/facebook";
 import { AngularFireModule } from 'angularfire2';
@@ -98,7 +99,8 @@ firebase.initializeApp(firebaseConfig);
     ListSavings,
     Savings,
     ListDetailsSavings,
-    Credits
+    Credits,
+    ProfilePage
   ],
   entryComponents: [
     MyApp,
@@ -119,7 +121,8 @@ firebase.initializeApp(firebaseConfig);
     ListSavings,
     Savings,
     ListDetailsSavings,
-    Credits
+    Credits,
+    ProfilePage
   ],
   providers: [
     HttpModule,

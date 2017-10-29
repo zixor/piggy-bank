@@ -10,7 +10,6 @@ import { EmailComposer } from '@ionic-native/email-composer';
 import { File } from '@ionic-native/file';
 import * as moment from 'moment';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-
 declare var cordova: any;
 
 @Component({
@@ -20,7 +19,6 @@ declare var cordova: any;
 export class HomePage {
 
   private expense;
-
   private balance: number = 0;
   private incomes: number = 0;
   private amountExpenses: number = 0;
@@ -57,22 +55,16 @@ export class HomePage {
     private file: File,
     private platform: Platform
   ) {
-
     console.log("1.constructor");
-
     this.systemDirectory = this.utilitiesService.getSysmteDirectory();
     let arrDates = this.utilitiesService.getInitialRangeOfDates();
     this.initialDate = arrDates[0];
     this.finalDate = arrDates[1];
-
     this.initializeConstants();
     this.subscribeExpensesLoaded();
-
   }
 
-
   initializeConstants() {
-
     this.utilitiesService.getValueByLanguaje("EXPORT_QUESTION").then(value => {
       this.EXPORT_QUESTION = value;
     });
@@ -112,9 +104,7 @@ export class HomePage {
     this.utilitiesService.getValueByLanguaje("DATE").then(value => {
       this.DATE = value;
     });
-
   }
-
 
   subscribeExpensesLoaded() {
     this.events.subscribe("expenses:loaded", expense => {
@@ -122,7 +112,6 @@ export class HomePage {
       this.showLoader();
     });
   }
-
 
   showLoader() {
     if (this.refresher != null) {
@@ -166,7 +155,6 @@ export class HomePage {
   }
 
   doRefresh(refresher) {
-
     this.findAll(this.initialDate, this.finalDate);
     this.refresher = refresher;
   }
@@ -204,21 +192,17 @@ export class HomePage {
   }
 
   doFilter() {
-
     const modal = this.modalCtl.create(Datefilter);
     modal.present();
-
     modal.onDidDismiss(filter => {
       console.log(filter);
       this.initialDate = filter.initialDate;
       this.finalDate = filter.finalDate;
       this.findAll(this.initialDate, this.finalDate);
     });
-
   }
 
   onExport() {
-
     let confirm = this.alertCtrl.create({
       title: this.EXPORT_TITTLE,
       message: this.EXPORT_QUESTION,
@@ -239,27 +223,19 @@ export class HomePage {
     confirm.present();
   }
 
-
-
   exportExpenses() {
-
     let expenses = this.expense.expenses;
-
     let data = "";
     expenses.forEach(expense => {
       let date = moment(expense.date).format('MMMM Do YYYY, h:mm:ss a');
       data += expense.category.name + "|" + date + "|" + expense.description + "|" + this.currencyPipe.transform(expense.amount, 'USD', true) + "\n";
     });
-
     this.utilitiesService.exportToFile("expenses.txt", data).then(fileEntry => {
-
       console.log(fileEntry);
       this.utilitiesService.sendEmail('', this.REPORT_TITLE_EXPORT,
         this.REPORT_TITLE_BODY,
         fileEntry.nativeURL);
-
     });
-
   }
 
   private presentToast(text) {
@@ -272,18 +248,13 @@ export class HomePage {
   }
 
   onShareWhatsApp(expense) {
-
     let message = this.SHARE_EXPENSE + "\n";
     let dateformat = moment(expense.date, "YYYY-MM-DD").toISOString();
-
     message += this.DESCRIPTION + " : " + expense.description + "\n";
     message += this.CATEGORY_TITLE + " : " + expense.category.name + "\n";
     message += this.AMOUNT + " : " + this.currencyPipe.transform(expense.amount, "USD", true) + "\n";
     message += this.DATE + " : " + this.datePipe.transform(dateformat) + "\n";
-
     this.utilitiesService.onShareWhatsApp(message);
-
   }
-
 
 }
