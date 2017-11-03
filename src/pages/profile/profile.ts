@@ -5,6 +5,7 @@ import { HomePage } from '../home/home';
 import firebase from 'firebase';
 import { UtilitiesService } from "../../providers/utilities.service";
 import { UserProfile } from "../../app/user-profile.model";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'page-profile',
@@ -12,15 +13,18 @@ import { UserProfile } from "../../app/user-profile.model";
 })
 export class ProfilePage {
 
-  private profile: any;
   private refresher;
+  private profile: any;
+  private userData:any[] = [];
+  private frmRegister: FormGroup;
   private userProfile: UserProfile;
 
   constructor(private navCtrl: NavController,
     private utilitiesService: UtilitiesService,
     private menu: MenuController,
     private navParams: NavParams,
-    private events: Events) {
+    private events: Events,
+    private fb: FormBuilder) {
     this.profile = {
       uid: "",
       name: "",
@@ -28,6 +32,12 @@ export class ProfilePage {
       password: "",
       repeatpassword: "",
     };
+
+    this.frmRegister = this.fb.group({
+      name:[this.userData['name'],[Validators.required,Validators.minLength(4)]],      
+      email:[this.userData['email'],[Validators.required,Validators.email]],
+      password:[this.userData['password'],[Validators.required, Validators.minLength(7)]]
+    });
   }
 
   ionViewDidLeave() {
@@ -70,10 +80,7 @@ export class ProfilePage {
   }
 
   validateForm() {
-    if (this.profile.password != this.profile.repeatpassword) {
-      this.utilitiesService.showMessage("Error", "El Password no coincide!");
-      return false;
-    } else if (this.profile.name == "" || this.profile.name.length < 4) {
+    if (this.profile.name == "" || this.profile.name.length < 4) {
       this.utilitiesService.showMessage("Error", "Longitud mínima para el Nombre son 4 caracteres!");
       return false;
     } else if (this.profile.password == "" || this.profile.password.length < 7) {
