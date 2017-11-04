@@ -3,5 +3,6 @@ export interface UserProfile {
         uid: string,
         photoURL: string,
         displayName: string,
-        email:string
+        email:string,
+        password?:string
 }

@@ -1,17 +1,17 @@
 <ion-menu [content]="content">
   <ion-content>
-    <ion-item class="bgd" item-width="120%"  style="padding-left:0%;">
+    <ion-item class="bgd" item-width="120%" style="padding-left:0%;">
       <ion-grid>
         <ion-row>
           <ion-col>
             <div class="profile-photo" *ngIf="userProfile.photoURL">
               <img src="{{userProfile.photoURL}}">
             </div>
-            <button ion-fab *ngIf="!userProfile.photoURL" color="warm-22" item-left style="box-shadow:none;">
-                <ion-icon name="md-contact"></ion-icon>
-              </button>
+            <div class="profile-photo" *ngIf="!userProfile.photoURL">
+              <img src="assets/userdafault.png">
+            </div>
           </ion-col>
-          <ion-col>          
+          <ion-col>
             <h2 style="color: #5a5a59;">{{userProfile.displayName}}</h2>
             <p style="color:white;">{{userProfile.email}}</p>
           </ion-col>

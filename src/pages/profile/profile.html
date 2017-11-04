@@ -1,45 +1,44 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Crear Usuario
-    </ion-title>
+  <ion-navbar color="header">  
+    <ion-title style="text-align:center;">Crear Usuario</ion-title>   
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   <div>
-    <h1>Registro de datos</h1>
-  </div>
-  <div>
     <form [formGroup]="frmRegister" (ngSubmit)="createProfile();" novalidate>
       <ion-list>
         <ion-item>
           <ion-icon name="md-person" item-left></ion-icon>
-          <ion-label stacked>Nombre:</ion-label>
-          <ion-input formControlName="name" type="text" placeholder="Nombre" name="name" [(ngModel)]="profile.name"></ion-input>
+          <ion-label floating>Nombre:</ion-label>
+          <ion-input formControlName="name" type="text" name="name" [(ngModel)]="profile.username"></ion-input>
         </ion-item>
         <ion-item *ngIf="frmRegister.get('name').errors && frmRegister.get('name').dirty">
-          <p *ngIf="frmRegister.get('name').hasError('required')" style="white-space: normal; color:red">El nombre es requerido.</p>
-          <p *ngIf="frmRegister.get('name').hasError('minlength')" style="white-space: normal; color:red">El mínimo de caracteres para es 4.</p>
+          <p *ngIf="frmRegister.get('name').hasError('required')" style="white-space: normal; color:red">El Nombre es requerido.</p>
+          <p *ngIf="frmRegister.get('name').hasError('minlength')" style="white-space: normal; color:red">El mínimo de caracteres requerido es 4.</p>
         </ion-item>
         <ion-item>
           <ion-icon name="md-at" item-left></ion-icon>
-          <ion-label stacked>Correo Electronico:</ion-label>
-          <ion-input formControlName="email" type="email" placeholder="email" name="email" [(ngModel)]="profile.email"></ion-input>
+          <ion-label floating>Correo Electrónico:</ion-label>
+          <ion-input formControlName="email" type="email" name="email" [(ngModel)]="profile.email"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="frmRegister.get('email').errors && frmRegister.get('name').dirty">
+          <p *ngIf="frmRegister.get('email').hasError('required')" style="white-space: normal; color:red">El Correo Electrónico es requerido.</p>
+          <p *ngIf="frmRegister.get('email').hasError('email')" style="white-space: normal; color:red">Ingrese un Correo Electrónico válido.</p>
         </ion-item>
         <ion-item>
           <ion-icon name="md-lock" item-left></ion-icon>
-          <ion-label stacked>Contraseña:</ion-label>
-          <ion-input formControlName="password" type="text" placeholder="Contraseña" name="password" [(ngModel)]="profile.password"></ion-input>
+          <ion-label floating>Contraseña:</ion-label>
+          <ion-input formControlName="password" type="text" name="password" [(ngModel)]="profile.password"></ion-input>
         </ion-item>
         <ion-item *ngIf="frmRegister.get('password').errors && frmRegister.get('password').dirty">
           <p *ngIf="frmRegister.get('password').hasError('required')" style="white-space: normal; color:red">El password es requerido.</p>
-          <p *ngIf="frmRegister.get('password').hasError('minlength')" style="white-space: normal; color:red">El mínimo de caracteres para es 7.</p>
-        </ion-item>
-        <ion-item>
-          <button ion-button block type="submit" [disabled]="!frmRegister.valid">Enviar</button>
+          <p *ngIf="frmRegister.get('password').hasError('minlength')" style="white-space: normal; color:red">El mínimo de caracteres requerido es 7.</p>
         </ion-item>
       </ion-list>
+      <div padding>
+        <button ion-button block color="add-item" type="submit" [disabled]="!frmRegister.valid">Guardar</button>
+      </div>
     </form>
   </div>
 </ion-content>

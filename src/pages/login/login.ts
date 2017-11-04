@@ -83,7 +83,7 @@ export class Login {
 
   setUserProfile(response) {
     let self = this;
-    if (response.displayName) {
+    if (response.email) {
       self.userProfile.uid = response.uid;
       self.userProfile.displayName = response.displayName;
       self.userProfile.photoURL = response.photoURL;

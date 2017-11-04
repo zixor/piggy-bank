@@ -14,10 +14,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class ProfilePage {
 
   private refresher;
-  private profile: any;
-  private userData:any[] = [];
+  private userData: any[] = [];
   private frmRegister: FormGroup;
-  private userProfile: UserProfile;
+  private profile: UserProfile;
 
   constructor(private navCtrl: NavController,
     private utilitiesService: UtilitiesService,
@@ -26,17 +25,17 @@ export class ProfilePage {
     private events: Events,
     private fb: FormBuilder) {
     this.profile = {
+      username: "",
       uid: "",
-      name: "",
+      photoURL: "",
+      displayName: "",
       email: "",
-      password: "",
-      repeatpassword: "",
-    };
-
+      password: ""
+    }
     this.frmRegister = this.fb.group({
-      name:[this.userData['name'],[Validators.required,Validators.minLength(4)]],      
-      email:[this.userData['email'],[Validators.required,Validators.email]],
-      password:[this.userData['password'],[Validators.required, Validators.minLength(7)]]
+      name: [this.userData['name'], [Validators.required, Validators.minLength(4)]],
+      email: [this.userData['email'], [Validators.required, Validators.email]],
+      password: [this.userData['password'], [Validators.required, Validators.minLength(7)]]
     });
   }
 
@@ -53,16 +52,14 @@ export class ProfilePage {
   }
 
   createProfile() {
-    if (this.validateForm()) {
-      firebase.auth().createUserWithEmailAndPassword(this.profile.email, this.profile.password)
-        .then(user => {
-          this.setProfile(user.uid);
-          this.navCtrl.setRoot(HomePage,{'fromProfile' : true});
-        })
-        .catch(e => {
-          this.utilitiesService.showMessage("Error", e.message);
-        });
-    }
+    firebase.auth().createUserWithEmailAndPassword(this.profile.email, this.profile.password)
+      .then(user => {
+        this.setProfile(user.uid);
+        this.navCtrl.setRoot(HomePage, { 'fromProfile': true });
+      })
+      .catch(e => {
+        this.utilitiesService.showMessage("Error", e.message);
+      });
   }
 
   setProfile(uid) {
@@ -70,26 +67,13 @@ export class ProfilePage {
       .database()
       .ref('/userProfile')
       .child(uid)
-      .set({ displayName: this.profile.name, email: this.profile.email });
-    this.userProfile.uid = uid;
-    this.userProfile.displayName = this.profile.name;
-    this.userProfile.photoURL = "";
-    this.userProfile.email = this.profile.email;
-    window.localStorage.setItem('userProfile', JSON.stringify(this.userProfile));
-    this.events.publish("userProfile:changed", this.userProfile);
-  }
-
-  validateForm() {
-    if (this.profile.name == "" || this.profile.name.length < 4) {
-      this.utilitiesService.showMessage("Error", "Longitud mínima para el Nombre son 4 caracteres!");
-      return false;
-    } else if (this.profile.password == "" || this.profile.password.length < 7) {
-      this.utilitiesService.showMessage("Error", "Longitud mínima para el Password es 7 caracteres!");
-      return false;
-    } else if (this.profile.email.indexOf("@") == -1) {
-      return false;
-    }
-    return true;
+      .set({ displayName: this.profile.username, email: this.profile.email });
+      
+    this.profile.displayName = this.profile.displayName;
+    this.profile.password = "";
+    this.profile.uid = uid;
+    window.localStorage.setItem('userProfile', JSON.stringify(this.profile));
+    this.events.publish("userProfile:changed", this.profile);
   }
 
 }
