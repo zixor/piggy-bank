@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title style="text-align:center;"> Savings </ion-title>
+    <ion-title style="text-align:center;"> {{ 'SAVINGS' | translate}} </ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="onTrash();" *ngIf="saving.id">
           <ion-icon name="trash"></ion-icon>
@@ -26,7 +26,7 @@
         </ion-col>
         <ion-col>
           <ion-item item-center>
-            <ion-input type="text" *ngIf="category" [(ngModel)]="category.name" name="category" placeholder="Choose Category" required
+            <ion-input type="text" *ngIf="category" [(ngModel)]="category.name" name="category" placeholder="{{ 'CHOOSE_CATEGORY' | translate}}" required
               readonly></ion-input>
           </ion-item>
         </ion-col>
@@ -34,12 +34,12 @@
     </ion-grid>
 
     <ion-item>
-      <ion-label color="primary" stacked>For what you save</ion-label>
+      <ion-label color="primary" stacked>{{ 'FOR_WHAT_YOU_SAVE' | translate}}</ion-label>
       <ion-input type="text" [(ngModel)]="saving.description" name="description"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label color="primary" floating>Choose Goal Date</ion-label>
+      <ion-label color="primary" floating>{{ 'CHOOSE_DATE' | translate}}</ion-label>
       <ion-datetime displayFormat="MMM DD YYYY" max="2030-12-31" name="date" [(ngModel)]="saving.goaldate"
       monthNames="{{ 'MONTHNAMES' | translate}}"
        monthShortNames="{{ 'MONTHSHORTNAMES' | translate}}"></ion-datetime>

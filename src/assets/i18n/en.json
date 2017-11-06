@@ -91,5 +91,8 @@
   "REPORT_TITLE_BODY": "This file contains all data related with the expenses by category",
   "EMAIL_ME_TITLE": "I  would like to hire you for an interesting project!",
   "EMAIL_ME_BODY": "Tell me more about your project...",
-  "CLOSE_SESSION": "Close session"
+  "CLOSE_SESSION": "Close session",
+  "CALCULATOR": "Calculator",
+  "FOR_WHAT_YOU_SAVE": "Which is the Goal For the Saving",
+  "CHOOSE_DATE": "Choose Date"
 }

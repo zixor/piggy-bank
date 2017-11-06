@@ -46,7 +46,6 @@ export class Login {
         this.utilitiesService.showMessage("Error", "Usuario o Password no válido!");
       } else {
         firebase.auth().signInWithEmailAndPassword(this.user, this.password).then(response => {
-          console.log(response);
           this.setUserProfile(response);
         });
       }
@@ -83,11 +82,17 @@ export class Login {
 
   setUserProfile(response) {
     let self = this;
-    if (response.email) {
+    if (response.uid) {
       self.userProfile.uid = response.uid;
-      self.userProfile.displayName = response.displayName;
       self.userProfile.photoURL = response.photoURL;
       self.userProfile.email = response.email;
+      if (!response.displayName) {
+        firebase.database().ref('/userProfile/' + response.uid).once('value').then(function (snapshot) {
+          self.userProfile.displayName = snapshot.val().displayName
+        });
+      } else {
+        self.userProfile.displayName = response.displayName;
+      }
       window.localStorage.setItem('userProfile', JSON.stringify(self.userProfile));
       self.events.publish("userProfile:changed", self.userProfile);
       self.navCtrl.setRoot(HomePage);

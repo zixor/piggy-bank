@@ -26,7 +26,7 @@
         </ion-col>
         <ion-col>
           <ion-item item-center>
-            <ion-input type="text" *ngIf="category" [(ngModel)]="category.name" name="category" placeholder="Choose Category" required
+            <ion-input type="text" *ngIf="category" [(ngModel)]="category.name" name="category" placeholder="{{ 'CHOOSE_CATEGORY' | translate}}" required
               readonly></ion-input>
           </ion-item>
         </ion-col>
