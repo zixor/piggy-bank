@@ -47,6 +47,22 @@ export class Login {
       } else {
         firebase.auth().signInWithEmailAndPassword(this.user, this.password).then(response => {
           this.setUserProfile(response);
+        }, err => {
+          let msg;
+          switch (err.code) { // SWITCH THE CODE RETURNED TO SEE WHAT MESSAGE YOU'LL DISPLAY
+            case "auth/wrong-password":
+              msg = "Email or Password is wrong.";
+              break;
+
+            case "auth/user-not-found":
+              msg = 'User not found.'
+              break;
+
+            case "auth/invalid-email":
+              msg = 'Email or Password is wrong.';
+              break;
+          }
+          this.utilitiesService.showMessage("Error:", msg);
         });
       }
     } catch (error) {
@@ -74,10 +90,9 @@ export class Login {
       const facebookCredential = firebase.auth.FacebookAuthProvider.credential(response.authResponse.accessToken);
       firebase.auth().signInWithCredential(facebookCredential)
         .then(response => {
-          // console.log("Firebase success: " + JSON.stringify(response));
           this.setUserProfile(response);
-        });
-    });
+        })
+    })
   }
 
   setUserProfile(response) {

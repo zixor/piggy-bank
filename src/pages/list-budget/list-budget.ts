@@ -72,7 +72,6 @@ export class ListBudget {
       }
       this.budgets = arrBudgets;
     });
-    console.log(this.budgets);
   }
 
   ionViewWillEnter() {

@@ -62,7 +62,6 @@ export class HomePage {
     private file: File
   ) {
     console.log("1.constructor");
-    this.disabelBackMenu(navParms.get('fromProfile'));
     this.systemDirectory = this.utilitiesService.getSysmteDirectory();
     let arrDates = this.utilitiesService.getInitialRangeOfDates();
     this.initialDate = arrDates[0];
@@ -70,11 +69,7 @@ export class HomePage {
     this.initializeConstants();
     this.subscribeExpensesLoaded();
     this.menu.swipeEnable(true);
-  }
-
-  disabelBackMenu(disable) {
-    this.disableGestorBack = disable;
-  }
+  }  
 
   initializeConstants() {
     this.utilitiesService.getValueByLanguaje("EXPORT_QUESTION").then(value => {
@@ -153,11 +148,13 @@ export class HomePage {
 
   ionViewWillEnter() {
     console.log("3.ionViewWillEnter");
-    this.expenseService.getAll(this.initialDate, this.finalDate).then(data => {
-      if (data) {
-        this.expenseService.getIncomes(this.initialDate, this.finalDate);
-      }
-    })
+    if (this.expenseService) {
+      this.expenseService.getAll(this.initialDate, this.finalDate).then(data => {
+        if (data) {
+          this.expenseService.getIncomes(this.initialDate, this.finalDate);
+        }
+      });
+    }
   }
 
   onItemClick(expense) {
