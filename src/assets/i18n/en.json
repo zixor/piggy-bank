@@ -94,5 +94,7 @@
   "CLOSE_SESSION": "Close session",
   "CALCULATOR": "Calculator",
   "FOR_WHAT_YOU_SAVE": "Which is the Goal For the Saving",
-  "CHOOSE_DATE": "Choose Date"
+  "CHOOSE_DATE": "Choose Date",
+  "SHARE_EXPENSE": "This is my expense description!",
+  "DELETE_QUESTION_DETAIL": "Do you want to delete this detail ?"
 }

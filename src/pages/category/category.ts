@@ -23,6 +23,7 @@ export class Category {
   private DELETE: string;
   private CATEGORY_CAN_NOT_DELETED: string;
   private CATEGORY_CAN_NOT_DELETED_DESC: string;
+  private CATEGORY_TITLE:string;
 
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
@@ -53,7 +54,6 @@ export class Category {
   }
 
   initializeConstants() {
-
     this.utilitiesService.getValueByLanguaje("CATEGORY_CAN_NOT_DELETED").then(value => {
       this.CATEGORY_CAN_NOT_DELETED = value;
     });
@@ -62,6 +62,9 @@ export class Category {
     });
     this.utilitiesService.getValueByLanguaje("DELETE").then(value => {
       this.DELETE = value;
+    });
+    this.utilitiesService.getValueByLanguaje("CATEGORY_TITLE").then(value => {
+      this.CATEGORY_TITLE = value;
     });
   }
 

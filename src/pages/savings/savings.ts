@@ -6,7 +6,7 @@ import { CategoryModel } from '../../models/category.model';
 import { SavingModel } from '../../models/saving.model';
 
 import { SavingSqliteService } from '../../providers/savings.service.sqlite';
-
+import { UtilitiesService } from '../../providers/utilities.service';
 
 @Component({
   selector: 'page-savings',
@@ -16,12 +16,14 @@ export class Savings {
 
   private saving: SavingModel;
   private category: CategoryModel;
+  private FOR_WHAT_YOU_SAVE:string;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private modalCtl: ModalController,
     private alertCtrl: AlertController,
-    private savingService: SavingSqliteService) {
+    private savingService: SavingSqliteService,
+    private utilities: UtilitiesService) {
 
 
     const saving: SavingModel = this.navParams.get('saving');
@@ -109,6 +111,13 @@ export class Savings {
       ]
     });
     confirm.present();
+  }
+
+
+  initializeConstants(){
+    this.utilities.getValueByLanguaje("FOR_WHAT_YOU_SAVE").then(value => {
+      this.FOR_WHAT_YOU_SAVE = value;
+    });
   }
 
 }

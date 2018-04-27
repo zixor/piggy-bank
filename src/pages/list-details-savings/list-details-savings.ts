@@ -18,7 +18,7 @@ export class ListDetailsSavings {
   private DELETE: string;
   private CANCEL: string;
   private CONFIRM: string;
-  private DELETE_TRANSACTION_FOR_DATE_AMOUNT: string;
+  private DELETE_QUESTION_DETAIL: string;
 
   constructor(
     private navParams: NavParams,
@@ -38,8 +38,8 @@ export class ListDetailsSavings {
 
   initializeConstants() {
 
-    this.utilitiesService.getValueByLanguaje("DELETE_TRANSACTION_FOR_DATE_AMOUNT").then(value => {
-      this.DELETE_TRANSACTION_FOR_DATE_AMOUNT = value;
+    this.utilitiesService.getValueByLanguaje("DELETE_QUESTION_DETAIL").then(value => {
+      this.DELETE_QUESTION_DETAIL = value;
     });
 
     this.utilitiesService.getValueByLanguaje("CANCEL").then(value => {
@@ -76,7 +76,7 @@ export class ListDetailsSavings {
   onTrash(detail: DetailSavingModel) {
     let confirm = this.alertCtrl.create({
       title: this.DELETE,
-      message: this.DELETE_TRANSACTION_FOR_DATE_AMOUNT + " " + detail.date + "" + detail.amount + " ? ",
+      message: this.DELETE_QUESTION_DETAIL + " " + detail.date + "" + detail.amount + " ? ",
       buttons: [
         {
           text: this.CANCEL,

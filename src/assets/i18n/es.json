@@ -94,5 +94,7 @@
   "CLOSE_SESSION": "Cerrar Sesión",
   "CALCULATOR": "Calculadora",
   "SAVING_GOAL": "Objetivo del ahorro",
-  "CHOOSE_DATE": "Escoge la Fecha"
+  "CHOOSE_DATE": "Escoge la Fecha",
+  "SHARE_EXPENSE": "Esta es la descripción de mi gasto!",
+  "DELETE_QUESTION_DETAIL": "Desea eliminar este detalle ?"
 }
